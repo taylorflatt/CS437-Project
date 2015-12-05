@@ -42,6 +42,9 @@
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.normalizedDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.denormalizedDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -118,7 +121,8 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.exitToolStripMenuItem});
+            this.exitToolStripMenuItem,
+            this.viewToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(910, 24);
@@ -151,6 +155,27 @@
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.exitToolStripMenuItem.Text = "Exit";
+            // 
+            // viewToolStripMenuItem
+            // 
+            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.normalizedDataToolStripMenuItem,
+            this.denormalizedDataToolStripMenuItem});
+            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.viewToolStripMenuItem.Text = "View";
+            // 
+            // normalizedDataToolStripMenuItem
+            // 
+            this.normalizedDataToolStripMenuItem.Name = "normalizedDataToolStripMenuItem";
+            this.normalizedDataToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.normalizedDataToolStripMenuItem.Text = "Normalized Data";
+            // 
+            // denormalizedDataToolStripMenuItem
+            // 
+            this.denormalizedDataToolStripMenuItem.Name = "denormalizedDataToolStripMenuItem";
+            this.denormalizedDataToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.denormalizedDataToolStripMenuItem.Text = "Denormalized Data";
             // 
             // label1
             // 
@@ -382,7 +407,7 @@
             // 
             // plotButton
             // 
-            this.plotButton.Location = new System.Drawing.Point(362, 13);
+            this.plotButton.Location = new System.Drawing.Point(383, 15);
             this.plotButton.Name = "plotButton";
             this.plotButton.Size = new System.Drawing.Size(75, 23);
             this.plotButton.TabIndex = 14;
@@ -431,36 +456,76 @@
             series1.Legend = "Legend1";
             series1.LegendText = "Class 0";
             series1.MarkerColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            series1.MarkerSize = 6;
             series1.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
             series1.Name = "0";
+            series1.SmartLabelStyle.AllowOutsidePlotArea = System.Windows.Forms.DataVisualization.Charting.LabelOutsidePlotAreaStyle.Yes;
+            series1.SmartLabelStyle.CalloutBackColor = System.Drawing.Color.Maroon;
+            series1.SmartLabelStyle.IsMarkerOverlappingAllowed = true;
+            series1.SmartLabelStyle.IsOverlappedHidden = false;
+            series1.SmartLabelStyle.MaxMovingDistance = 20D;
+            series1.SmartLabelStyle.MinMovingDistance = 10D;
+            series1.SmartLabelStyle.MovingDirection = System.Windows.Forms.DataVisualization.Charting.LabelAlignmentStyles.Top;
             series2.ChartArea = "ChartArea1";
             series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
             series2.Legend = "Legend1";
             series2.LegendText = "Class 1";
             series2.MarkerColor = System.Drawing.Color.Fuchsia;
+            series2.MarkerSize = 6;
             series2.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
             series2.Name = "1";
+            series2.SmartLabelStyle.AllowOutsidePlotArea = System.Windows.Forms.DataVisualization.Charting.LabelOutsidePlotAreaStyle.Yes;
+            series2.SmartLabelStyle.CalloutBackColor = System.Drawing.Color.Maroon;
+            series2.SmartLabelStyle.IsMarkerOverlappingAllowed = true;
+            series2.SmartLabelStyle.IsOverlappedHidden = false;
+            series2.SmartLabelStyle.MaxMovingDistance = 20D;
+            series2.SmartLabelStyle.MinMovingDistance = 10D;
+            series2.SmartLabelStyle.MovingDirection = System.Windows.Forms.DataVisualization.Charting.LabelAlignmentStyles.Top;
             series3.ChartArea = "ChartArea1";
             series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
             series3.Legend = "Legend1";
             series3.LegendText = "Class 2";
             series3.MarkerColor = System.Drawing.Color.Lime;
+            series3.MarkerSize = 6;
             series3.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
             series3.Name = "2";
+            series3.SmartLabelStyle.AllowOutsidePlotArea = System.Windows.Forms.DataVisualization.Charting.LabelOutsidePlotAreaStyle.Yes;
+            series3.SmartLabelStyle.CalloutBackColor = System.Drawing.Color.Maroon;
+            series3.SmartLabelStyle.IsMarkerOverlappingAllowed = true;
+            series3.SmartLabelStyle.IsOverlappedHidden = false;
+            series3.SmartLabelStyle.MaxMovingDistance = 20D;
+            series3.SmartLabelStyle.MinMovingDistance = 10D;
+            series3.SmartLabelStyle.MovingDirection = System.Windows.Forms.DataVisualization.Charting.LabelAlignmentStyles.Top;
             series4.ChartArea = "ChartArea1";
             series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
             series4.Legend = "Legend1";
             series4.LegendText = "Class 3";
             series4.MarkerColor = System.Drawing.Color.Aqua;
+            series4.MarkerSize = 6;
             series4.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
             series4.Name = "3";
+            series4.SmartLabelStyle.AllowOutsidePlotArea = System.Windows.Forms.DataVisualization.Charting.LabelOutsidePlotAreaStyle.Yes;
+            series4.SmartLabelStyle.CalloutBackColor = System.Drawing.Color.Maroon;
+            series4.SmartLabelStyle.IsMarkerOverlappingAllowed = true;
+            series4.SmartLabelStyle.IsOverlappedHidden = false;
+            series4.SmartLabelStyle.MaxMovingDistance = 20D;
+            series4.SmartLabelStyle.MinMovingDistance = 10D;
+            series4.SmartLabelStyle.MovingDirection = System.Windows.Forms.DataVisualization.Charting.LabelAlignmentStyles.Top;
             series5.ChartArea = "ChartArea1";
             series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
             series5.Legend = "Legend1";
             series5.LegendText = "Class 4";
             series5.MarkerColor = System.Drawing.Color.Blue;
+            series5.MarkerSize = 6;
             series5.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
             series5.Name = "4";
+            series5.SmartLabelStyle.AllowOutsidePlotArea = System.Windows.Forms.DataVisualization.Charting.LabelOutsidePlotAreaStyle.Yes;
+            series5.SmartLabelStyle.CalloutBackColor = System.Drawing.Color.Maroon;
+            series5.SmartLabelStyle.IsMarkerOverlappingAllowed = true;
+            series5.SmartLabelStyle.IsOverlappedHidden = false;
+            series5.SmartLabelStyle.MaxMovingDistance = 20D;
+            series5.SmartLabelStyle.MinMovingDistance = 10D;
+            series5.SmartLabelStyle.MovingDirection = System.Windows.Forms.DataVisualization.Charting.LabelAlignmentStyles.Top;
             series6.ChartArea = "ChartArea1";
             series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
             series6.Legend = "Legend1";
@@ -469,6 +534,13 @@
             series6.MarkerSize = 7;
             series6.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Square;
             series6.Name = "5";
+            series6.SmartLabelStyle.AllowOutsidePlotArea = System.Windows.Forms.DataVisualization.Charting.LabelOutsidePlotAreaStyle.Yes;
+            series6.SmartLabelStyle.CalloutBackColor = System.Drawing.Color.Maroon;
+            series6.SmartLabelStyle.IsMarkerOverlappingAllowed = true;
+            series6.SmartLabelStyle.IsOverlappedHidden = false;
+            series6.SmartLabelStyle.MaxMovingDistance = 20D;
+            series6.SmartLabelStyle.MinMovingDistance = 10D;
+            series6.SmartLabelStyle.MovingDirection = System.Windows.Forms.DataVisualization.Charting.LabelAlignmentStyles.Top;
             this.chart1.Series.Add(series1);
             this.chart1.Series.Add(series2);
             this.chart1.Series.Add(series3);
@@ -732,5 +804,8 @@
         private System.Windows.Forms.TabPage normalizedDataTab;
         private System.Windows.Forms.DataGridView dataGridDenormalizedData;
         private System.Windows.Forms.DataGridView dataGridNormalizedData;
+        private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem normalizedDataToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem denormalizedDataToolStripMenuItem;
     }
 }

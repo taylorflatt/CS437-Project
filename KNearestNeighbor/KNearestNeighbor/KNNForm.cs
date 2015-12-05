@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using System.Collections.ObjectModel;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace KNearestNeighbor
 {
@@ -16,20 +17,22 @@ namespace KNearestNeighbor
     public partial class KNNForm : Form
     {
         public int k; //k-value to be set.
-        //public double[][] inputs = 
-        //    {
-        //        new double[] { .5, .2, .1, .2, .9},
-        //        new double[] { .5, .5, .2, .5, .2},
-        //        new double[] {  .2, .1, .7, .8, .2},
-        //        new double[] {  .1, .1, .8, .1, .2},
-        //        new double[] {  .1, .2, .2, .4, .1},
-        //        new double[] {  .3, .1, .2, 0, .1},
-        //        new double[] { .11, .5, .1, .2, .1},
-        //        new double[] { .15, .5, .2, .5, .9},
-        //        new double[] { .10, .5, .2, .1, 0},
-        //        new double[] { .10, .5, .2, .1, .1},
-        //    };
+    //public double[][] inputs = 
+    //    {
+    //        new double[] { .5, .2, .1, .2, .9},
+    //        new double[] { .5, .5, .2, .5, .2},
+    //        new double[] {  .2, .1, .7, .8, .2},
+    //        new double[] {  .1, .1, .8, .1, .2},
+    //        new double[] {  .1, .2, .2, .4, .1},
+    //        new double[] {  .3, .1, .2, 0, .1},
+    //        new double[] { .11, .5, .1, .2, .1},
+    //        new double[] { .15, .5, .2, .5, .9},
+    //        new double[] { .10, .5, .2, .1, 0},
+    //        new double[] { .10, .5, .2, .1, .1},
+    //    };
 
+        //Will need to read in all these values via excel sheet so: http://csharp.net-informations.com/excel/csharp-read-excel.htm
+        //Training set attribute values.
         public double[][] inputs =
             {
                 new double[] { 5, 2, 1, 2, 9},
@@ -44,15 +47,22 @@ namespace KNearestNeighbor
                 new double[] { 10, 5, 2, 1, 1},
             };
 
-        //training set input array
+        //training set model values
+        public string[] labels =
+            {
+                "make1",
+                "make2",
+                "make3",
+            };
+
+
+        //training set make values (classes)
         public int[] outputs =
             {
                 0,0,0,0,0,
                 1,1,1,
                 2,2
             };
-
-        public double[][] normalizedTrainingData = new double[10][];
 
         public string inputModel; //label for our input point
         public double attribute1, attribute2, attribute3, attribute4, attribute5;
@@ -148,11 +158,11 @@ namespace KNearestNeighbor
                 }
 
                 //double[] data = { attribute1, attribute2, attribute3, attribute4, attribute5 };
-                double[] data = { NormalizeData.Normalize(inputs, attribute1TB),
-                    NormalizeData.Normalize(inputs, attribute2TB),
-                    NormalizeData.Normalize(inputs, attribute3TB),
-                    NormalizeData.Normalize(inputs, attribute4TB),
-                    NormalizeData.Normalize(inputs, attribute5TB) };
+                double[] data = { NormalizeData.Normalize(inputs, attribute1TB, 0),
+                    NormalizeData.Normalize(inputs, attribute2TB, 1),
+                    NormalizeData.Normalize(inputs, attribute3TB, 2),
+                    NormalizeData.Normalize(inputs, attribute4TB, 3),
+                    NormalizeData.Normalize(inputs, attribute5TB, 4) };
 
                 double[][] temp6 = NormalizeData.Normalize(inputs);
                     
@@ -476,44 +486,60 @@ namespace KNearestNeighbor
 
                 double[][] normalizedInputs = NormalizeData.Normalize(inputs);
 
-                double[] data = { NormalizeData.Normalize(inputs, attribute1TB),
-                    NormalizeData.Normalize(inputs, attribute2TB),
-                    NormalizeData.Normalize(inputs, attribute3TB),
-                    NormalizeData.Normalize(inputs, attribute4TB),
-                    NormalizeData.Normalize(inputs, attribute5TB) };
-
-                double[][] temp6 = NormalizeData.Normalize(inputs);
-
-                var temp213 = inputs.Length;
-                var temp12312 = inputs[0][0];
-                var temp18124 = xCoord;
-                var asfjkn182 = yCoord;
-
-
-                var input00X = normalizedInputs[0][0];
-                var input01Y = normalizedInputs[0][1];
-
-                var input10X = normalizedInputs[1][0];
-                var input11Y = normalizedInputs[1][1];
-
-                var input20X = normalizedInputs[2][0];
-                var input21Y = normalizedInputs[2][1];
-
-                var input30X = normalizedInputs[3][0];
-                var input31Y = normalizedInputs[3][1];
+                double[] data = { NormalizeData.Normalize(inputs, attribute1TB, 0),
+                    NormalizeData.Normalize(inputs, attribute2TB, 1),
+                    NormalizeData.Normalize(inputs, attribute3TB, 2),
+                    NormalizeData.Normalize(inputs, attribute4TB, 3),
+                    NormalizeData.Normalize(inputs, attribute5TB, 4) };
 
                 //NEED TO ACCOUNT FOR THE CASE THE PERSON JUST HITS "PLOT" and doesn't choose two values. Maybe just set the values to 
                 //two default "Attribute1 and Attribute2 values. No - we want them to choose them so it will look good and display right.
 
                 //Just for the case in which x-coord: Attribute1 and y-coord: Attribute2
-                for (int count = 0; count < inputs.Length; count++)
-                {
-                    string className = outputs[count].ToString();
-                    chart1.Series[className].Points.AddXY(normalizedInputs[count][0], normalizedInputs[count][1]);
-                    chart1.Series[5].Points.AddXY(data[0], data[1]); //add our input point
-                    //chart1.Series[0].Points[count].AxisLabel = outputs[count].ToString();
-                    //chart1.Series[0].Label = outputs[count].ToString();
-                }
+
+                Plot.PlotPoints(chart1, 0, 1, inputs, normalizedInputs, outputs, data);
+
+                //int point = 0;
+                //for (int count = 0; count < inputs.Length; count++)
+                //{
+                //    string className = outputs[count].ToString();
+
+                //    chart1.Series[className].Points.AddXY(normalizedInputs[count][0], normalizedInputs[count][1]);
+
+                //    try
+                //    {
+                //        string xInputCoord = StringExtensions.Truncate(Convert.ToString(chart1.Series[className].Points[point].XValue), 4);
+                //        string yInputCoord = StringExtensions.Truncate(Convert.ToString(chart1.Series[className].Points[point].YValues[0]), 4);
+
+                //        chart1.Series[className].Points[point].ToolTip = string.Format("Coordinate: ({0},{1}) " + "\n"
+                //        + "Class: {2}", xInputCoord, chart1.Series[className].Points[point].YValues[0], className);
+                //    }
+
+                //    catch (ArgumentOutOfRangeException error)
+                //    {
+                //        Console.WriteLine("This error SHOULD be ok. How the tooltips are added makes it so that it will access a non-existing" 
+                //            + " element due to switching the series (aka the class) and restarting at position 0. To correc this, we simply" 
+                //            + " reset the counter back to zero and require an increment at the end no matter what.");
+                //        Console.WriteLine("Packed Message: " + error.Message);
+                //        Console.WriteLine("Call Stack: " + error.StackTrace);
+
+                //        point = 0; //Set value back to zero.
+
+                //        //Now re-add the tooltip to the point that failed.
+                //        string xInputCoord = StringExtensions.Truncate(Convert.ToString(chart1.Series[className].Points[point].XValue), 4);
+                //        string yInputCoord = StringExtensions.Truncate(Convert.ToString(chart1.Series[className].Points[point].YValues[0]), 4);
+
+                //        chart1.Series[className].Points[point].ToolTip = string.Format("Coordinate: ({0},{1}) " + "\n"
+                //        + "Class: {2}", xInputCoord, chart1.Series[className].Points[point].YValues[0], className);
+                //    }
+
+                //    finally
+                //    {
+                //        point++;
+                //    }
+
+                //    chart1.Series[5].Points.AddXY(data[0], data[1]); //add our input point
+                //}
 
                 chart1.Show();
 
@@ -609,7 +635,7 @@ namespace KNearestNeighbor
     public static class NormalizeData
     {
         //For input
-        public static double Normalize(double[][]inputs, TextBox attribute)
+        public static double Normalize(double[][]inputs, TextBox attribute, int attributeNum)
         {
             double max = 0;
             double min = 1;
@@ -619,11 +645,11 @@ namespace KNearestNeighbor
             //find the max/min value for attribute 1
             for (int count = 0; count < inputs.Length; count++)
             {
-                if (inputs[count][0] > max)
-                    max = inputs[count][0];
+                if (inputs[count][attributeNum] > max)
+                    max = inputs[count][attributeNum];
 
-                if (inputs[count][0] < min)
-                    min = inputs[count][0];
+                if (inputs[count][attributeNum] < min)
+                    min = inputs[count][attributeNum];
             }
 
             normalizedValue = (currentValue - min) / (max - min);
@@ -872,5 +898,64 @@ namespace KNearestNeighbor
         public CoordinateException(string message, Exception inner)
             : base(message, inner)
         { }
+    }
+
+    public static class StringExtensions
+    {
+        public static string Truncate(this string value, int maxLength)
+        {
+            if (string.IsNullOrEmpty(value))
+                return value;
+
+            return value.Length <= maxLength ? value : value.Substring(0, maxLength);
+        }
+    }
+
+    public static class Plot
+    {
+        public static void PlotPoints(Chart chart, int xCoordChoice, int yCoordChoice, double[][]trainingSet, double[][]normalizedTrainingSet, int[]outputs, double[]inputData )
+        { 
+            int point = 0;
+            for (int count = 0; count < trainingSet.Length; count++)
+            {
+                string className = outputs[count].ToString();
+
+                chart.Series[className].Points.AddXY(normalizedTrainingSet[count][xCoordChoice], normalizedTrainingSet[count][yCoordChoice]);
+
+                try
+                {
+                    string xInputCoord = StringExtensions.Truncate(Convert.ToString(chart.Series[className].Points[point].XValue), 4);
+                    string yInputCoord = StringExtensions.Truncate(Convert.ToString(chart.Series[className].Points[point].YValues[0]), 4);
+
+                    chart.Series[className].Points[point].ToolTip = string.Format("Coordinate: ({0},{1}) " + "\n"
+                    + "Class: {2}", xInputCoord, yInputCoord, className);
+                }
+
+                catch (ArgumentOutOfRangeException error)
+                {
+                    Console.WriteLine("This error SHOULD be ok. How the tooltips are added makes it so that it will access a non-existing"
+                        + " element due to switching the series (aka the class) and restarting at position 0. To correc this, we simply"
+                        + " reset the counter back to zero and require an increment at the end no matter what.");
+                    Console.WriteLine("Packed Message: " + error.Message);
+                    Console.WriteLine("Call Stack: " + error.StackTrace);
+
+                    point = 0; //Set value back to zero.
+
+                    //Now re-add the tooltip to the point that failed.
+                    string xInputCoord = StringExtensions.Truncate(Convert.ToString(chart.Series[className].Points[point].XValue), 4);
+                    string yInputCoord = StringExtensions.Truncate(Convert.ToString(chart.Series[className].Points[point].YValues[0]), 4);
+
+                    chart.Series[className].Points[point].ToolTip = string.Format("Coordinate: ({0},{1}) " + "\n"
+                    + "Class: {2}", xInputCoord, yInputCoord, className);
+                }
+
+                finally
+                {
+                    point++;
+                }
+            }
+
+            chart.Series[5].Points.AddXY(inputData[xCoordChoice], inputData[yCoordChoice]); //add our input point
+        }
     }
 }
