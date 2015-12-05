@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
+using System.Collections.ObjectModel;
 
 namespace KNearestNeighbor
 {
@@ -51,8 +52,11 @@ namespace KNearestNeighbor
                 2,2
             };
 
+        public double[][] normalizedTrainingData = new double[10][];
+
         public string inputModel; //label for our input point
         public double attribute1, attribute2, attribute3, attribute4, attribute5;
+        protected bool trainingDataNormalized = false; //assume training data isn't normalized.
 
         protected string xCoord = "-1";
         protected string yCoord = "-1";
@@ -140,15 +144,23 @@ namespace KNearestNeighbor
                 if (checkBox1.Checked)
                 {
                     //Normalize my input
-                    double temp5 = NormalizeData.Normalize(inputs, attribute1TB);
+                    double[][] temp5 = NormalizeData.Normalize(inputs);
                 }
 
-                double[] data = { attribute1, attribute2, attribute3, attribute4, attribute5 };
+                //double[] data = { attribute1, attribute2, attribute3, attribute4, attribute5 };
+                double[] data = { NormalizeData.Normalize(inputs, attribute1TB),
+                    NormalizeData.Normalize(inputs, attribute2TB),
+                    NormalizeData.Normalize(inputs, attribute3TB),
+                    NormalizeData.Normalize(inputs, attribute4TB),
+                    NormalizeData.Normalize(inputs, attribute5TB) };
 
                 double[][] temp6 = NormalizeData.Normalize(inputs);
+                    
 
+                //Compute input data's class.
                 outputClass = knn.Compute(data);
 
+                //debug: show it to make sure it works correctly.
                 System.Windows.Forms.MessageBox.Show(Convert.ToString(outputClass));
             }
 
@@ -344,6 +356,24 @@ namespace KNearestNeighbor
             }
         }
 
+        private void dataTabControl_Selected(object sender, TabControlEventArgs e)
+        {
+            if(dataTabControl.SelectedIndex == 1)
+            {
+                dataGridDenormalizedData.AutoGenerateColumns = false;
+                dataGridDenormalizedData.Columns.Add("Make", "Make"); //class
+                dataGridDenormalizedData.Columns.Add("Model", "Model");
+                dataGridDenormalizedData.Columns.Add("Attribute1", "Attribute1");
+                dataGridDenormalizedData.Columns.Add("Attribute2", "Attribute2");
+                dataGridDenormalizedData.Columns.Add("Attribute3", "Attribute3");
+                dataGridDenormalizedData.Columns.Add("Attribute4", "Attribute4");
+                dataGridDenormalizedData.Columns.Add("Attribute5", "Attribute5");
+
+                dataGridDenormalizedData.DataSource = inputs.ToList();
+            }
+                
+        }
+
         private void label6_TextChanged(object sender, EventArgs e)
         {
             Label objLabel = (Label)sender;
@@ -394,7 +424,7 @@ namespace KNearestNeighbor
         // then you might run into errors displaying and checking values. 
         //Example: If you have a bad x AND y coordinate and ONLY change the x coordinate to a valid selection then it will still display the error 
         //since the error count is still 1. But once you fix both it will resolve.
-        private void button1_Click_1(object sender, EventArgs e)
+        private void plotButton_Click(object sender, EventArgs e)
         {
             try
             {
@@ -414,7 +444,7 @@ namespace KNearestNeighbor
                     ErrorProviderExtensions.SetErrorWithCount(errorProviderCoordinateX, comboBox1, "Please validate the X value.");
                     ErrorProviderExtensions.SetErrorWithCount(errorProviderCoordinateY, comboBox2, "Please validate the Y value.");
 
-                    throw new CoordinateException("Need a valid x and y coordinates.");
+                    throw new CoordinateException("Need valid x and y coordinates.");
                 }
 
                 //Just the x-coordinate has errors.
@@ -422,7 +452,7 @@ namespace KNearestNeighbor
                 {
                     ErrorProviderExtensions.SetErrorWithCount(errorProviderCoordinateX, comboBox1, "Please validate the X value.");
 
-                    throw new XCoordinateException("Need a valid X-coordinate");
+                    throw new XCoordinateException("Need valid X-coordinate");
                 }
 
                 //Just the y-coordinate has errors.
@@ -430,7 +460,7 @@ namespace KNearestNeighbor
                 {
                     ErrorProviderExtensions.SetErrorWithCount(errorProviderCoordinateY, comboBox2, "Please validate the Y value.");
 
-                    throw new XCoordinateException("Need a valid Y-coordinate");
+                    throw new XCoordinateException("Need valid Y-coordinate");
                 }
 
                 else
@@ -442,25 +472,50 @@ namespace KNearestNeighbor
                     errorProviderPlot.Clear();
                 }
 
-                string temp = comboBox1.SelectedText;
-                string temp7 = comboBox2.SelectedText;
-                string temp2 = xCoord;
-                string temp6 = yCoord;
-                string temp3 = outputs[0].ToString();
-                string temp4 = outputs[5].ToString();
-                string temp5 = outputs[9].ToString();
+                //Only normalize the data if it already hasn't been normalized.
+
+                double[][] normalizedInputs = NormalizeData.Normalize(inputs);
+
+                double[] data = { NormalizeData.Normalize(inputs, attribute1TB),
+                    NormalizeData.Normalize(inputs, attribute2TB),
+                    NormalizeData.Normalize(inputs, attribute3TB),
+                    NormalizeData.Normalize(inputs, attribute4TB),
+                    NormalizeData.Normalize(inputs, attribute5TB) };
+
+                double[][] temp6 = NormalizeData.Normalize(inputs);
+
+                var temp213 = inputs.Length;
+                var temp12312 = inputs[0][0];
+                var temp18124 = xCoord;
+                var asfjkn182 = yCoord;
+
+
+                var input00X = normalizedInputs[0][0];
+                var input01Y = normalizedInputs[0][1];
+
+                var input10X = normalizedInputs[1][0];
+                var input11Y = normalizedInputs[1][1];
+
+                var input20X = normalizedInputs[2][0];
+                var input21Y = normalizedInputs[2][1];
+
+                var input30X = normalizedInputs[3][0];
+                var input31Y = normalizedInputs[3][1];
 
                 //NEED TO ACCOUNT FOR THE CASE THE PERSON JUST HITS "PLOT" and doesn't choose two values. Maybe just set the values to 
                 //two default "Attribute1 and Attribute2 values. No - we want them to choose them so it will look good and display right.
 
+                //Just for the case in which x-coord: Attribute1 and y-coord: Attribute2
                 for (int count = 0; count < inputs.Length; count++)
                 {
-                    chart1.Series[0].Points.AddXY(inputs[count][0], inputs[count][1]);
+                    string className = outputs[count].ToString();
+                    chart1.Series[className].Points.AddXY(normalizedInputs[count][0], normalizedInputs[count][1]);
+                    chart1.Series[5].Points.AddXY(data[0], data[1]); //add our input point
                     //chart1.Series[0].Points[count].AxisLabel = outputs[count].ToString();
-                    chart1.Series[0].Label = outputs[count].ToString();
+                    //chart1.Series[0].Label = outputs[count].ToString();
                 }
 
-
+                chart1.Show();
 
                 ////X = attribute 1 combination choices
                 //if (xCoord.Equals("Attribute1") && yCoord.Equals("Attribute2"))
@@ -468,69 +523,67 @@ namespace KNearestNeighbor
                 //    chart1.Series[0].Points.AddXY(inputs[0][1], inputs[0][2]);
                 //}
 
-                if (comboBox1.SelectedText.Equals("Attribute1") && comboBox2.SelectedText.Equals("Attribute3"))
-                    chart1.Series[0].Points.AddXY(inputs.ElementAt(0), inputs.ElementAt(2));
+                //if (comboBox1.SelectedText.Equals("Attribute1") && comboBox2.SelectedText.Equals("Attribute3"))
+                //    chart1.Series[0].Points.AddXY(inputs.ElementAt(0), inputs.ElementAt(2));
 
-                else if (comboBox1.SelectedText.Equals("Attribute1") && comboBox2.SelectedText.Equals("Attribute4"))
-                    chart1.Series[0].Points.AddXY(inputs.ElementAt(0), inputs.ElementAt(3));
+                //else if (comboBox1.SelectedText.Equals("Attribute1") && comboBox2.SelectedText.Equals("Attribute4"))
+                //    chart1.Series[0].Points.AddXY(inputs.ElementAt(0), inputs.ElementAt(3));
 
-                else if (comboBox1.SelectedText.Equals("Attribute1") && comboBox2.SelectedText.Equals("Attribute5"))
-                    chart1.Series[0].Points.AddXY(inputs.ElementAt(0), inputs.ElementAt(4));
+                //else if (comboBox1.SelectedText.Equals("Attribute1") && comboBox2.SelectedText.Equals("Attribute5"))
+                //    chart1.Series[0].Points.AddXY(inputs.ElementAt(0), inputs.ElementAt(4));
 
-                //X = attribute2 cominbation choices
-                else if (comboBox1.SelectedText.Equals("Attribute2") && comboBox2.SelectedText.Equals("Attribute1"))
-                    chart1.Series[0].Points.AddXY(inputs.ElementAt(1), inputs.ElementAt(0));
+                ////X = attribute2 cominbation choices
+                //else if (comboBox1.SelectedText.Equals("Attribute2") && comboBox2.SelectedText.Equals("Attribute1"))
+                //    chart1.Series[0].Points.AddXY(inputs.ElementAt(1), inputs.ElementAt(0));
 
-                else if (comboBox1.SelectedText.Equals("Attribute2") && comboBox2.SelectedText.Equals("Attribute3"))
-                    chart1.Series[0].Points.AddXY(inputs.ElementAt(1), inputs.ElementAt(2));
+                //else if (comboBox1.SelectedText.Equals("Attribute2") && comboBox2.SelectedText.Equals("Attribute3"))
+                //    chart1.Series[0].Points.AddXY(inputs.ElementAt(1), inputs.ElementAt(2));
 
-                else if (comboBox1.SelectedText.Equals("Attribute2") && comboBox2.SelectedText.Equals("Attribute4"))
-                    chart1.Series[0].Points.AddXY(inputs.ElementAt(1), inputs.ElementAt(3));
+                //else if (comboBox1.SelectedText.Equals("Attribute2") && comboBox2.SelectedText.Equals("Attribute4"))
+                //    chart1.Series[0].Points.AddXY(inputs.ElementAt(1), inputs.ElementAt(3));
 
-                else if (comboBox1.SelectedText.Equals("Attribute2") && comboBox2.SelectedText.Equals("Attribute5"))
-                    chart1.Series[0].Points.AddXY(inputs.ElementAt(1), inputs.ElementAt(4));
+                //else if (comboBox1.SelectedText.Equals("Attribute2") && comboBox2.SelectedText.Equals("Attribute5"))
+                //    chart1.Series[0].Points.AddXY(inputs.ElementAt(1), inputs.ElementAt(4));
 
-                //X = attribute3 combination choices
-                else if (comboBox1.SelectedText.Equals("Attribute3") && comboBox2.SelectedText.Equals("Attribute1"))
-                    chart1.Series[0].Points.AddXY(inputs.ElementAt(2), inputs.ElementAt(0));
+                ////X = attribute3 combination choices
+                //else if (comboBox1.SelectedText.Equals("Attribute3") && comboBox2.SelectedText.Equals("Attribute1"))
+                //    chart1.Series[0].Points.AddXY(inputs.ElementAt(2), inputs.ElementAt(0));
 
-                else if (comboBox1.SelectedText.Equals("Attribute3") && comboBox2.SelectedText.Equals("Attribute2"))
-                    chart1.Series[0].Points.AddXY(inputs.ElementAt(2), inputs.ElementAt(1));
+                //else if (comboBox1.SelectedText.Equals("Attribute3") && comboBox2.SelectedText.Equals("Attribute2"))
+                //    chart1.Series[0].Points.AddXY(inputs.ElementAt(2), inputs.ElementAt(1));
 
-                else if (comboBox1.SelectedText.Equals("Attribute3") && comboBox2.SelectedText.Equals("Attribute4"))
-                    chart1.Series[0].Points.AddXY(inputs.ElementAt(2), inputs.ElementAt(3));
+                //else if (comboBox1.SelectedText.Equals("Attribute3") && comboBox2.SelectedText.Equals("Attribute4"))
+                //    chart1.Series[0].Points.AddXY(inputs.ElementAt(2), inputs.ElementAt(3));
 
-                else if (comboBox1.SelectedText.Equals("Attribute3") && comboBox2.SelectedText.Equals("Attribute5"))
-                    chart1.Series[0].Points.AddXY(inputs.ElementAt(2), inputs.ElementAt(4));
+                //else if (comboBox1.SelectedText.Equals("Attribute3") && comboBox2.SelectedText.Equals("Attribute5"))
+                //    chart1.Series[0].Points.AddXY(inputs.ElementAt(2), inputs.ElementAt(4));
 
-                //X = attribute4 combination choices
-                else if (comboBox1.SelectedText.Equals("Attribute4") && comboBox2.SelectedText.Equals("Attribute1"))
-                    chart1.Series[0].Points.AddXY(inputs.ElementAt(3), inputs.ElementAt(0));
+                ////X = attribute4 combination choices
+                //else if (comboBox1.SelectedText.Equals("Attribute4") && comboBox2.SelectedText.Equals("Attribute1"))
+                //    chart1.Series[0].Points.AddXY(inputs.ElementAt(3), inputs.ElementAt(0));
 
-                else if (comboBox1.SelectedText.Equals("Attribute4") && comboBox2.SelectedText.Equals("Attribute2"))
-                    chart1.Series[0].Points.AddXY(inputs.ElementAt(3), inputs.ElementAt(1));
+                //else if (comboBox1.SelectedText.Equals("Attribute4") && comboBox2.SelectedText.Equals("Attribute2"))
+                //    chart1.Series[0].Points.AddXY(inputs.ElementAt(3), inputs.ElementAt(1));
 
-                else if (comboBox1.SelectedText.Equals("Attribute4") && comboBox2.SelectedText.Equals("Attribute3"))
-                    chart1.Series[0].Points.AddXY(inputs.ElementAt(3), inputs.ElementAt(2));
+                //else if (comboBox1.SelectedText.Equals("Attribute4") && comboBox2.SelectedText.Equals("Attribute3"))
+                //    chart1.Series[0].Points.AddXY(inputs.ElementAt(3), inputs.ElementAt(2));
 
-                else if (comboBox1.SelectedText.Equals("Attribute4") && comboBox2.SelectedText.Equals("Attribute5"))
-                    chart1.Series[0].Points.AddXY(inputs.ElementAt(3), inputs.ElementAt(4));
+                //else if (comboBox1.SelectedText.Equals("Attribute4") && comboBox2.SelectedText.Equals("Attribute5"))
+                //    chart1.Series[0].Points.AddXY(inputs.ElementAt(3), inputs.ElementAt(4));
 
 
-                //X= attribute5 combination choices
-                else if (comboBox1.SelectedText.Equals("Attribute5") && comboBox2.SelectedText.Equals("Attribute1"))
-                    chart1.Series[0].Points.AddXY(inputs.ElementAt(4), inputs.ElementAt(0));
+                ////X= attribute5 combination choices
+                //else if (comboBox1.SelectedText.Equals("Attribute5") && comboBox2.SelectedText.Equals("Attribute1"))
+                //    chart1.Series[0].Points.AddXY(inputs.ElementAt(4), inputs.ElementAt(0));
 
-                else if (comboBox1.SelectedText.Equals("Attribute5") && comboBox2.SelectedText.Equals("Attribute2"))
-                    chart1.Series[0].Points.AddXY(inputs.ElementAt(4), inputs.ElementAt(1));
+                //else if (comboBox1.SelectedText.Equals("Attribute5") && comboBox2.SelectedText.Equals("Attribute2"))
+                //    chart1.Series[0].Points.AddXY(inputs.ElementAt(4), inputs.ElementAt(1));
 
-                else if (comboBox1.SelectedText.Equals("Attribute5") && comboBox2.SelectedText.Equals("Attribute3"))
-                    chart1.Series[0].Points.AddXY(inputs.ElementAt(4), inputs.ElementAt(2));
+                //else if (comboBox1.SelectedText.Equals("Attribute5") && comboBox2.SelectedText.Equals("Attribute3"))
+                //    chart1.Series[0].Points.AddXY(inputs.ElementAt(4), inputs.ElementAt(2));
 
-                else if (comboBox1.SelectedText.Equals("Attribute5") && comboBox2.SelectedText.Equals("Attribute4"))
-                    chart1.Series[0].Points.AddXY(inputs.ElementAt(4), inputs.ElementAt(3));
-
-                chart1.Show();
+                //else if (comboBox1.SelectedText.Equals("Attribute5") && comboBox2.SelectedText.Equals("Attribute4"))
+                //    chart1.Series[0].Points.AddXY(inputs.ElementAt(4), inputs.ElementAt(3));
             }
 
             catch (XCoordinateException error)
@@ -555,7 +608,8 @@ namespace KNearestNeighbor
 
     public static class NormalizeData
     {
-        public static double Normalize(double[][] inputs, TextBox attribute)
+        //For input
+        public static double Normalize(double[][]inputs, TextBox attribute)
         {
             double max = 0;
             double min = 1;
@@ -577,39 +631,64 @@ namespace KNearestNeighbor
             return normalizedValue;
         }
 
-        public static double[][] Normalize(double[][] inputs)
+        ////For input
+        //public static double[] Normalize(double[] training, double[][] inputs, TextBox attribute)
+        //{
+        //    double max = 0;
+        //    double min = 1;
+        //    double currentValue = Convert.ToDouble(attribute.Text);
+        //    double normalizedValue = 0;
+
+        //    //find the max/min value for attribute 1
+        //    for (int count = 0; count < inputs.Length; count++)
+        //    {
+        //        if (inputs[count][0] > max)
+        //            max = inputs[count][0];
+
+        //        if (inputs[count][0] < min)
+        //            min = inputs[count][0];
+        //    }
+
+        //    normalizedValue = (currentValue - min) / (max - min);
+
+        //    return normalizedValue;
+        //}
+
+        //For training data
+        public static double[][] Normalize(double[][] training)
         {
             List<double> max = new List<double> { 0, 0, 0, 0, 0 };
             List<double> min = new List<double> { 1, 1, 1, 1, 1 };
 
             //normalize my input data set (training set)
-            for (int column = 0; column < inputs[0].Length; column++)
+            for (int column = 0; column < training[0].Length; column++)
             {
-                for (int row = 0; row < inputs.Length; row++)
+                for (int row = 0; row < training.Length; row++)
                 {
                     var temp5 = max[column];
-                    var temp2 = inputs[row][column];
+                    var temp2 = training[row][column];
 
                     if (row == 0 && column == 0)
-                        min[column] = inputs[row][column];
+                        min[column] = training[row][column];
 
-                    if (inputs[row][column] > max[column])
-                        max[column] = inputs[row][column];
+                    if (training[row][column] > max[column])
+                        max[column] = training[row][column];
 
-                    if (inputs[row][column] < min[column])
-                        min[column] = inputs[row][column];
+                    if (training[row][column] < min[column])
+                        min[column] = training[row][column];
                 }
             }
 
             //We want the same sized array as before.
-            double[][] normalizedInputs = new double[inputs.Length][];
+            double[][] normalizedInputs = new double[training.Length][];
+
             List<double> temp = new List<double> { 0, 0, 0, 0, 0 };
 
-            for (int row = 0; row < inputs.Length; row++)
+            for (int row = 0; row < training.Length; row++)
             {
-                for (int column = 0; column < inputs[0].Length; column++)
+                for (int column = 0; column < training[0].Length; column++)
                 {
-                    temp[column] = (inputs[row][column] - min[column]) / (max[column] - min[column]);
+                    temp[column] = (training[row][column] - min[column]) / (max[column] - min[column]);
                 }
 
                 normalizedInputs[row] = new double[] { temp[0], temp[1], temp[2], temp[3], temp[4] }; //Add our temporary array to the normalized inputs.

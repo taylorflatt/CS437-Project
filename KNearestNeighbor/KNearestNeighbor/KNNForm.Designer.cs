@@ -29,9 +29,14 @@
         private void InitializeComponent()
         {            
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -79,6 +84,12 @@
             this.errorProviderCoordinateX = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProviderPlot = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProviderCoordinateY = new System.Windows.Forms.ErrorProvider(this.components);
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.dataTabControl = new System.Windows.Forms.TabControl();
+            this.denormalizedDataTab = new System.Windows.Forms.TabPage();
+            this.dataGridDenormalizedData = new System.Windows.Forms.DataGridView();
+            this.normalizedDataTab = new System.Windows.Forms.TabPage();
+            this.dataGridNormalizedData = new System.Windows.Forms.DataGridView();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -95,6 +106,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderCoordinateX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderPlot)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderCoordinateY)).BeginInit();
+            this.groupBox4.SuspendLayout();
+            this.dataTabControl.SuspendLayout();
+            this.denormalizedDataTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridDenormalizedData)).BeginInit();
+            this.normalizedDataTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridNormalizedData)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -104,7 +121,7 @@
             this.exitToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(466, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(910, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -279,7 +296,7 @@
             // 
             // calculateButton
             // 
-            this.calculateButton.Location = new System.Drawing.Point(348, 253);
+            this.calculateButton.Location = new System.Drawing.Point(377, 253);
             this.calculateButton.Name = "calculateButton";
             this.calculateButton.Size = new System.Drawing.Size(75, 23);
             this.calculateButton.TabIndex = 13;
@@ -358,25 +375,25 @@
             this.groupBox2.Controls.Add(this.label9);
             this.groupBox2.Location = new System.Drawing.Point(15, 282);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(439, 440);
+            this.groupBox2.Size = new System.Drawing.Size(883, 472);
             this.groupBox2.TabIndex = 13;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Output";
             // 
             // plotButton
             // 
-            this.plotButton.Location = new System.Drawing.Point(333, 56);
+            this.plotButton.Location = new System.Drawing.Point(362, 13);
             this.plotButton.Name = "plotButton";
             this.plotButton.Size = new System.Drawing.Size(75, 23);
             this.plotButton.TabIndex = 14;
             this.plotButton.Text = "Plot";
             this.plotButton.UseVisualStyleBackColor = true;
-            this.plotButton.Click += new System.EventHandler(this.button1_Click_1);
+            this.plotButton.Click += new System.EventHandler(this.plotButton_Click);
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(120, 56);
+            this.label6.Location = new System.Drawing.Point(843, 23);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(27, 13);
             this.label6.TabIndex = 6;
@@ -386,7 +403,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(10, 56);
+            this.label5.Location = new System.Drawing.Point(733, 23);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(103, 13);
             this.label5.TabIndex = 5;
@@ -394,27 +411,71 @@
             // 
             // chart1
             // 
-            chartArea2.AxisX.Interval = 0.05D;
-            chartArea2.AxisX.IsStartedFromZero = false;
-            chartArea2.AxisX.Maximum = 1D;
-            chartArea2.AxisX.Minimum = 0D;
-            chartArea2.AxisY.Interval = 0.05D;
-            chartArea2.AxisY.IsStartedFromZero = false;
-            chartArea2.AxisY.Maximum = 1D;
-            chartArea2.AxisY.Minimum = 0D;
-            chartArea2.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.chart1.Legends.Add(legend2);
-            this.chart1.Location = new System.Drawing.Point(6, 90);
+            chartArea1.AxisX.Interval = 0.05D;
+            chartArea1.AxisX.IsStartedFromZero = false;
+            chartArea1.AxisX.Maximum = 1D;
+            chartArea1.AxisX.Minimum = 0D;
+            chartArea1.AxisY.Interval = 0.05D;
+            chartArea1.AxisY.IsStartedFromZero = false;
+            chartArea1.AxisY.Maximum = 1D;
+            chartArea1.AxisY.Minimum = 0D;
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            legend1.Title = "Legend";
+            this.chart1.Legends.Add(legend1);
+            this.chart1.Location = new System.Drawing.Point(6, 47);
             this.chart1.Name = "chart1";
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series1.Legend = "Legend1";
+            series1.LegendText = "Class 0";
+            series1.MarkerColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            series1.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
+            series1.Name = "0";
             series2.ChartArea = "ChartArea1";
             series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
             series2.Legend = "Legend1";
-            series2.LegendText = "#LABEL\\n#LABEL\\n#LABEL";
-            series2.Name = "Series1";
+            series2.LegendText = "Class 1";
+            series2.MarkerColor = System.Drawing.Color.Fuchsia;
+            series2.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
+            series2.Name = "1";
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series3.Legend = "Legend1";
+            series3.LegendText = "Class 2";
+            series3.MarkerColor = System.Drawing.Color.Lime;
+            series3.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
+            series3.Name = "2";
+            series4.ChartArea = "ChartArea1";
+            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series4.Legend = "Legend1";
+            series4.LegendText = "Class 3";
+            series4.MarkerColor = System.Drawing.Color.Aqua;
+            series4.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
+            series4.Name = "3";
+            series5.ChartArea = "ChartArea1";
+            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series5.Legend = "Legend1";
+            series5.LegendText = "Class 4";
+            series5.MarkerColor = System.Drawing.Color.Blue;
+            series5.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
+            series5.Name = "4";
+            series6.ChartArea = "ChartArea1";
+            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series6.Legend = "Legend1";
+            series6.LegendText = "My Input";
+            series6.MarkerColor = System.Drawing.Color.Maroon;
+            series6.MarkerSize = 7;
+            series6.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Square;
+            series6.Name = "5";
+            this.chart1.Series.Add(series1);
             this.chart1.Series.Add(series2);
-            this.chart1.Size = new System.Drawing.Size(427, 344);
+            this.chart1.Series.Add(series3);
+            this.chart1.Series.Add(series4);
+            this.chart1.Series.Add(series5);
+            this.chart1.Series.Add(series6);
+            this.chart1.Size = new System.Drawing.Size(871, 419);
             this.chart1.TabIndex = 4;
             this.chart1.Text = "chart1";
             // 
@@ -510,11 +571,71 @@
             // 
             this.errorProviderCoordinateY.ContainerControl = this;
             // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.dataTabControl);
+            this.groupBox4.Location = new System.Drawing.Point(454, 69);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(444, 178);
+            this.groupBox4.TabIndex = 13;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Training Data";
+            // 
+            // dataTabControl
+            // 
+            this.dataTabControl.Controls.Add(this.denormalizedDataTab);
+            this.dataTabControl.Controls.Add(this.normalizedDataTab);
+            this.dataTabControl.Location = new System.Drawing.Point(6, 19);
+            this.dataTabControl.Name = "dataTabControl";
+            this.dataTabControl.SelectedIndex = 0;
+            this.dataTabControl.Size = new System.Drawing.Size(438, 159);
+            this.dataTabControl.TabIndex = 1;
+            this.dataTabControl.Selected += new System.Windows.Forms.TabControlEventHandler(this.dataTabControl_Selected);
+            // 
+            // denormalizedDataTab
+            // 
+            this.denormalizedDataTab.Controls.Add(this.dataGridDenormalizedData);
+            this.denormalizedDataTab.Location = new System.Drawing.Point(4, 22);
+            this.denormalizedDataTab.Name = "denormalizedDataTab";
+            this.denormalizedDataTab.Padding = new System.Windows.Forms.Padding(3);
+            this.denormalizedDataTab.Size = new System.Drawing.Size(430, 133);
+            this.denormalizedDataTab.TabIndex = 0;
+            this.denormalizedDataTab.Text = "View Denormalized Data";
+            this.denormalizedDataTab.UseVisualStyleBackColor = true;
+            // 
+            // dataGridDenormalizedData
+            // 
+            this.dataGridDenormalizedData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridDenormalizedData.Location = new System.Drawing.Point(3, 6);
+            this.dataGridDenormalizedData.Name = "dataGridDenormalizedData";
+            this.dataGridDenormalizedData.Size = new System.Drawing.Size(421, 121);
+            this.dataGridDenormalizedData.TabIndex = 0;
+            // 
+            // normalizedDataTab
+            // 
+            this.normalizedDataTab.Controls.Add(this.dataGridNormalizedData);
+            this.normalizedDataTab.Location = new System.Drawing.Point(4, 22);
+            this.normalizedDataTab.Name = "normalizedDataTab";
+            this.normalizedDataTab.Padding = new System.Windows.Forms.Padding(3);
+            this.normalizedDataTab.Size = new System.Drawing.Size(430, 133);
+            this.normalizedDataTab.TabIndex = 1;
+            this.normalizedDataTab.Text = "View Normalized Data";
+            this.normalizedDataTab.UseVisualStyleBackColor = true;
+            // 
+            // dataGridNormalizedData
+            // 
+            this.dataGridNormalizedData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridNormalizedData.Location = new System.Drawing.Point(5, 6);
+            this.dataGridNormalizedData.Name = "dataGridNormalizedData";
+            this.dataGridNormalizedData.Size = new System.Drawing.Size(421, 121);
+            this.dataGridNormalizedData.TabIndex = 1;
+            // 
             // KNNForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(466, 734);
+            this.ClientSize = new System.Drawing.Size(910, 766);
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.calculateButton);
@@ -545,6 +666,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderCoordinateX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderPlot)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderCoordinateY)).EndInit();
+            this.groupBox4.ResumeLayout(false);
+            this.dataTabControl.ResumeLayout(false);
+            this.denormalizedDataTab.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridDenormalizedData)).EndInit();
+            this.normalizedDataTab.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridNormalizedData)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -599,5 +726,11 @@
         private System.Windows.Forms.ErrorProvider errorProviderCoordinateX;
         private System.Windows.Forms.ErrorProvider errorProviderPlot;
         private System.Windows.Forms.ErrorProvider errorProviderCoordinateY;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.TabControl dataTabControl;
+        private System.Windows.Forms.TabPage denormalizedDataTab;
+        private System.Windows.Forms.TabPage normalizedDataTab;
+        private System.Windows.Forms.DataGridView dataGridDenormalizedData;
+        private System.Windows.Forms.DataGridView dataGridNormalizedData;
     }
 }
