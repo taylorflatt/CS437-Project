@@ -10,7 +10,7 @@ namespace KNearestNeighbor
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new KNNForm());
+            Application.Run(new Wizard());
 
             //Here we define 10 cars that have a specific set of classification data.
             double[][] inputs =
