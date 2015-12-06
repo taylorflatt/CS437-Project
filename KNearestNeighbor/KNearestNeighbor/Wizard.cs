@@ -2,17 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
-using System.Data.OleDb;
-using System.Reflection;
-using Microsoft.Office.Interop.Excel;
-using System.Runtime.InteropServices;
-using System.Diagnostics;
 using NPOI.XSSF.UserModel;
 using NPOI.SS.UserModel;
 
@@ -23,8 +15,14 @@ namespace KNearestNeighbor
         protected int k;
         KNearestNeighborAlgorithm knn;
 
-        protected List<List<double>> trainingSet = new List<List<double>>(); //create jagged list.
-        protected List<double> outputClass = new List<double>(); //Actual computational set.
+        protected List<List<double>> trainingSet = new List<List<double>>(); //Training Set
+        protected List<int> outputClass = new List<int>(); //Class (output) Set
+        protected List<double> inputSet = new List<double>(); //User Input Set.
+        protected int userOutputClass; //User's class after computing KNN.
+
+        protected List<List<double>> normalizedTrainingSet = new List<List<double>>(); //Normalized Training Set
+        protected List<double> normalizedInputSet = new List<double>(); //Normalized Input Set
+
         protected List<string> trainingSetLabel = new List<string>();
         protected List<string> outputClassNames = new List<string>(); //Name we read from the data. (Assume this is first).
         protected List<string> attributeNames = new List<string>(); //without make/model
@@ -181,24 +179,16 @@ namespace KNearestNeighbor
                     temp.Text = attributeNames.ElementAt(count - 1).ToString() + ": ";
 
                     tableLayoutPanel1.Controls.Add(temp, 0, row);
-                    tableLayoutPanel1.Controls.Add(new System.Windows.Forms.TextBox(), column, row);
+
+                    //I need to be explicit and set a name so I can reference the fields later.
+                    System.Windows.Forms.TextBox tempTB = new System.Windows.Forms.TextBox();
+                    tempTB.Name = "attribute" + count + "TB"; //attribute1TB, attribute2TB...
+
+                    tableLayoutPanel1.Controls.Add(tempTB, column, row);
                 }
             }
 
             catch { }
-        }
-
-        //Check whether the input data set has been normalized. Handle that situation.
-        //Check whether the training data set has been normalized. Handle that situation.
-        private void initialDataStep2_Click(object sender, EventArgs e)
-        {
-            //First check if the data appears normalized already or not. Confirm with the user prior to action.
-            //If data IS normalized, then display a message indicating that the data appears normalized already.
-            //If data IS NOT normalized, then normalize the data and proceed.
-            if(normalizeInputDataCheckBox.Checked)
-            {
-                //foo
-            }
         }
 
         private void kValueTB_TextChanged(object sender, EventArgs e)
@@ -206,6 +196,78 @@ namespace KNearestNeighbor
             string kValue = kValueTB.Text;
 
             DataValidation.ValidateKValue(errorProviderK, kValue, kValueTB, trainingSet);
+        }
+
+        private void groupBox1_TextChanged(object sender, EventArgs e)
+        {
+            string value = tableLayoutPanel1.GetControlFromPosition(2, 1).Text;
+        }
+
+        private void initialDataStep2_Validating(object sender, CancelEventArgs e)
+        {
+            int numAttributes = attributeNames.Count;
+
+            for (int count = 1; count <= numAttributes; count++)
+            {
+                string textBoxName = "attribute" + count + "TB";
+                System.Windows.Forms.TextBox textBox = (System.Windows.Forms.TextBox)this.tableLayoutPanel1.Controls[textBoxName];
+                string value = this.tableLayoutPanel1.Controls[textBoxName].Text;
+
+                DataValidation.ValidateAttributes(errorProviderAttributes, value, textBox, false);
+            }
+
+            //If there are errors, stop from proceeding.
+            if (errorProviderAttributes.HasErrors() == true)
+            {
+                //Stop from being able to select "next".
+                e.Cancel = true;
+            }
+
+            //First check if the data appears normalized already or not. Confirm with the user prior to action.
+            //If data IS normalized, then display a message indicating that the data appears normalized already.
+            //If data IS NOT normalized, then normalize the data and proceed.
+            if (normalizeInputDataCheckBox.Checked)
+            {
+                //foo
+            }
+
+            //First check if the data appears normalized already or not. Confirm with the user prior to action.
+            //If data IS normalized, then display a message indicating that the data appears normalized already.
+            //If data IS NOT normalized, then normalize the data and proceed.
+            if (normalizeTrainingDataCheckBox.Checked)
+            {
+                //foo
+            }
+        }
+
+        //Allow me to close the program without having to first fix the errors.
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            e.Cancel = false;
+            base.OnClosing(e);
+        }
+
+        //If all the information is correct, compute the KNN.
+        private void initialDataStep2_Validated(object sender, EventArgs e)
+        {
+            //Now we add the values since they are valid.
+            int numAttributes = attributeNames.Count;
+
+            for (int count = 1; count <= numAttributes; count++)
+            {
+                string textBoxName = "attribute" + count + "TB";
+                System.Windows.Forms.TextBox textBox = (System.Windows.Forms.TextBox)this.tableLayoutPanel1.Controls[textBoxName];
+                string value = this.tableLayoutPanel1.Controls[textBoxName].Text;
+
+                inputSet.Add(Convert.ToDouble(value));
+            }
+
+            NormalizeData.Normalize(trainingSet, numAttributes);
+
+            //initialize our KNN object.
+            knn = new KNearestNeighborAlgorithm(k, inputs: trainingSet, outputs: outputClass); //initialize our algorithm with inputs
+
+            int answer = knn.Compute(inputSet);
         }
     }
 }

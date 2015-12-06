@@ -123,6 +123,34 @@ namespace KNearestNeighbor
             }
         }
 
+        public static void ValidateAttributes(this ErrorProvider ep, string value, TextBox textbox, bool discreteValue)
+        {
+            //If there are any letters (we have continuous data), we throw an error.
+            if (discreteValue == false && Regex.Matches(value, @"[a-zA-Z]").Count > 0)
+            {
+                ep.SetErrorWithCount(textbox, "This attribute cannot contain letters.");
+            }
+
+            //If there is nothing typed at all OR if there are no numbers typed, we throw an error.
+            else if (value.Count() == 0 || Regex.Matches(value, @"[0-9]").Count == 0)
+            {
+                ep.SetErrorWithCount(textbox, "This attribute must contain a number.");
+            }
+
+            //If there is a negative number, we throw an error.
+            else if (value.Contains("-"))
+            {
+                ep.SetErrorWithCount(textbox, "This attribute must contain a positive number greater than zero.");
+            }
+
+            //Clear the error.
+            else
+            {
+                ep.RemoveErrors();
+                ep.Clear();
+            }
+        }
+
         public static void ValidateCoordinates(this ErrorProvider ep, string xCoord, string yCoord, ComboBox comboboxX, ComboBox comboboxY, double[][] inputs)
         {
             //If the X-coordinate and Y-coordinate are the same attributes, pick different ones.

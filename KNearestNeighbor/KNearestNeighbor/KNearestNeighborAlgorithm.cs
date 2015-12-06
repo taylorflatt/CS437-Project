@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Accord.Math;
+using System.Collections.Generic;
 
 namespace KNearestNeighbor
 {
@@ -16,8 +17,8 @@ namespace KNearestNeighbor
         /// <param name="inputs">The input data points.</param>
         /// <param name="outputs">The associated labels for the input points.</param>
         /// 
-        public KNearestNeighborAlgorithm(int k, double[][] inputs, int[] outputs)
-            : base(k, inputs, outputs, Accord.Math.Distance.Euclidean)
+        public KNearestNeighborAlgorithm(int k, List<List<double>> inputs, List<int> outputs)
+            : base(k, inputs, outputs, EuclideanDistance.SquareEuclidean)
         { }
     }
 
@@ -30,11 +31,11 @@ namespace KNearestNeighbor
     public class KNearestNeighbor<T>
     {
         private int k;
-        private T[][] inputs;
-        private int[] outputs;
+        private List<List<double>> inputs;
+        private List<int> outputs;
         private int classCount;
-        private Func<T[], T[], double> distance;
-        private double[] distances;
+        private Func<List<double>, List<double>, double> distance;
+        private List<double> distances;
 
         /// <summary>
         ///   Creates a new <see cref="KNearestNeighborAlgorithm"/>.
@@ -46,7 +47,7 @@ namespace KNearestNeighbor
         /// <param name="outputs">The associated labels for the input points.</param>
         /// <param name="distance">The distance measure to use in the decision.</param>
         /// 
-        public KNearestNeighbor(int k, T[][] inputs, int[] outputs, Func<T[], T[], double> distance)
+        public KNearestNeighbor(int k, List<List<double>> inputs, List<int> outputs, Func<List<double>, List<double>, double> distance)
         {
             this.inputs = inputs;
             this.outputs = outputs;
@@ -55,7 +56,11 @@ namespace KNearestNeighbor
             this.classCount = outputs.Distinct().Count();
 
             this.distance = distance;
-            this.distances = new double[inputs.Length];
+            this.distances = new List<double>(inputs.Count);
+
+            //Add the requisite number of elements to the distance list.
+            for (int index = 0; index < inputs.Count; index++)
+                this.distances.Add(0);
         }
         
         public KNearestNeighbor() { }
@@ -73,7 +78,7 @@ namespace KNearestNeighbor
         /// 
         /// <value>The input points.</value>
         /// 
-        public T[][] Inputs
+        public List<List<double>> Inputs
         {
             get { return inputs; }
         }
@@ -83,22 +88,10 @@ namespace KNearestNeighbor
         ///   with each <see cref="Inputs"/> point.
         /// </summary>
         /// 
-        public int[] Outputs
+        public List<int> Outputs
         {
             get { return outputs; }
         }
-
-        /// <summary>
-        ///   Gets or sets the distance function used
-        ///   as a distance metric between data points.
-        /// </summary>
-        /// 
-        public Func<T[], T[], double> Distance
-        {
-            get { return distance; }
-            set { distance = value; }
-        }
-
 
         /// <summary>
         ///   Gets or sets the number of nearest 
@@ -112,7 +105,7 @@ namespace KNearestNeighbor
             get { return k; }
             set
             {
-                if (value <= 0 || value > inputs.Length)
+                if (value <= 0 || value > inputs.Count)
                     throw new ArgumentOutOfRangeException("value",
                         "The value for k should be greater than zero and less than total number of input points.");
 
@@ -128,14 +121,21 @@ namespace KNearestNeighbor
         /// 
         /// <returns>The most likely label for the given point.</returns>
         /// 
-        public int Compute(T[] input)
+        public int Compute(List<double> input)
         {
-            for (int i = 0; i < inputs.Length; i++)
-                distances[i] = distance(input, inputs[i]);
+            var temp = inputs.Count; //10
+            for (int i = 0; i < inputs.Count; i++)
+            {
+                double distance = EuclideanDistance.Euclidean(input, inputs[i]); //compute the distance
+                distances[i] = distance; //store distance in this array.
+            }
+                //distances[i] = distance(input, inputs[i]);
 
-            int[] nearestIndices = Matrix.Indices(0, inputs.Length);
+            int[] nearestIndices = Matrix.Indices(0, inputs.Count);
 
-            Array.Sort(distances, nearestIndices);
+            List<int> tempArray = new List<int>(nearestIndices);
+
+            tempArray.Sort();
 
             double[] scores = new double[classCount];
 

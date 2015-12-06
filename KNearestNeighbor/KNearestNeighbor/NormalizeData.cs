@@ -7,7 +7,7 @@ namespace KNearestNeighbor
     public static class NormalizeData
     {
         //For input
-        public static double Normalize(double[][] inputs, TextBox attribute, int attributeNum)
+        public static double Normalize(List<List<double>> inputs, TextBox attribute, int attributeNum)
         {
             double max = 0;
             double min = 1;
@@ -15,7 +15,7 @@ namespace KNearestNeighbor
             double normalizedValue = 0;
 
             //find the max/min value for attribute 1
-            for (int count = 0; count < inputs.Length; count++)
+            for (int count = 0; count < inputs.Count; count++)
             {
                 if (inputs[count][attributeNum] > max)
                     max = inputs[count][attributeNum];
@@ -30,20 +30,28 @@ namespace KNearestNeighbor
         }
 
         //For training data
-        public static double[][] Normalize(double[][] training)
+        public static List<List<double>> Normalize(List<List<double>> training, int numAttributes)
         {
-            List<double> max = new List<double> { 0, 0, 0, 0, 0 };
-            List<double> min = new List<double> { 1, 1, 1, 1, 1 };
+            double[] max = new double[numAttributes];
+            double[] min = new double[numAttributes];
+            //List<double> max = new List<double>();
+            //List<double> min = new List<double>();
+
+            //max.Capacity = numAttributes;
+            //min.Capacity = numAttributes;
+
+            //for (int index = 0; index < numAttributes; index++)
+            //{
+            //    max.Add(0);
+            //    min.Add(1);
+            //}
 
             //normalize my input data set (training set)
-            for (int column = 0; column < training[0].Length; column++)
+            for (int column = 0; column < training[0].Count; column++)
             {
-                for (int row = 0; row < training.Length; row++)
+                for (int row = 0; row < training.Count; row++)
                 {
-                    var temp5 = max[column];
-                    var temp2 = training[row][column];
-
-                    if (row == 0 && column == 0)
+                    if (row == 0)
                         min[column] = training[row][column];
 
                     if (training[row][column] > max[column])
@@ -55,21 +63,25 @@ namespace KNearestNeighbor
             }
 
             //We want the same sized array as before.
-            double[][] normalizedInputs = new double[training.Length][];
+            List<List<double>> normalizedTrainingSet = new List<List<double>>();
 
-            List<double> temp = new List<double> { 0, 0, 0, 0, 0 };
+            List<double> tempRow = new List<double>();
 
-            for (int row = 0; row < training.Length; row++)
+            for (int index = 1; index < numAttributes; index++)
             {
-                for (int column = 0; column < training[0].Length; column++)
-                {
-                    temp[column] = (training[row][column] - min[column]) / (max[column] - min[column]);
-                }
-
-                normalizedInputs[row] = new double[] { temp[0], temp[1], temp[2], temp[3], temp[4] }; //Add our temporary array to the normalized inputs.
+                tempRow.Add(0);
+                normalizedTrainingSet.Add(new List<double> { 0 });
             }
 
-            return normalizedInputs;
+            for (int row = 0; row < training.Count; row++)
+            {
+                for (int column = 0; column < training[0].Count; column++)
+                    tempRow[column] = (training[row][column] - min[column]) / (max[column] - min[column]);
+
+                normalizedTrainingSet[row].Add(tempRow[row]);
+            }
+
+            return normalizedTrainingSet;
         }
     }
 }

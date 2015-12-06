@@ -121,8 +121,8 @@
   <data name="descriptionStep1.BindingImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAKQAAAFsCAIAAADNG4V7AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAOvwAA
-        Dr8BOAVTJAAAJsFJREFUeF7t3fdvnNm5H/D8B8lFggQ3SJAENwiSIIGzlla9sEgU1XvvvVO9U6K6KIkS
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAOvAAA
+        DrwBlbxySQAAJsFJREFUeF7t3fdvnNm5H/D8B8lFggQ3SJAENwiSIIGzlla9sEgU1XvvvVO9U6K6KIkS
         1ahKUey9N9W963JvYl/DcRDbiQP7rnclsU59e52ZfM973nk5pLRr792VRth9HnwxmLV//Pj7nHNGgvcf
         afv+yQeRvf9Y24f8hbb/n2oH/pl28J+zHP4X2uG/1I78S+3ov1KP/ms9+9/o2f9Wz/53+om/0k/8e/3k
         f2A59R/1U/9JP/2f9TP/RT/7X/VzP9DP/zf9wg/1C8P0C8P1ix/rl0bol0fpl8doeWP1vHHGlQnG1YnG
@@ -293,8 +293,8 @@
   <data name="descriptionStep1.Icon" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAIAAADYYG7QAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAOvwAA
-        Dr8BOAVTJAAAEyFJREFUWEeV19dXVVm2BnD+mzvufejuqjKggiQRQRBJBlBAVJKSo0iQKCBJkmRBck7G
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAOvAAA
+        DrwBlbxySQAAEyFJREFUWEeV19dXVVm2BnD+mzvufejuqjKggiQRQRBJBlBAVJKSo0iQKCBJkmRBck7G
         Kiu2WmVWUFERJXNy3nnvNe/c51gM+3bdru415tjjPPjwG9/81lLtqMfJ1JNU6mka9SzD8iKTfplJz5yn
         Z7KpVznMq3z6TSE9V0y/LaHel9Dvy+n5cmahil6opBdq6E81zGI9s9RALTfSK1eY1SZmrZVZb2fWO7iN
         DlbVQ33otjQP0J3DVPcQ3TtC94/SA+PM0BQzMk2PTLPjt9hJebjpO9z0t/zQOEs4njLZMU+TmGep9LM0
@@ -382,8 +382,8 @@
   <data name="initialDataStep2.BindingImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAhYAAAA6CAIAAABj1IfgAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAOvwAA
-        Dr8BOAVTJAAAEfpJREFUeF7t3PdTVWmex/H9EzbnnHMYu21RUIIiJkAFEUQFFFtEMQAGUDAiKDmYyDlH
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAOvAAA
+        DrwBlbxySQAAEfpJREFUeF7t3PdTVWmex/H9EzbnnHMYu21RUIIiJkAFEUQFFFtEMQAGUDAiKDmYyDlH
         AbXb3tmend2d2q3Z2aqdqt2t3aqZ6ZZ407n3nvicc8/d7/OcywXttrkOoHLr+9S7qHMpf3/V5zxcf0bK
         /FkMW6Ssn2P9PC37F1i/SDv/S6xfpl34lfku/upcv0a79Ou0nN9g/SYt97dYvw3Jl3+H9bu0K7831+/T
         8v6Alv+HrD+iXf3j+a79CetPadf/jPXnnm78BesvaTf/inbrr1l/Qyv4W9bf0W5/i7XGU+EHrA9pRaw7
@@ -469,8 +469,8 @@
   <data name="displayDataStep3.BindingImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAhYAAAA6CAIAAABj1IfgAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAOvwAA
-        Dr8BOAVTJAAAEfpJREFUeF7t3PdTVWmex/H9EzbnnHMYu21RUIIiJkAFEUQFFFtEMQAGUDAiKDmYyDlH
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAOvAAA
+        DrwBlbxySQAAEfpJREFUeF7t3PdTVWmex/H9EzbnnHMYu21RUIIiJkAFEUQFFFtEMQAGUDAiKDmYyDlH
         AbXb3tmend2d2q3Z2aqdqt2t3aqZ6ZZ407n3nvicc8/d7/OcywXttrkOoHLr+9S7qHMpf3/V5zxcf0bK
         /FkMW6Ssn2P9PC37F1i/SDv/S6xfpl34lfku/upcv0a79Ou0nN9g/SYt97dYvw3Jl3+H9bu0K7831+/T
         8v6Alv+HrD+iXf3j+a79CetPadf/jPXnnm78BesvaTf/inbrr1l/Qyv4W9bf0W5/i7XGU+EHrA9pRaw7
@@ -553,8 +553,8 @@
   <data name="finishStep.BindingImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAhcAAAGTCAIAAAAUcqdMAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAOvwAA
-        Dr8BOAVTJAAAJE1JREFUeF7t3PmTVWWe5/H6E2bf933tWarH0iqxBFxwA1QQQVBAURYFkUUEWQRk31eV
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAOvAAA
+        DrwBlbxySQAAJE1JREFUeF7t3PmTVWWe5/H6E2bf933tWarH0iqxBFxwA1QQQVBAURYFkUUEWQRk31eV
         fV+TTUCpsqqnenpmOmaipydiOmJmYiZiJqZbZck973ruzZvzfc733Cefe25mkn5FlIz3Kz5x4rknD0QF
         P+Q7TqbdP8rP+VOM3WZz/3S8P+M278/G+3Nu8/98vL/g9u5f7N6Cv1TdX3Z776+4Lfyr8f6a26K/Hu9v
         yArv/814f8tt8d+u7u+4Lfm7bkv/Xry/77bsH3Tvg38Y7x+5Lf/H8f5JshX/NN4/c1v5z90+/K14/8Jt
@@ -717,5 +717,8 @@
   </metadata>
   <metadata name="errorProviderK.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>157, 17</value>
+  </metadata>
+  <metadata name="errorProviderAttributes.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>288, 17</value>
   </metadata>
 </root>
