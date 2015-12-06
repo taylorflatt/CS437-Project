@@ -8,40 +8,6 @@ namespace KNearestNeighbor
 {
     public static class DataValidation
     {
-        public static void ValidateKValue(this ErrorProvider ep, string value, TextBox textbox, double[][] inputs)
-        {
-            //If there are any letters, we throw an error.
-            if (Regex.Matches(value, @"[a-zA-Z]").Count > 0)
-            {
-                ep.SetErrorWithCount(textbox, "K-Value cannot contain letters.");
-            }
-
-            //If there is nothing typed at all OR if there are no numbers typed, we throw an error.
-            else if (value.Count() == 0 || Regex.Matches(value, @"[0-9]").Count == 0)
-            {
-                ep.SetErrorWithCount(textbox, "K-Value must contain a number.");
-            }
-
-            //If there is a negative number OR there is only a zero typed, we throw an error.
-            else if (value.Contains("-") || (value.Length == 1 && value.Contains("0")))
-            {
-                ep.SetErrorWithCount(textbox, "K-Value must contain a positive number greater than zero.");
-            }
-
-            //If the value typed is out of bounds, we throw an error.
-            else if (Convert.ToInt32(value) > inputs.Length)
-            {
-                ep.SetErrorWithCount(textbox, "K-Value must be less than the number of inputs");
-            }
-
-            //Clear the error.
-            else
-            {
-                ep.RemoveErrors();
-                ep.Clear();
-            }
-        }
-
         public static void ValidateKValue(this ErrorProvider ep, string value, TextBox textbox, List<List<double>> trainingData)
         {
             //If there are any letters, we throw an error.

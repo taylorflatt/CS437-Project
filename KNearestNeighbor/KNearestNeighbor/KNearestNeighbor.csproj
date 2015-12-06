@@ -176,6 +176,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="Properties\DataSources\KNearestNeighborTest.datasource" />
+    <None Include="Properties\DataSources\Wizard.datasource" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

@@ -55,17 +55,21 @@
             this.numClassesLabel = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.normalizeInputDataCheckBox = new System.Windows.Forms.CheckBox();
+            this.dontNormalizeInputDataCheckBox = new System.Windows.Forms.CheckBox();
             this.kValueTB = new System.Windows.Forms.TextBox();
-            this.normalizeTrainingDataCheckBox = new System.Windows.Forms.CheckBox();
+            this.dontNormalizeTrainingDataCheckBox = new System.Windows.Forms.CheckBox();
             this.kValueLabel = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.displayDataStep3 = new WizardBase.IntermediateStep();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
             this.finishStep = new WizardBase.FinishStep();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.errorProviderK = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProviderAttributes = new System.Windows.Forms.ErrorProvider(this.components);
+            this.dataSet1 = new System.Data.DataSet();
+            this.wizardBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.initialDataStep2.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -73,8 +77,11 @@
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.displayDataStep3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderK)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderAttributes)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataSet1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.wizardBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // wizardControl2
@@ -98,6 +105,7 @@
             this.initialDataStep2,
             this.displayDataStep3,
             this.finishStep});
+            this.wizardControl2.CurrentStepIndexChanged += new System.EventHandler(this.wizardControl2_CurrentStepIndexChanged);
             // 
             // descriptionStep1
             // 
@@ -339,9 +347,9 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.normalizeInputDataCheckBox);
+            this.groupBox3.Controls.Add(this.dontNormalizeInputDataCheckBox);
             this.groupBox3.Controls.Add(this.kValueTB);
-            this.groupBox3.Controls.Add(this.normalizeTrainingDataCheckBox);
+            this.groupBox3.Controls.Add(this.dontNormalizeTrainingDataCheckBox);
             this.groupBox3.Controls.Add(this.kValueLabel);
             this.groupBox3.Location = new System.Drawing.Point(256, 156);
             this.groupBox3.Name = "groupBox3";
@@ -350,15 +358,15 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "KNN Options";
             // 
-            // normalizeInputDataCheckBox
+            // dontNormalizeInputDataCheckBox
             // 
-            this.normalizeInputDataCheckBox.AutoSize = true;
-            this.normalizeInputDataCheckBox.Location = new System.Drawing.Point(6, 45);
-            this.normalizeInputDataCheckBox.Name = "normalizeInputDataCheckBox";
-            this.normalizeInputDataCheckBox.Size = new System.Drawing.Size(99, 17);
-            this.normalizeInputDataCheckBox.TabIndex = 5;
-            this.normalizeInputDataCheckBox.Text = "Normalize Input";
-            this.normalizeInputDataCheckBox.UseVisualStyleBackColor = true;
+            this.dontNormalizeInputDataCheckBox.AutoSize = true;
+            this.dontNormalizeInputDataCheckBox.Location = new System.Drawing.Point(6, 45);
+            this.dontNormalizeInputDataCheckBox.Name = "dontNormalizeInputDataCheckBox";
+            this.dontNormalizeInputDataCheckBox.Size = new System.Drawing.Size(127, 17);
+            this.dontNormalizeInputDataCheckBox.TabIndex = 5;
+            this.dontNormalizeInputDataCheckBox.Text = "Don\'t Normalize Input";
+            this.dontNormalizeInputDataCheckBox.UseVisualStyleBackColor = true;
             // 
             // kValueTB
             // 
@@ -368,15 +376,15 @@
             this.kValueTB.TabIndex = 1;
             this.kValueTB.TextChanged += new System.EventHandler(this.kValueTB_TextChanged);
             // 
-            // normalizeTrainingDataCheckBox
+            // dontNormalizeTrainingDataCheckBox
             // 
-            this.normalizeTrainingDataCheckBox.AutoSize = true;
-            this.normalizeTrainingDataCheckBox.Location = new System.Drawing.Point(6, 68);
-            this.normalizeTrainingDataCheckBox.Name = "normalizeTrainingDataCheckBox";
-            this.normalizeTrainingDataCheckBox.Size = new System.Drawing.Size(220, 17);
-            this.normalizeTrainingDataCheckBox.TabIndex = 2;
-            this.normalizeTrainingDataCheckBox.Text = "(Recommended) Normalize Training Data";
-            this.normalizeTrainingDataCheckBox.UseVisualStyleBackColor = true;
+            this.dontNormalizeTrainingDataCheckBox.AutoSize = true;
+            this.dontNormalizeTrainingDataCheckBox.Location = new System.Drawing.Point(6, 68);
+            this.dontNormalizeTrainingDataCheckBox.Name = "dontNormalizeTrainingDataCheckBox";
+            this.dontNormalizeTrainingDataCheckBox.Size = new System.Drawing.Size(167, 17);
+            this.dontNormalizeTrainingDataCheckBox.TabIndex = 2;
+            this.dontNormalizeTrainingDataCheckBox.Text = "Don\'t Normalize Training Data";
+            this.dontNormalizeTrainingDataCheckBox.UseVisualStyleBackColor = true;
             // 
             // kValueLabel
             // 
@@ -414,8 +422,27 @@
             // displayDataStep3
             // 
             this.displayDataStep3.BindingImage = ((System.Drawing.Image)(resources.GetObject("displayDataStep3.BindingImage")));
+            this.displayDataStep3.Controls.Add(this.label14);
+            this.displayDataStep3.Controls.Add(this.label13);
             this.displayDataStep3.ForeColor = System.Drawing.SystemColors.ControlText;
             this.displayDataStep3.Name = "displayDataStep3";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(289, 219);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(0, 13);
+            this.label14.TabIndex = 1;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(242, 219);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(35, 13);
+            this.label13.TabIndex = 0;
+            this.label13.Text = "Class:";
             // 
             // finishStep
             // 
@@ -433,6 +460,14 @@
             // errorProviderAttributes
             // 
             this.errorProviderAttributes.ContainerControl = this;
+            // 
+            // dataSet1
+            // 
+            this.dataSet1.DataSetName = "NewDataSet";
+            // 
+            // wizardBindingSource
+            // 
+            this.wizardBindingSource.DataSource = typeof(KNearestNeighbor.Wizard);
             // 
             // Wizard
             // 
@@ -452,8 +487,12 @@
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.groupBox1.ResumeLayout(false);
+            this.displayDataStep3.ResumeLayout(false);
+            this.displayDataStep3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderK)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderAttributes)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataSet1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.wizardBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -465,14 +504,14 @@
         private WizardBase.IntermediateStep displayDataStep3;
         private WizardBase.FinishStep finishStep;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.CheckBox normalizeInputDataCheckBox;
+        private System.Windows.Forms.CheckBox dontNormalizeInputDataCheckBox;
         private System.Windows.Forms.TextBox kValueTB;
         private System.Windows.Forms.Label kValueLabel;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.CheckBox normalizeTrainingDataCheckBox;
+        private System.Windows.Forms.CheckBox dontNormalizeTrainingDataCheckBox;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label numClassesLabel;
         private System.Windows.Forms.Label predictAttributeNumLabel;
@@ -495,5 +534,9 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label13;
+        private System.Data.DataSet dataSet1;
+        private System.Windows.Forms.BindingSource wizardBindingSource;
     }
 }

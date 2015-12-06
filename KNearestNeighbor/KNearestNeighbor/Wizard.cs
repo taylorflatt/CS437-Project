@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using System.IO;
 using NPOI.XSSF.UserModel;
 using NPOI.SS.UserModel;
+using NPOI.SS.Formula.Functions;
 
 namespace KNearestNeighbor
 {
@@ -33,8 +34,8 @@ namespace KNearestNeighbor
 
             //Don't let them manipulate the training data until it has been entered.
             kValueTB.Enabled = false;
-            normalizeInputDataCheckBox.Enabled = false;
-            normalizeTrainingDataCheckBox.Enabled = false;
+            dontNormalizeInputDataCheckBox.Enabled = false;
+            dontNormalizeTrainingDataCheckBox.Enabled = false;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -98,20 +99,42 @@ namespace KNearestNeighbor
 
                     //Now allow them to be able to manipulate the data.
                     kValueTB.Enabled = true;
-                    normalizeInputDataCheckBox.Enabled = true;
-                    normalizeTrainingDataCheckBox.Enabled = true;
+                    dontNormalizeInputDataCheckBox.Enabled = true;
+                    dontNormalizeTrainingDataCheckBox.Enabled = true;
+                    wizardControl2.NextButtonEnabled = true;
                 }
             }
 
-            catch (ICSharpCode.SharpZipLib.Zip.ZipException)
+            catch (ICSharpCode.SharpZipLib.Zip.ZipException error)
             {
-                DialogResult error = MessageBox.Show("You must use a file with .xlsx extension. ",
+                Console.WriteLine("You need to select an acceptable file type. ");
+                Console.WriteLine("Packed Message: " + error.Message);
+                Console.WriteLine("Call Stack: " + error.StackTrace);
+
+                DialogResult errorMessage = MessageBox.Show("You must use a file with .xlsx extension. ",
                     "Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error,
                     MessageBoxDefaultButton.Button1);
 
-                if(error == DialogResult.OK)
+                if(errorMessage == DialogResult.OK)
+                    button1_Click(sender, e); //Restart the dialog process.
+            }
+
+            catch (System.IO.IOException error)
+            {
+                Console.WriteLine("The file is currently being used by another process. Close the file and try to reopen it. ");
+                Console.WriteLine("Packed Message: " + error.Message);
+                Console.WriteLine("Call Stack: " + error.StackTrace);
+
+                DialogResult errorMessage = MessageBox.Show("The file you have selected is currently being used by another process. Please "
+                    + "close it and click \"Ok\" when you have done so. Then try to open it. ",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error,
+                    MessageBoxDefaultButton.Button1);
+
+                if (errorMessage == DialogResult.OK)
                     button1_Click(sender, e); //Restart the dialog process.
             }
         }
@@ -119,7 +142,9 @@ namespace KNearestNeighbor
         private void populateDataGrid()
         {
             dataGridView1.AutoGenerateColumns = false; //Remove all of the junk columns.
-            System.Data.DataTable table = new System.Data.DataTable("TrainingData");
+
+            DataSet testDataSet = new DataSet("Test");
+            DataTable table = testDataSet.Tables.Add("TrainingData");
 
             DataColumn makeColumn = new DataColumn("Make");
             DataColumn modelColumn = new DataColumn("Model");
@@ -132,32 +157,49 @@ namespace KNearestNeighbor
             foreach (var element in attributeNames)
             {
                 DataColumn attributeColumn = new DataColumn(element.ToString());
-                table.Columns.Add(attributeColumn);
+                table.Columns.Add(attributeColumn);                
                 //dataGridView1.Columns.Add(element.ToString(), element.ToString());
             }
 
-            for(int row = 0; row < trainingSet.Count; row++)
+            //make sure there are rows there.
+            for(int index = 0; index < trainingSet.Count; index++)
+            {
+                table.Rows.Add();
+            }
+
+            for (int row = 0; row < trainingSet.Count; row++)
             {
                 DataRow temp = table.NewRow();
-                temp.BeginEdit();
 
-                temp["Make"] = outputClassNames.ToString(); //Make
-                temp["Model"] = trainingSetLabel.ToString(); //Model
+                temp[makeColumn] = outputClassNames[row].ToString(); //Make
+                temp[modelColumn] = trainingSetLabel[row].ToString(); //Model
 
                 int column = 2; //set it to position 2 (past make/model)
                 while (column < attributeNames.Count + 2)
                 {
+
                     temp[column] = trainingSet[row][column - 2].ToString(); //Attributes
                     column++;
                 }
 
                 column = 0; //reset to zero.
 
-                temp.EndEdit();
-                table.Rows.Add(temp);
+                //table.Rows.Add(temp.ItemArray);
+
+                table.Rows[row].BeginEdit();
+
+                //maybe try modifying the existing rows?
+                //Didn't work. 
+                for(int count = 0; count < temp.ItemArray.Count(); count++)
+                    table.Rows[row].SetField(count, temp.ItemArray[count]);
+
+                table.Rows[row].EndEdit();
+
+                //testDataSet.Tables[0].ImportRow(temp);
             }
 
-            dataGridView1.DataSource = table; //Set the DGV to be our custom data set.
+            //dataGridView1.DataSource = table; //Set the DGV to be our custom data set.
+            dataGridView1.DataSource = dataSet1;
         }
 
         private void populateAttributeList()
@@ -216,6 +258,70 @@ namespace KNearestNeighbor
                 DataValidation.ValidateAttributes(errorProviderAttributes, value, textBox, false);
             }
 
+            //Validate the K-Value
+            string kValue = kValueTB.Text;
+            DataValidation.ValidateKValue(errorProviderK, kValue, kValueTB, trainingSet);
+
+            if(errorProviderK.HasErrors())
+            {
+                //Stop from being able to select "next".
+                e.Cancel = true;
+            }
+
+            //Check if the data has been normalized properly (or at all). We are HOPING they normalized it properly.
+            if (dontNormalizeInputDataCheckBox.Checked)
+            {
+                int count = 0;
+                foreach (var element in inputSet)
+                {
+                    //If the elements are smaller than 1, our data is already normalized.
+                    if (element < 1)
+                        count++;
+                }
+
+                //If even 1 value isn't less than 1, the data isn't normalized. Prompt the user.
+                if (count < inputSet.Count)
+                {
+                    DialogResult warning = MessageBox.Show("We noticed at least one input was greater than 1. Your inputs haven't been normalized properly. Please review your data. Or uncheck the \"Don't Normalize Input Data\" option. ",
+                    "Warning",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning,
+                    MessageBoxDefaultButton.Button1);
+
+                    //They are re-checking information.
+                    if (warning == DialogResult.OK)
+                        e.Cancel = true;
+                }
+            }
+
+            //Check if the training data has been normalized properly (or at all).
+            if (dontNormalizeTrainingDataCheckBox.Checked)
+            {
+                int count = 0;
+                foreach (var listElement in inputSet)
+                {
+                    foreach(var element in inputSet)
+                    {
+                        if (element > 1)
+                            count++;
+                    }
+                }
+
+                //If even 1 value isn't less than 1, the data isn't normalized. Prompt the user.
+                if (count != 0)
+                {
+                    DialogResult warning = MessageBox.Show("We noticed at least one training data point was greater than 1. The training data hasn't been normalized properly. Please review your data. Or uncheck the \"Don't Normalize Training Data\" option. ",
+                    "Warning",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning,
+                    MessageBoxDefaultButton.Button1);
+
+                    //They are re-checking information.
+                    if (warning == DialogResult.OK)
+                        e.Cancel = true;
+                }
+            }
+
             //If there are errors, stop from proceeding.
             if (errorProviderAttributes.HasErrors() == true)
             {
@@ -223,21 +329,6 @@ namespace KNearestNeighbor
                 e.Cancel = true;
             }
 
-            //First check if the data appears normalized already or not. Confirm with the user prior to action.
-            //If data IS normalized, then display a message indicating that the data appears normalized already.
-            //If data IS NOT normalized, then normalize the data and proceed.
-            if (normalizeInputDataCheckBox.Checked)
-            {
-                //foo
-            }
-
-            //First check if the data appears normalized already or not. Confirm with the user prior to action.
-            //If data IS normalized, then display a message indicating that the data appears normalized already.
-            //If data IS NOT normalized, then normalize the data and proceed.
-            if (normalizeTrainingDataCheckBox.Checked)
-            {
-                //foo
-            }
         }
 
         //Allow me to close the program without having to first fix the errors.
@@ -248,26 +339,70 @@ namespace KNearestNeighbor
         }
 
         //If all the information is correct, compute the KNN.
+
+        //If the user checked "don't normalize input data" AND it validated properly, then we are assuming the data is normalized. We just need to 
+        //handle the case in which we have to normalize the data. (Most likely the majority of situations).
+
+        //If the user checked "don't normalize training data" AND it validated properly, then we are assuming the data is normalized. We just need
+        //to handle the case in which we have to normalize the data. (Most likely the majority of situations).
         private void initialDataStep2_Validated(object sender, EventArgs e)
         {
-            //Now we add the values since they are valid.
             int numAttributes = attributeNames.Count;
 
-            for (int count = 1; count <= numAttributes; count++)
+            if (dontNormalizeInputDataCheckBox.Checked == false)
             {
-                string textBoxName = "attribute" + count + "TB";
-                System.Windows.Forms.TextBox textBox = (System.Windows.Forms.TextBox)this.tableLayoutPanel1.Controls[textBoxName];
-                string value = this.tableLayoutPanel1.Controls[textBoxName].Text;
+                for (int count = 1; count <= numAttributes; count++)
+                {
+                    string textBoxName = "attribute" + count + "TB"; //create textbox name
+                    System.Windows.Forms.TextBox textBox = (System.Windows.Forms.TextBox)this.tableLayoutPanel1.Controls[textBoxName];
+                    string value = this.tableLayoutPanel1.Controls[textBoxName].Text; //get the value in that textbox
+                    double normalizedInput = NormalizeData.Normalize(trainingSet, value, count - 1); //normalize the value
 
-                inputSet.Add(Convert.ToDouble(value));
+                    inputSet.Add(Convert.ToDouble(value)); //store un-normalized value to the un-normalized list.
+                    normalizedInputSet.Add(normalizedInput); //Add the normalized value to the normalized list.
+                }
             }
 
-            NormalizeData.Normalize(trainingSet, numAttributes);
+            //Then it has already been normalized AND confirmed by the user, just set the normalized input list to be the input list.
+            else
+            {
+                normalizedInputSet = inputSet;
+            }
+            
+
+            if(dontNormalizeTrainingDataCheckBox.Checked == false)
+            {
+                normalizedTrainingSet = NormalizeData.Normalize(trainingSet, numAttributes);
+            }
+
+            else
+            {
+                normalizedTrainingSet = trainingSet;
+            }
+
+            
 
             //initialize our KNN object.
             knn = new KNearestNeighborAlgorithm(k, inputs: trainingSet, outputs: outputClass); //initialize our algorithm with inputs
 
             int answer = knn.Compute(inputSet);
+
+            label14.Text = Convert.ToString(answer);
+
+            
+        }
+
+        private void wizardControl2_CurrentStepIndexChanged(object sender, EventArgs e)
+        {
+            if (wizardControl2.CurrentStepIndex == 2)
+            {
+                wizardControl2.BackButtonEnabled = false;
+            }
+
+            if (wizardControl2.CurrentStepIndex == 1)
+            {
+                wizardControl2.NextButtonEnabled = false;
+            }
         }
     }
 }
