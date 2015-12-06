@@ -30,6 +30,8 @@ namespace KNearestNeighbor
         protected List<string> outputClassNames = new List<string>(); //Name we read from the data. (Assume this is first).
         protected List<string> attributeNames = new List<string>(); //without make/model
 
+        int inputClass;
+
         public Wizard()
         {
             InitializeComponent();
@@ -428,9 +430,9 @@ namespace KNearestNeighbor
             //initialize our KNN object.
             knn = new KNearestNeighborAlgorithm(k, inputs: trainingSet, outputs: outputClass); //initialize our algorithm with inputs
 
-            int answer = knn.Compute(inputSet);
+            inputClass = knn.Compute(inputSet);
 
-            label14.Text = Convert.ToString(answer);
+            label14.Text = Convert.ToString(inputClass);
 
             
         }
@@ -536,7 +538,7 @@ namespace KNearestNeighbor
 
                 //Just for the case in which x-coord: Attribute1 and y-coord: Attribute2
 
-                Plot.PlotPoints(chart1, xCoord, yCoord, trainingSet, normalizedTrainingSet, outputClass, inputSet);
+                Plot.PlotPoints(chart1, xCoord, yCoord, normalizedTrainingSet, normalizedInputSet, inputClass, outputClass, outputClassNames);
 
                 chart1.Show();
             }
