@@ -73,7 +73,7 @@ namespace KNearestNeighbor
 
         public int outputClass; //need a default value
 
-        KNearestNeighbor knn;
+        KNearestNeighborAlgorithm knn;
 
         public KNNForm()
         {
@@ -81,7 +81,7 @@ namespace KNearestNeighbor
 
             //k = Convert.ToInt32(Math.Ceiling(Math.Sqrt(inputs.Count()))); //set the k value to default be sqrt(num_inputs)
 
-            knn = new KNearestNeighbor(k, inputs: inputs, outputs: outputs); //initialize our algorithm with inputs
+            knn = new KNearestNeighborAlgorithm(k, inputs: inputs, outputs: outputs); //initialize our algorithm with inputs
         }
 
         private void textBox13_TextChanged(object sender, EventArgs e)
@@ -632,330 +632,330 @@ namespace KNearestNeighbor
         }
     }
 
-    public static class NormalizeData
-    {
-        //For input
-        public static double Normalize(double[][]inputs, TextBox attribute, int attributeNum)
-        {
-            double max = 0;
-            double min = 1;
-            double currentValue = Convert.ToDouble(attribute.Text);
-            double normalizedValue = 0;
+    //public static class NormalizeData
+    //{
+    //    //For input
+    //    public static double Normalize(double[][]inputs, TextBox attribute, int attributeNum)
+    //    {
+    //        double max = 0;
+    //        double min = 1;
+    //        double currentValue = Convert.ToDouble(attribute.Text);
+    //        double normalizedValue = 0;
 
-            //find the max/min value for attribute 1
-            for (int count = 0; count < inputs.Length; count++)
-            {
-                if (inputs[count][attributeNum] > max)
-                    max = inputs[count][attributeNum];
+    //        //find the max/min value for attribute 1
+    //        for (int count = 0; count < inputs.Length; count++)
+    //        {
+    //            if (inputs[count][attributeNum] > max)
+    //                max = inputs[count][attributeNum];
 
-                if (inputs[count][attributeNum] < min)
-                    min = inputs[count][attributeNum];
-            }
+    //            if (inputs[count][attributeNum] < min)
+    //                min = inputs[count][attributeNum];
+    //        }
 
-            normalizedValue = (currentValue - min) / (max - min);
+    //        normalizedValue = (currentValue - min) / (max - min);
 
-            return normalizedValue;
-        }
+    //        return normalizedValue;
+    //    }
 
-        ////For input
-        //public static double[] Normalize(double[] training, double[][] inputs, TextBox attribute)
-        //{
-        //    double max = 0;
-        //    double min = 1;
-        //    double currentValue = Convert.ToDouble(attribute.Text);
-        //    double normalizedValue = 0;
+    //    ////For input
+    //    //public static double[] Normalize(double[] training, double[][] inputs, TextBox attribute)
+    //    //{
+    //    //    double max = 0;
+    //    //    double min = 1;
+    //    //    double currentValue = Convert.ToDouble(attribute.Text);
+    //    //    double normalizedValue = 0;
 
-        //    //find the max/min value for attribute 1
-        //    for (int count = 0; count < inputs.Length; count++)
-        //    {
-        //        if (inputs[count][0] > max)
-        //            max = inputs[count][0];
+    //    //    //find the max/min value for attribute 1
+    //    //    for (int count = 0; count < inputs.Length; count++)
+    //    //    {
+    //    //        if (inputs[count][0] > max)
+    //    //            max = inputs[count][0];
 
-        //        if (inputs[count][0] < min)
-        //            min = inputs[count][0];
-        //    }
+    //    //        if (inputs[count][0] < min)
+    //    //            min = inputs[count][0];
+    //    //    }
 
-        //    normalizedValue = (currentValue - min) / (max - min);
+    //    //    normalizedValue = (currentValue - min) / (max - min);
 
-        //    return normalizedValue;
-        //}
+    //    //    return normalizedValue;
+    //    //}
 
-        //For training data
-        public static double[][] Normalize(double[][] training)
-        {
-            List<double> max = new List<double> { 0, 0, 0, 0, 0 };
-            List<double> min = new List<double> { 1, 1, 1, 1, 1 };
+    //    //For training data
+    //    public static double[][] Normalize(double[][] training)
+    //    {
+    //        List<double> max = new List<double> { 0, 0, 0, 0, 0 };
+    //        List<double> min = new List<double> { 1, 1, 1, 1, 1 };
 
-            //normalize my input data set (training set)
-            for (int column = 0; column < training[0].Length; column++)
-            {
-                for (int row = 0; row < training.Length; row++)
-                {
-                    var temp5 = max[column];
-                    var temp2 = training[row][column];
+    //        //normalize my input data set (training set)
+    //        for (int column = 0; column < training[0].Length; column++)
+    //        {
+    //            for (int row = 0; row < training.Length; row++)
+    //            {
+    //                var temp5 = max[column];
+    //                var temp2 = training[row][column];
 
-                    if (row == 0 && column == 0)
-                        min[column] = training[row][column];
+    //                if (row == 0 && column == 0)
+    //                    min[column] = training[row][column];
 
-                    if (training[row][column] > max[column])
-                        max[column] = training[row][column];
+    //                if (training[row][column] > max[column])
+    //                    max[column] = training[row][column];
 
-                    if (training[row][column] < min[column])
-                        min[column] = training[row][column];
-                }
-            }
+    //                if (training[row][column] < min[column])
+    //                    min[column] = training[row][column];
+    //            }
+    //        }
 
-            //We want the same sized array as before.
-            double[][] normalizedInputs = new double[training.Length][];
+    //        //We want the same sized array as before.
+    //        double[][] normalizedInputs = new double[training.Length][];
 
-            List<double> temp = new List<double> { 0, 0, 0, 0, 0 };
+    //        List<double> temp = new List<double> { 0, 0, 0, 0, 0 };
 
-            for (int row = 0; row < training.Length; row++)
-            {
-                for (int column = 0; column < training[0].Length; column++)
-                {
-                    temp[column] = (training[row][column] - min[column]) / (max[column] - min[column]);
-                }
+    //        for (int row = 0; row < training.Length; row++)
+    //        {
+    //            for (int column = 0; column < training[0].Length; column++)
+    //            {
+    //                temp[column] = (training[row][column] - min[column]) / (max[column] - min[column]);
+    //            }
 
-                normalizedInputs[row] = new double[] { temp[0], temp[1], temp[2], temp[3], temp[4] }; //Add our temporary array to the normalized inputs.
-            }
+    //            normalizedInputs[row] = new double[] { temp[0], temp[1], temp[2], temp[3], temp[4] }; //Add our temporary array to the normalized inputs.
+    //        }
 
-            return normalizedInputs;
-        }
-    }
+    //        return normalizedInputs;
+    //    }
+    //}
 
 
     //Allows me to check if there are any errors in the form prior to submition by calling "Has Errors".
-    public static class ErrorProviderExtensions
-    {
-        private static int count;
+    //public static class ErrorProviderExtensions
+    //{
+    //    private static int count;
 
-        public static void SetErrorWithCount(this ErrorProvider ep, Control c, string message)
-        {
-            if (message == "")
-            {
-                if (ep.GetError(c) != "")
-                    count--;
-            }
+    //    public static void SetErrorWithCount(this ErrorProvider ep, Control c, string message)
+    //    {
+    //        if (message == "")
+    //        {
+    //            if (ep.GetError(c) != "")
+    //                count--;
+    //        }
 
-            else
-                count++;
+    //        else
+    //            count++;
 
-            ep.SetError(c, message);
-        }
+    //        ep.SetError(c, message);
+    //    }
 
-        public static void ValidateKValue(this ErrorProvider ep, string value, TextBox textbox, double[][] inputs)
-        {
-            //If there are any letters, we throw an error.
-            if (Regex.Matches(value, @"[a-zA-Z]").Count > 0)
-            {
-                ep.SetErrorWithCount(textbox, "K-Value cannot contain letters.");
-            }
+        //public static void ValidateKValue(this ErrorProvider ep, string value, TextBox textbox, double[][] inputs)
+        //{
+        //    //If there are any letters, we throw an error.
+        //    if (Regex.Matches(value, @"[a-zA-Z]").Count > 0)
+        //    {
+        //        ep.SetErrorWithCount(textbox, "K-Value cannot contain letters.");
+        //    }
 
-            //If there is nothing typed at all OR if there are no numbers typed, we throw an error.
-            else if (value.Count() == 0 || Regex.Matches(value, @"[0-9]").Count == 0)
-            {
-                ep.SetErrorWithCount(textbox, "K-Value must contain a number.");
-            }
+        //    //If there is nothing typed at all OR if there are no numbers typed, we throw an error.
+        //    else if (value.Count() == 0 || Regex.Matches(value, @"[0-9]").Count == 0)
+        //    {
+        //        ep.SetErrorWithCount(textbox, "K-Value must contain a number.");
+        //    }
 
-            //If there is a negative number OR there is only a zero typed, we throw an error.
-            else if (value.Contains("-") || (value.Length == 1 && value.Contains("0")))
-            {
-                ep.SetErrorWithCount(textbox, "K-Value must contain a positive number greater than zero.");
-            }
+        //    //If there is a negative number OR there is only a zero typed, we throw an error.
+        //    else if (value.Contains("-") || (value.Length == 1 && value.Contains("0")))
+        //    {
+        //        ep.SetErrorWithCount(textbox, "K-Value must contain a positive number greater than zero.");
+        //    }
 
-            //If the value typed is out of bounds, we throw an error.
-            else if (Convert.ToInt32(value) > inputs.Length)
-            {
-                ep.SetErrorWithCount(textbox, "K-Value must be less than the number of inputs");
-            }
+        //    //If the value typed is out of bounds, we throw an error.
+        //    else if (Convert.ToInt32(value) > inputs.Length)
+        //    {
+        //        ep.SetErrorWithCount(textbox, "K-Value must be less than the number of inputs");
+        //    }
 
-            //Clear the error.
-            else
-            {
-                ep.RemoveErrors();
-                ep.Clear();
-            }
-        }
+        //    //Clear the error.
+        //    else
+        //    {
+        //        ep.RemoveErrors();
+        //        ep.Clear();
+        //    }
+        //}
 
-        public static void ValidateModel(this ErrorProvider ep, string value, TextBox textbox, double[][] inputs)
-        {
-            if (value.Count() == 0)
-            {
-                ep.SetErrorWithCount(textbox, "The model must have at least 1 character.");
-            }
+        //public static void ValidateModel(this ErrorProvider ep, string value, TextBox textbox, double[][] inputs)
+        //{
+        //    if (value.Count() == 0)
+        //    {
+        //        ep.SetErrorWithCount(textbox, "The model must have at least 1 character.");
+        //    }
 
-            else if (value.Count() > 15)
-            {
-                ep.SetErrorWithCount(textbox, "The model cannot be longer than 15 characters.");
-            }
+        //    else if (value.Count() > 15)
+        //    {
+        //        ep.SetErrorWithCount(textbox, "The model cannot be longer than 15 characters.");
+        //    }
 
-            else
-            {
-                ep.RemoveErrors();
-                ep.Clear();
-            }
-        }
+        //    else
+        //    {
+        //        ep.RemoveErrors();
+        //        ep.Clear();
+        //    }
+        //}
 
-        public static void ValidateAttributes(this ErrorProvider ep, string value, TextBox textbox, double[][] inputs, bool discreteValue)
-        {
-            //If there are any letters (we have continuous data), we throw an error.
-            if (discreteValue == false && Regex.Matches(value, @"[a-zA-Z]").Count > 0)
-            {
-                ep.SetErrorWithCount(textbox, "This attribute cannot contain letters.");
-            }
+        //public static void ValidateAttributes(this ErrorProvider ep, string value, TextBox textbox, double[][] inputs, bool discreteValue)
+        //{
+        //    //If there are any letters (we have continuous data), we throw an error.
+        //    if (discreteValue == false && Regex.Matches(value, @"[a-zA-Z]").Count > 0)
+        //    {
+        //        ep.SetErrorWithCount(textbox, "This attribute cannot contain letters.");
+        //    }
 
-            //If there is nothing typed at all OR if there are no numbers typed, we throw an error.
-            else if (value.Count() == 0 || Regex.Matches(value, @"[0-9]").Count == 0)
-            {
-                ep.SetErrorWithCount(textbox, "This attribute must contain a number.");
-            }
+        //    //If there is nothing typed at all OR if there are no numbers typed, we throw an error.
+        //    else if (value.Count() == 0 || Regex.Matches(value, @"[0-9]").Count == 0)
+        //    {
+        //        ep.SetErrorWithCount(textbox, "This attribute must contain a number.");
+        //    }
 
-            //If there is a negative number, we throw an error.
-            else if (value.Contains("-"))
-            {
-                ep.SetErrorWithCount(textbox, "This attribute must contain a positive number greater than zero.");
-            }
+        //    //If there is a negative number, we throw an error.
+        //    else if (value.Contains("-"))
+        //    {
+        //        ep.SetErrorWithCount(textbox, "This attribute must contain a positive number greater than zero.");
+        //    }
 
-            //Clear the error.
-            else
-            {
-                ep.RemoveErrors();
-                ep.Clear();
-            }
-        }
+        //    //Clear the error.
+        //    else
+        //    {
+        //        ep.RemoveErrors();
+        //        ep.Clear();
+        //    }
+        //}
 
-        public static void ValidateCoordinates(this ErrorProvider ep, string xCoord, string yCoord, ComboBox comboboxX, ComboBox comboboxY, double[][] inputs)
-        {
-            //If the X-coordinate and Y-coordinate are the same attributes, pick different ones.
-            if (xCoord.Equals(yCoord) || yCoord.Equals(xCoord))
-            {
-                ep.SetErrorWithCount(comboboxX, "You need to pick two different attributes to plot.");
-                ep.SetErrorWithCount(comboboxY, "You need to pick two different attributes to plot.");
-            }
+        //public static void ValidateCoordinates(this ErrorProvider ep, string xCoord, string yCoord, ComboBox comboboxX, ComboBox comboboxY, double[][] inputs)
+        //{
+        //    //If the X-coordinate and Y-coordinate are the same attributes, pick different ones.
+        //    if (xCoord.Equals(yCoord) || yCoord.Equals(xCoord))
+        //    {
+        //        ep.SetErrorWithCount(comboboxX, "You need to pick two different attributes to plot.");
+        //        ep.SetErrorWithCount(comboboxY, "You need to pick two different attributes to plot.");
+        //    }
 
-            //Clear the error.
-            else
-            {
-                ep.RemoveErrors();
-                ep.Clear();
-            }
-        }
+        //    //Clear the error.
+        //    else
+        //    {
+        //        ep.RemoveErrors();
+        //        ep.Clear();
+        //    }
+        //}
 
-        public static bool HasErrors(this ErrorProvider ep)
-        {
-            return count != 0;
-        }
+    //    public static bool HasErrors(this ErrorProvider ep)
+    //    {
+    //        return count != 0;
+    //    }
 
-        public static int GetErrorCount(this ErrorProvider ep)
-        {
-            return count;
-        }
+    //    public static int GetErrorCount(this ErrorProvider ep)
+    //    {
+    //        return count;
+    //    }
 
-        public static int RemoveErrors(this ErrorProvider ep)
-        {
-            return count = 0;
-        }
-    }
+    //    public static int RemoveErrors(this ErrorProvider ep)
+    //    {
+    //        return count = 0;
+    //    }
+    //}
 
-    public class XCoordinateException : Exception
-    {
+    //public class XCoordinateException : Exception
+    //{
 
-        public XCoordinateException() { }
+    //    public XCoordinateException() { }
 
-        public XCoordinateException(string message)
-            : base(message)
-        { }
+    //    public XCoordinateException(string message)
+    //        : base(message)
+    //    { }
 
-        public XCoordinateException(string message, Exception inner)
-            : base(message, inner)
-        { }
-    }
+    //    public XCoordinateException(string message, Exception inner)
+    //        : base(message, inner)
+    //    { }
+    //}
 
-    public class YCoordinateException : Exception
-    {
+    //public class YCoordinateException : Exception
+    //{
 
-        public YCoordinateException() { }
+    //    public YCoordinateException() { }
 
-        public YCoordinateException(string message)
-            : base(message)
-        { }
+    //    public YCoordinateException(string message)
+    //        : base(message)
+    //    { }
 
-        public YCoordinateException(string message, Exception inner)
-            : base(message, inner)
-        { }
-    }
+    //    public YCoordinateException(string message, Exception inner)
+    //        : base(message, inner)
+    //    { }
+    //}
 
-    public class CoordinateException : Exception
-    {
+    //public class CoordinateException : Exception
+    //{
 
-        public CoordinateException() { }
+    //    public CoordinateException() { }
 
-        public CoordinateException(string message)
-            : base(message)
-        { }
+    //    public CoordinateException(string message)
+    //        : base(message)
+    //    { }
 
-        public CoordinateException(string message, Exception inner)
-            : base(message, inner)
-        { }
-    }
+    //    public CoordinateException(string message, Exception inner)
+    //        : base(message, inner)
+    //    { }
+    //}
 
-    public static class StringExtensions
-    {
-        public static string Truncate(this string value, int maxLength)
-        {
-            if (string.IsNullOrEmpty(value))
-                return value;
+    //public static class StringExtensions
+    //{
+    //    public static string Truncate(this string value, int maxLength)
+    //    {
+    //        if (string.IsNullOrEmpty(value))
+    //            return value;
 
-            return value.Length <= maxLength ? value : value.Substring(0, maxLength);
-        }
-    }
+    //        return value.Length <= maxLength ? value : value.Substring(0, maxLength);
+    //    }
+    //}
 
-    public static class Plot
-    {
-        public static void PlotPoints(Chart chart, int xCoordChoice, int yCoordChoice, double[][]trainingSet, double[][]normalizedTrainingSet, int[]outputs, double[]inputData )
-        { 
-            int point = 0;
-            for (int count = 0; count < trainingSet.Length; count++)
-            {
-                string className = outputs[count].ToString();
+    //public static class Plot
+    //{
+    //    public static void PlotPoints(Chart chart, int xCoordChoice, int yCoordChoice, double[][]trainingSet, double[][]normalizedTrainingSet, int[]outputs, double[]inputData )
+    //    { 
+    //        int point = 0;
+    //        for (int count = 0; count < trainingSet.Length; count++)
+    //        {
+    //            string className = outputs[count].ToString();
 
-                chart.Series[className].Points.AddXY(normalizedTrainingSet[count][xCoordChoice], normalizedTrainingSet[count][yCoordChoice]);
+    //            chart.Series[className].Points.AddXY(normalizedTrainingSet[count][xCoordChoice], normalizedTrainingSet[count][yCoordChoice]);
 
-                try
-                {
-                    string xInputCoord = StringExtensions.Truncate(Convert.ToString(chart.Series[className].Points[point].XValue), 4);
-                    string yInputCoord = StringExtensions.Truncate(Convert.ToString(chart.Series[className].Points[point].YValues[0]), 4);
+    //            try
+    //            {
+    //                string xInputCoord = StringExtensions.Truncate(Convert.ToString(chart.Series[className].Points[point].XValue), 4);
+    //                string yInputCoord = StringExtensions.Truncate(Convert.ToString(chart.Series[className].Points[point].YValues[0]), 4);
 
-                    chart.Series[className].Points[point].ToolTip = string.Format("Coordinate: ({0},{1}) " + "\n"
-                    + "Class: {2}", xInputCoord, yInputCoord, className);
-                }
+    //                chart.Series[className].Points[point].ToolTip = string.Format("Coordinate: ({0},{1}) " + "\n"
+    //                + "Class: {2}", xInputCoord, yInputCoord, className);
+    //            }
 
-                catch (ArgumentOutOfRangeException error)
-                {
-                    Console.WriteLine("This error SHOULD be ok. How the tooltips are added makes it so that it will access a non-existing"
-                        + " element due to switching the series (aka the class) and restarting at position 0. To correc this, we simply"
-                        + " reset the counter back to zero and require an increment at the end no matter what.");
-                    Console.WriteLine("Packed Message: " + error.Message);
-                    Console.WriteLine("Call Stack: " + error.StackTrace);
+    //            catch (ArgumentOutOfRangeException error)
+    //            {
+    //                Console.WriteLine("This error SHOULD be ok. How the tooltips are added makes it so that it will access a non-existing"
+    //                    + " element due to switching the series (aka the class) and restarting at position 0. To correc this, we simply"
+    //                    + " reset the counter back to zero and require an increment at the end no matter what.");
+    //                Console.WriteLine("Packed Message: " + error.Message);
+    //                Console.WriteLine("Call Stack: " + error.StackTrace);
 
-                    point = 0; //Set value back to zero.
+    //                point = 0; //Set value back to zero.
 
-                    //Now re-add the tooltip to the point that failed.
-                    string xInputCoord = StringExtensions.Truncate(Convert.ToString(chart.Series[className].Points[point].XValue), 4);
-                    string yInputCoord = StringExtensions.Truncate(Convert.ToString(chart.Series[className].Points[point].YValues[0]), 4);
+    //                //Now re-add the tooltip to the point that failed.
+    //                string xInputCoord = StringExtensions.Truncate(Convert.ToString(chart.Series[className].Points[point].XValue), 4);
+    //                string yInputCoord = StringExtensions.Truncate(Convert.ToString(chart.Series[className].Points[point].YValues[0]), 4);
 
-                    chart.Series[className].Points[point].ToolTip = string.Format("Coordinate: ({0},{1}) " + "\n"
-                    + "Class: {2}", xInputCoord, yInputCoord, className);
-                }
+    //                chart.Series[className].Points[point].ToolTip = string.Format("Coordinate: ({0},{1}) " + "\n"
+    //                + "Class: {2}", xInputCoord, yInputCoord, className);
+    //            }
 
-                finally
-                {
-                    point++;
-                }
-            }
+    //            finally
+    //            {
+    //                point++;
+    //            }
+    //        }
 
-            chart.Series[5].Points.AddXY(inputData[xCoordChoice], inputData[yCoordChoice]); //add our input point
-        }
-    }
+    //        chart.Series[5].Points.AddXY(inputData[xCoordChoice], inputData[yCoordChoice]); //add our input point
+    //    }
+    //}
 }

@@ -40,7 +40,7 @@ namespace KNearestNeighbor
             //will be biased and we won't get a real answer. But if we make it too small then we might not get an 
             //accurate representation of then data. So we need to have a LARGE data set in order to have truly 
             //accurate results.
-            KNearestNeighbor knn = new KNearestNeighbor(k: 3, inputs: inputs, outputs: outputs);
+            KNearestNeighborAlgorithm knn = new KNearestNeighborAlgorithm(k: 3, inputs: inputs, outputs: outputs);
 
 
             // After the algorithm has been created, we can classify a new car instance so we can see which 
