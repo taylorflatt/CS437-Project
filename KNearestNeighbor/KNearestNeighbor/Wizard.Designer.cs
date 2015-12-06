@@ -86,7 +86,7 @@
             // 
             // wizardControl2
             // 
-            this.wizardControl2.BackButtonEnabled = true;
+            this.wizardControl2.BackButtonEnabled = false;
             this.wizardControl2.BackButtonVisible = true;
             this.wizardControl2.CancelButtonEnabled = true;
             this.wizardControl2.CancelButtonVisible = true;
@@ -475,7 +475,11 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(619, 721);
             this.Controls.Add(this.wizardControl2);
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(635, 759);
+            this.MinimumSize = new System.Drawing.Size(635, 759);
             this.Name = "Wizard";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Wizard";
             this.initialDataStep2.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);

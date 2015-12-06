@@ -94,7 +94,7 @@ namespace KNearestNeighbor
                     }
 
                     predictAttributeNumLabel.Text = string.Format("We see {0} attributes.", attributeNames.Count);
-                    populateDataGrid();
+                    populateDataGrid(xssfwb, sheet);
                     populateAttributeList();
 
                     //Now allow them to be able to manipulate the data.
@@ -139,68 +139,100 @@ namespace KNearestNeighbor
             }
         }
 
-        private void populateDataGrid()
+        //What about taking the data sheet itself as the input and then creating the view from the excel file directly?
+        private void populateDataGrid(XSSFWorkbook xssfwb, ISheet sheet)
         {
-            dataGridView1.AutoGenerateColumns = false; //Remove all of the junk columns.
 
-            DataSet testDataSet = new DataSet("Test");
-            DataTable table = testDataSet.Tables.Add("TrainingData");
+            DataTable table = new DataTable();
+            IRow headerRow = sheet.GetRow(0);
 
-            DataColumn makeColumn = new DataColumn("Make");
-            DataColumn modelColumn = new DataColumn("Model");
-            table.Columns.Add(makeColumn);
-            table.Columns.Add(modelColumn);
+            int cellCount = headerRow.LastCellNum;
 
-            //dataGridView1.Columns.Add("Make", "Make"); //class
-            //dataGridView1.Columns.Add("Model", "Model"); //attribute label
-
-            foreach (var element in attributeNames)
+            for (int i = headerRow.FirstCellNum; i < cellCount; i++)
             {
-                DataColumn attributeColumn = new DataColumn(element.ToString());
-                table.Columns.Add(attributeColumn);                
-                //dataGridView1.Columns.Add(element.ToString(), element.ToString());
+                DataColumn column = new DataColumn(headerRow.GetCell(i).StringCellValue);
+                table.Columns.Add(column);
             }
 
-            //make sure there are rows there.
-            for(int index = 0; index < trainingSet.Count; index++)
+            int rowCount = sheet.LastRowNum;
+            //set i to sheet.FirstRowNum + 1 so it bypasses the first (header) row.
+            for (int i = (sheet.FirstRowNum + 1); i <= sheet.LastRowNum; i++)
             {
-                table.Rows.Add();
-            }
-
-            for (int row = 0; row < trainingSet.Count; row++)
-            {
-                DataRow temp = table.NewRow();
-
-                temp[makeColumn] = outputClassNames[row].ToString(); //Make
-                temp[modelColumn] = trainingSetLabel[row].ToString(); //Model
-
-                int column = 2; //set it to position 2 (past make/model)
-                while (column < attributeNames.Count + 2)
+                IRow row = sheet.GetRow(i);
+                DataRow dataRow = table.NewRow();
+                for (int j = row.FirstCellNum; j < cellCount; j++)
                 {
-
-                    temp[column] = trainingSet[row][column - 2].ToString(); //Attributes
-                    column++;
+                    if (row.GetCell(j) != null)
+                    {
+                        dataRow[j] = row.GetCell(j).ToString();
+                    }
                 }
 
-                column = 0; //reset to zero.
-
-                //table.Rows.Add(temp.ItemArray);
-
-                table.Rows[row].BeginEdit();
-
-                //maybe try modifying the existing rows?
-                //Didn't work. 
-                for(int count = 0; count < temp.ItemArray.Count(); count++)
-                    table.Rows[row].SetField(count, temp.ItemArray[count]);
-
-                table.Rows[row].EndEdit();
-
-                //testDataSet.Tables[0].ImportRow(temp);
+                table.Rows.Add(dataRow);
             }
 
-            //dataGridView1.DataSource = table; //Set the DGV to be our custom data set.
-            dataGridView1.DataSource = dataSet1;
-        }
+                dataGridView1.DataSource = table;
+
+                //dataGridView1.AutoGenerateColumns = false; //Remove all of the junk columns.
+
+                //DataSet testDataSet = new DataSet("Test");
+                //DataTable table = testDataSet.Tables.Add("TrainingData");
+
+                //DataColumn makeColumn = new DataColumn("Make");
+                //DataColumn modelColumn = new DataColumn("Model");
+                //table.Columns.Add(makeColumn);
+                //table.Columns.Add(modelColumn);
+
+                ////dataGridView1.Columns.Add("Make", "Make"); //class
+                ////dataGridView1.Columns.Add("Model", "Model"); //attribute label
+
+                //foreach (var element in attributeNames)
+                //{
+                //    DataColumn attributeColumn = new DataColumn(element.ToString());
+                //    table.Columns.Add(attributeColumn);                
+                //    //dataGridView1.Columns.Add(element.ToString(), element.ToString());
+                //}
+
+                ////make sure there are rows there.
+                //for(int index = 0; index < trainingSet.Count; index++)
+                //{
+                //    table.Rows.Add();
+                //}
+
+                //for (int row = 0; row < trainingSet.Count; row++)
+                //{
+                //    DataRow temp = table.NewRow();
+
+                //    temp[makeColumn] = outputClassNames[row].ToString(); //Make
+                //    temp[modelColumn] = trainingSetLabel[row].ToString(); //Model
+
+                //    int column = 2; //set it to position 2 (past make/model)
+                //    while (column < attributeNames.Count + 2)
+                //    {
+
+                //        temp[column] = trainingSet[row][column - 2].ToString(); //Attributes
+                //        column++;
+                //    }
+
+                //    column = 0; //reset to zero.
+
+                //    //table.Rows.Add(temp.ItemArray);
+
+                //    table.Rows[row].BeginEdit();
+
+                //    //maybe try modifying the existing rows?
+                //    //Didn't work. 
+                //    for(int count = 0; count < temp.ItemArray.Count(); count++)
+                //        table.Rows[row].SetField(count, temp.ItemArray[count]);
+
+                //    table.Rows[row].EndEdit();
+
+                //    //testDataSet.Tables[0].ImportRow(temp);
+                //}
+
+                ////dataGridView1.DataSource = table; //Set the DGV to be our custom data set.
+                //dataGridView1.DataSource = dataSet1;
+            }
 
         private void populateAttributeList()
         {
