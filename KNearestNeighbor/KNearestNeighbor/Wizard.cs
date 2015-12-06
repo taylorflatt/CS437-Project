@@ -10,6 +10,8 @@ using NPOI.SS.UserModel;
 using NPOI.SS.Formula.Functions;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Drawing;
+using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace KNearestNeighbor
 {
@@ -36,11 +38,48 @@ namespace KNearestNeighbor
         {
             InitializeComponent();
 
+            //Load the description text into the description step.
+            //var fileName = Path.Combine(Directory.GetCurrentDirectory(), "description.txt");
+            string fileName = "description.txt";
+
+            try
+            {
+                using (FileStream file = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+                {
+                    //programDescriptionTB.LoadFile(fileName, RichTextBoxStreamType.PlainText); //don't need
+
+                    int orderCount = 0; //Set to zero because in the Regex it adds a whitespace line so it increments falsely by 1.
+                    foreach (string line in File.ReadLines(fileName))
+                    {
+                        StringExtensions.ParseLine(programDescriptionTB, line, orderCount, ref orderCount);
+                        orderCount++;
+                    }
+                }
+            }
+            
+            catch(System.IO.FileNotFoundException error)
+            {
+                Console.WriteLine("We could not find the text file to display the instructions for step 1 (description step). ");
+                Console.WriteLine("Packed Message: " + error.Message);
+                Console.WriteLine("Call Stack: " + error.StackTrace);
+
+                DialogResult errorMessage = MessageBox.Show(String.Format("Unfortunately, the {0} file cannot be found. Please check that the file exists and is in the directory of the program. ", fileName),
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error,
+                    MessageBoxDefaultButton.Button1);
+
+                if (errorMessage == DialogResult.OK)
+                    Environment.Exit(1);
+            }
+
             //Don't let them manipulate the training data until it has been entered.
             kValueTB.Enabled = false;
             dontNormalizeInputDataCheckBox.Enabled = false;
             dontNormalizeTrainingDataCheckBox.Enabled = false;
         }
+
+        
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -440,6 +479,16 @@ namespace KNearestNeighbor
         //Custom code for individual steps.
         private void wizardControl2_CurrentStepIndexChanged(object sender, EventArgs e)
         {
+            ////Description step.
+            //if(wizardControl2.CurrentStepIndex == 0)
+            //{
+            //    string fileName = "description.txt";
+            //    using (FileStream file = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            //    {
+            //        programDescriptionTB.LoadFile(fileName);
+            //    }
+            //}
+
             //Data initialize step.
             if (wizardControl2.CurrentStepIndex == 1)
             {
@@ -543,6 +592,11 @@ namespace KNearestNeighbor
                 chart1.Show();
             }
             catch { }
+        }
+
+        private void programDescriptionTB_LinkClicked(object sender, LinkClickedEventArgs e)
+        {
+            Process.Start(e.LinkText);
         }
     }
 }

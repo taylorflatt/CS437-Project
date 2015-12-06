@@ -80,7 +80,9 @@
             this.plotXComboBox = new System.Windows.Forms.ComboBox();
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
+            this.programDescriptionTB = new System.Windows.Forms.RichTextBox();
             this.wizardBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.descriptionStep1.SuspendLayout();
             this.initialDataStep2.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -99,7 +101,7 @@
             // 
             // wizardControl2
             // 
-            this.wizardControl2.BackButtonEnabled = true;
+            this.wizardControl2.BackButtonEnabled = false;
             this.wizardControl2.BackButtonVisible = true;
             this.wizardControl2.CancelButtonEnabled = true;
             this.wizardControl2.CancelButtonVisible = true;
@@ -123,9 +125,10 @@
             // descriptionStep1
             // 
             this.descriptionStep1.BindingImage = ((System.Drawing.Image)(resources.GetObject("descriptionStep1.BindingImage")));
+            this.descriptionStep1.Controls.Add(this.programDescriptionTB);
             this.descriptionStep1.Icon = ((System.Drawing.Image)(resources.GetObject("descriptionStep1.Icon")));
             this.descriptionStep1.Name = "descriptionStep1";
-            this.descriptionStep1.Subtitle = "KNN is an non parametric lazy learning algorithm.";
+            this.descriptionStep1.Subtitle = "The non parametric lazy learning algorithm.";
             this.descriptionStep1.Title = "Determine your nearest competitor";
             // 
             // initialDataStep2
@@ -591,6 +594,20 @@
             this.label18.TabIndex = 0;
             this.label18.Text = "Plot X:";
             // 
+            // programDescriptionTB
+            // 
+            this.programDescriptionTB.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.programDescriptionTB.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.programDescriptionTB.BulletIndent = 30;
+            this.programDescriptionTB.Cursor = System.Windows.Forms.Cursors.Default;
+            this.programDescriptionTB.Location = new System.Drawing.Point(173, 59);
+            this.programDescriptionTB.Name = "programDescriptionTB";
+            this.programDescriptionTB.ReadOnly = true;
+            this.programDescriptionTB.Size = new System.Drawing.Size(432, 618);
+            this.programDescriptionTB.TabIndex = 0;
+            this.programDescriptionTB.Text = "";
+            this.programDescriptionTB.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.programDescriptionTB_LinkClicked);
+            // 
             // wizardBindingSource
             // 
             this.wizardBindingSource.DataSource = typeof(KNearestNeighbor.Wizard);
@@ -607,6 +624,7 @@
             this.Name = "Wizard";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Wizard";
+            this.descriptionStep1.ResumeLayout(false);
             this.initialDataStep2.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
@@ -680,5 +698,6 @@
         private System.Windows.Forms.ComboBox plotXComboBox;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.RichTextBox programDescriptionTB;
     }
 }
