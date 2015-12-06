@@ -8,6 +8,8 @@ using System.IO;
 using NPOI.XSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.SS.Formula.Functions;
+using System.Windows.Forms.DataVisualization.Charting;
+using System.Drawing;
 
 namespace KNearestNeighbor
 {
@@ -71,7 +73,16 @@ namespace KNearestNeighbor
                         else if (sheet.GetRow(row) != null) //null is when the row only contains empty cells 
                         {
                             //Assumption 1: The class will always be the first value in the row.
-                            outputClassNames.Add(Convert.ToString(sheet.GetRow(row).GetCell(0).StringCellValue));
+                            //Only add the outputClassName IF it is distinct so we can 1-to-1 match with outputClass.
+                            string className = Convert.ToString(sheet.GetRow(row).GetCell(0).StringCellValue);
+
+                            //if the outputClassNames list ISN'T already contained the current class name, then we don't add it to the list.
+                            if (outputClassNames.Contains(className) == false)
+                                outputClassNames.Add(className);
+
+                            //Now I need to check the outputClassNames with the currentClassName and add the appropriate class number.
+                            if (outputClassNames.Contains(className) == true)
+                                outputClass.Add(outputClassNames.IndexOf(className));
 
                             //Assumption 2: The data label will always be the second value in the row.
                             trainingSetLabel.Add(Convert.ToString(sheet.GetRow(row).GetCell(1).StringCellValue));
@@ -242,12 +253,12 @@ namespace KNearestNeighbor
 
             try
             {
-                //Add values starting from zero to value - 1 to the outputClass.
+                //Add values starting from zero to value - 1.
                 int column = 2;
                 for (int count = 1; count <= numAttributes; count++)
                 {
                     int row = count;
-                    outputClass.Add(count - 1);
+                    //inputSet.Add(count - 1);
 
                     System.Windows.Forms.Label temp = new System.Windows.Forms.Label();
                     temp.Text = attributeNames.ElementAt(count - 1).ToString() + ": ";
@@ -424,17 +435,112 @@ namespace KNearestNeighbor
             
         }
 
+        //Custom code for individual steps.
         private void wizardControl2_CurrentStepIndexChanged(object sender, EventArgs e)
         {
-            if (wizardControl2.CurrentStepIndex == 2)
-            {
-                wizardControl2.BackButtonEnabled = false;
-            }
-
+            //Data initialize step.
             if (wizardControl2.CurrentStepIndex == 1)
             {
                 wizardControl2.NextButtonEnabled = false;
             }
+
+            //Data display step.
+            else if (wizardControl2.CurrentStepIndex == 2)
+            {
+                wizardControl2.BackButtonEnabled = false;
+
+                chart1.Legends.Add("Legend");
+
+                Random randomGen = new Random();
+
+                List<Color> acceptableColorList = new List<Color>
+                {
+                    Color.Maroon, //This will be our input data point color.
+                    Color.Orange,
+                    Color.Fuchsia,
+                    Color.Lime,
+                    Color.Aqua,
+                    Color.LightBlue,
+                    Color.DarkBlue,
+                    Color.SlateGray,
+                    Color.DarkGreen,
+                    Color.Gold,
+                    Color.LightCoral,
+                    Color.Red,
+                    Color.BlueViolet
+
+                    //In the case that there are more than 12 classes, just generate a random color.
+                };
+
+                List<int> pickedColors = new List<int>();
+
+                int count = 0;
+                int temp312 = outputClass.Distinct().Count();
+                while (count < outputClass.Distinct().Count())
+                {
+                    chart1.Series.Add("Class " + count);
+                    chart1.Series[count].ChartType = SeriesChartType.Point; //Point graph.
+                    chart1.Series[count].MarkerStyle = MarkerStyle.Circle;
+                    chart1.Series[count].MarkerSize = 6; //Might look into parameterizing this to give the user the option of increasing the size.
+
+                    bool uniqueColor = false;
+
+                    while(uniqueColor == false)
+                    {
+                        int colorPositionInList = randomGen.Next(1, acceptableColorList.Count - 1);
+
+                        //If the color is unique, we will add it. Otherwise, we will pick another color from the list.
+                        if(!pickedColors.Contains(colorPositionInList))
+                        {
+                            //Set the series color.
+                            chart1.Series[count].MarkerColor = acceptableColorList.ElementAt(colorPositionInList);
+
+                            //Add the element location to our list so we don't pick the same color again.
+                            pickedColors.Add(colorPositionInList); 
+
+                            //Drop from the while loop.
+                            uniqueColor = true;
+                        }
+
+                        //If we have assigned all of the static colors, then we need to grab a random color.
+                        if(pickedColors.Count >= (acceptableColorList.Count - 1))
+                        {
+                            chart1.Series[count].MarkerColor = Color.FromArgb((byte)randomGen.Next(255), (byte)randomGen.Next(255), (byte)randomGen.Next(255));
+                        }
+                    }
+
+                    count++;
+                }
+
+                //Create out input data point.
+                chart1.Series.Add("My Input");
+                chart1.Series[count].ChartType = SeriesChartType.Point; //Point graph.
+                chart1.Series[count].MarkerColor = acceptableColorList.ElementAt(0); //Set the color to be the first in the list.
+                chart1.Series[count].MarkerStyle = MarkerStyle.Square;
+                chart1.Series[count].MarkerSize = 7; //Might look into parameterizing this to give the user the option of increasing the size.
+
+
+
+            }
+        }
+
+        private void plotButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int xCoord = plotXComboBox.SelectedIndex;
+                int yCoord = plotYComboBox.SelectedIndex;
+
+                //NEED TO ACCOUNT FOR THE CASE THE PERSON JUST HITS "PLOT" and doesn't choose two values. Maybe just set the values to 
+                //two default "Attribute1 and Attribute2 values. No - we want them to choose them so it will look good and display right.
+
+                //Just for the case in which x-coord: Attribute1 and y-coord: Attribute2
+
+                Plot.PlotPoints(chart1, xCoord, yCoord, trainingSet, normalizedTrainingSet, outputClass, inputSet);
+
+                chart1.Show();
+            }
+            catch { }
         }
     }
 }

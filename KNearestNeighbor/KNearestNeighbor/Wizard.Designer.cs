@@ -30,6 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Wizard));
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             this.wizardControl2 = new WizardBase.WizardControl();
             this.descriptionStep1 = new WizardBase.StartStep();
             this.initialDataStep2 = new WizardBase.IntermediateStep();
@@ -69,6 +71,15 @@
             this.errorProviderK = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProviderAttributes = new System.Windows.Forms.ErrorProvider(this.components);
             this.dataSet1 = new System.Data.DataSet();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.plotButton = new System.Windows.Forms.Button();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.plotYComboBox = new System.Windows.Forms.ComboBox();
+            this.plotXComboBox = new System.Windows.Forms.ComboBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
             this.wizardBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.initialDataStep2.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -81,12 +92,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderK)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderAttributes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataSet1)).BeginInit();
+            this.groupBox6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.wizardBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // wizardControl2
             // 
-            this.wizardControl2.BackButtonEnabled = false;
+            this.wizardControl2.BackButtonEnabled = true;
             this.wizardControl2.BackButtonVisible = true;
             this.wizardControl2.CancelButtonEnabled = true;
             this.wizardControl2.CancelButtonVisible = true;
@@ -422,6 +435,7 @@
             // displayDataStep3
             // 
             this.displayDataStep3.BindingImage = ((System.Drawing.Image)(resources.GetObject("displayDataStep3.BindingImage")));
+            this.displayDataStep3.Controls.Add(this.groupBox6);
             this.displayDataStep3.Controls.Add(this.label14);
             this.displayDataStep3.Controls.Add(this.label13);
             this.displayDataStep3.ForeColor = System.Drawing.SystemColors.ControlText;
@@ -465,6 +479,118 @@
             // 
             this.dataSet1.DataSetName = "NewDataSet";
             // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.plotButton);
+            this.groupBox6.Controls.Add(this.label15);
+            this.groupBox6.Controls.Add(this.label16);
+            this.groupBox6.Controls.Add(this.chart1);
+            this.groupBox6.Controls.Add(this.plotYComboBox);
+            this.groupBox6.Controls.Add(this.plotXComboBox);
+            this.groupBox6.Controls.Add(this.label17);
+            this.groupBox6.Controls.Add(this.label18);
+            this.groupBox6.Location = new System.Drawing.Point(0, 219);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(615, 458);
+            this.groupBox6.TabIndex = 14;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Output";
+            // 
+            // plotButton
+            // 
+            this.plotButton.Location = new System.Drawing.Point(383, 15);
+            this.plotButton.Name = "plotButton";
+            this.plotButton.Size = new System.Drawing.Size(75, 23);
+            this.plotButton.TabIndex = 14;
+            this.plotButton.Text = "Plot";
+            this.plotButton.UseVisualStyleBackColor = true;
+            this.plotButton.Click += new System.EventHandler(this.plotButton_Click);
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(843, 23);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(27, 13);
+            this.label15.TabIndex = 6;
+            this.label15.Text = "N/A";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(733, 23);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(103, 13);
+            this.label16.TabIndex = 5;
+            this.label16.Text = "Nearest Competitor: ";
+            // 
+            // chart1
+            // 
+            chartArea1.AxisX.Interval = 0.05D;
+            chartArea1.AxisX.IsStartedFromZero = false;
+            chartArea1.AxisX.Maximum = 1D;
+            chartArea1.AxisX.Minimum = 0D;
+            chartArea1.AxisY.Interval = 0.05D;
+            chartArea1.AxisY.IsStartedFromZero = false;
+            chartArea1.AxisY.Maximum = 1D;
+            chartArea1.AxisY.Minimum = 0D;
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            legend1.Title = "Legend";
+            this.chart1.Legends.Add(legend1);
+            this.chart1.Location = new System.Drawing.Point(6, 47);
+            this.chart1.Name = "chart1";
+            this.chart1.Size = new System.Drawing.Size(609, 405);
+            this.chart1.TabIndex = 4;
+            this.chart1.Text = "chart1";
+            // 
+            // plotYComboBox
+            // 
+            this.plotYComboBox.FormattingEnabled = true;
+            this.plotYComboBox.Items.AddRange(new object[] {
+            "Attribute1",
+            "Attribute2",
+            "Attribute3",
+            "Attribute4",
+            "Attribute5"});
+            this.plotYComboBox.Location = new System.Drawing.Point(235, 17);
+            this.plotYComboBox.Name = "plotYComboBox";
+            this.plotYComboBox.Size = new System.Drawing.Size(121, 21);
+            this.plotYComboBox.TabIndex = 3;
+            // 
+            // plotXComboBox
+            // 
+            this.plotXComboBox.FormattingEnabled = true;
+            this.plotXComboBox.Items.AddRange(new object[] {
+            "Attribute1",
+            "Attribute2",
+            "Attribute3",
+            "Attribute4",
+            "Attribute5"});
+            this.plotXComboBox.Location = new System.Drawing.Point(52, 20);
+            this.plotXComboBox.Name = "plotXComboBox";
+            this.plotXComboBox.Size = new System.Drawing.Size(121, 21);
+            this.plotXComboBox.TabIndex = 2;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(191, 23);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(38, 13);
+            this.label17.TabIndex = 1;
+            this.label17.Text = "Plot Y:";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(7, 20);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(38, 13);
+            this.label18.TabIndex = 0;
+            this.label18.Text = "Plot X:";
+            // 
             // wizardBindingSource
             // 
             this.wizardBindingSource.DataSource = typeof(KNearestNeighbor.Wizard);
@@ -496,6 +622,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderK)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderAttributes)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataSet1)).EndInit();
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.wizardBindingSource)).EndInit();
             this.ResumeLayout(false);
 
@@ -542,5 +671,14 @@
         private System.Windows.Forms.Label label13;
         private System.Data.DataSet dataSet1;
         private System.Windows.Forms.BindingSource wizardBindingSource;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.Button plotButton;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
+        private System.Windows.Forms.ComboBox plotYComboBox;
+        private System.Windows.Forms.ComboBox plotXComboBox;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label18;
     }
 }
