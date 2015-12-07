@@ -33,13 +33,6 @@ namespace KNearestNeighbor
             {
                 ep.SetErrorWithCount(textbox, "K-Value must be less than the number of inputs");
             }
-
-            //Clear the error.
-            else
-            {
-                ep.RemoveErrors();
-                ep.Clear();
-            }
         }
 
         public static void ValidateModel(this ErrorProvider ep, string value, TextBox textbox, double[][] inputs)
@@ -52,40 +45,6 @@ namespace KNearestNeighbor
             else if (value.Count() > 15)
             {
                 ep.SetErrorWithCount(textbox, "The model cannot be longer than 15 characters.");
-            }
-
-            else
-            {
-                ep.RemoveErrors();
-                ep.Clear();
-            }
-        }
-
-        public static void ValidateAttributes(this ErrorProvider ep, string value, TextBox textbox, double[][] inputs, bool discreteValue)
-        {
-            //If there are any letters (we have continuous data), we throw an error.
-            if (discreteValue == false && Regex.Matches(value, @"[a-zA-Z]").Count > 0)
-            {
-                ep.SetErrorWithCount(textbox, "This attribute cannot contain letters.");
-            }
-
-            //If there is nothing typed at all OR if there are no numbers typed, we throw an error.
-            else if (value.Count() == 0 || Regex.Matches(value, @"[0-9]").Count == 0)
-            {
-                ep.SetErrorWithCount(textbox, "This attribute must contain a number.");
-            }
-
-            //If there is a negative number, we throw an error.
-            else if (value.Contains("-"))
-            {
-                ep.SetErrorWithCount(textbox, "This attribute must contain a positive number greater than zero.");
-            }
-
-            //Clear the error.
-            else
-            {
-                ep.RemoveErrors();
-                ep.Clear();
             }
         }
 
@@ -108,13 +67,6 @@ namespace KNearestNeighbor
             {
                 ep.SetErrorWithCount(textbox, "This attribute must contain a positive number greater than zero.");
             }
-
-            //Clear the error.
-            else
-            {
-                ep.RemoveErrors();
-                ep.Clear();
-            }
         }
 
         public static void ValidateCoordinates(this ErrorProvider ep, string xCoord, string yCoord, ComboBox comboboxX, ComboBox comboboxY, double[][] inputs)
@@ -125,13 +77,13 @@ namespace KNearestNeighbor
                 ep.SetErrorWithCount(comboboxX, "You need to pick two different attributes to plot.");
                 ep.SetErrorWithCount(comboboxY, "You need to pick two different attributes to plot.");
             }
+        }
 
-            //Clear the error.
-            else
-            {
-                ep.RemoveErrors();
-                ep.Clear();
-            }
+
+        public static void removeErrors(this ErrorProvider ep)
+        {
+            ep.RemoveErrors();
+            ep.Clear();
         }
 
     }

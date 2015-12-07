@@ -12,21 +12,7 @@ namespace KNearestNeighbor
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Wizard());
-
-            //Here we define 10 cars that have a specific set of classification data.
-            //double[][] inputs =
-            //{
-            //    new double[] { -5, -2, 1, 2, 9},
-            //    new double[] { -5, -5, 2, 5, 2},
-            //    new double[] {  2, 1, 7, 8, 2},
-            //    new double[] {  1, 1, 8, 1, 2},
-            //    new double[] {  1, 2, 2, 4, 1},
-            //    new double[] {  3, 1, 2, 0, 1},
-            //    new double[] { 11, 5, 1, 2, 1},
-            //    new double[] { 15, 5, 2, 5, 9},
-            //    new double[] { 10, 5, 2, 1, 0},
-            //    new double[] { 10, 5, 2, 1, 0},
-            //};
+            //Application.Run(new HelpForm());
 
             List<List<double>> inputs = new List<List<double>>
             {
@@ -42,12 +28,6 @@ namespace KNearestNeighbor
                 new List<double> { 10, 5, 2, 1, 0},
             };
 
-            //int[] outputs =
-            //{
-            //    0,0,0,0,0,
-            //    1,1,1,
-            //    2,2
-            //};
 
             List<int> outputs = new List<int>
             {

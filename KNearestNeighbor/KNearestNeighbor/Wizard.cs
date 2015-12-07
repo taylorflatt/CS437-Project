@@ -77,9 +77,10 @@ namespace KNearestNeighbor
             kValueTB.Enabled = false;
             dontNormalizeInputDataCheckBox.Enabled = false;
             dontNormalizeTrainingDataCheckBox.Enabled = false;
+
         }
 
-        
+        //After initial validation, it may not be re-validating the form to catch new errors.
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -87,8 +88,14 @@ namespace KNearestNeighbor
             {
                 DialogResult result = openFileDialog1.ShowDialog();
 
+                //If they cancel out of the dialog (not selecting a file).
+                //if (result == DialogResult.Cancel || result == DialogResult.Abort)
+                //    initialDataStep2.CausesValidation = false;
+
+                //They have chosen a file.
                 if (result == DialogResult.OK)
                 {
+                    //initialDataStep2.CausesValidation = true;
                     XSSFWorkbook xssfwb;
                     using (FileStream file = new FileStream(openFileDialog1.FileName, FileMode.Open, FileAccess.Read))
                     {
@@ -153,7 +160,7 @@ namespace KNearestNeighbor
                     kValueTB.Enabled = true;
                     dontNormalizeInputDataCheckBox.Enabled = true;
                     dontNormalizeTrainingDataCheckBox.Enabled = true;
-                    wizardControl2.NextButtonEnabled = true;
+                    baseControl.NextButtonEnabled = true;
                 }
             }
 
@@ -224,66 +231,6 @@ namespace KNearestNeighbor
             }
 
                 dataGridView1.DataSource = table;
-
-                //dataGridView1.AutoGenerateColumns = false; //Remove all of the junk columns.
-
-                //DataSet testDataSet = new DataSet("Test");
-                //DataTable table = testDataSet.Tables.Add("TrainingData");
-
-                //DataColumn makeColumn = new DataColumn("Make");
-                //DataColumn modelColumn = new DataColumn("Model");
-                //table.Columns.Add(makeColumn);
-                //table.Columns.Add(modelColumn);
-
-                ////dataGridView1.Columns.Add("Make", "Make"); //class
-                ////dataGridView1.Columns.Add("Model", "Model"); //attribute label
-
-                //foreach (var element in attributeNames)
-                //{
-                //    DataColumn attributeColumn = new DataColumn(element.ToString());
-                //    table.Columns.Add(attributeColumn);                
-                //    //dataGridView1.Columns.Add(element.ToString(), element.ToString());
-                //}
-
-                ////make sure there are rows there.
-                //for(int index = 0; index < trainingSet.Count; index++)
-                //{
-                //    table.Rows.Add();
-                //}
-
-                //for (int row = 0; row < trainingSet.Count; row++)
-                //{
-                //    DataRow temp = table.NewRow();
-
-                //    temp[makeColumn] = outputClassNames[row].ToString(); //Make
-                //    temp[modelColumn] = trainingSetLabel[row].ToString(); //Model
-
-                //    int column = 2; //set it to position 2 (past make/model)
-                //    while (column < attributeNames.Count + 2)
-                //    {
-
-                //        temp[column] = trainingSet[row][column - 2].ToString(); //Attributes
-                //        column++;
-                //    }
-
-                //    column = 0; //reset to zero.
-
-                //    //table.Rows.Add(temp.ItemArray);
-
-                //    table.Rows[row].BeginEdit();
-
-                //    //maybe try modifying the existing rows?
-                //    //Didn't work. 
-                //    for(int count = 0; count < temp.ItemArray.Count(); count++)
-                //        table.Rows[row].SetField(count, temp.ItemArray[count]);
-
-                //    table.Rows[row].EndEdit();
-
-                //    //testDataSet.Tables[0].ImportRow(temp);
-                //}
-
-                ////dataGridView1.DataSource = table; //Set the DGV to be our custom data set.
-                //dataGridView1.DataSource = dataSet1;
             }
 
         private void populateAttributeList()
@@ -331,7 +278,12 @@ namespace KNearestNeighbor
 
         private void initialDataStep2_Validating(object sender, CancelEventArgs e)
         {
+            //THESE TWO LINES ARE REQUIRED OR THE VALIDATION WON'T WORK PROPERLY.
+            DataValidation.removeErrors(errorProviderAttributes); //Zero out the errors.
+            DataValidation.removeErrors(errorProviderK); //Zero out the errors.
+
             int numAttributes = attributeNames.Count;
+            bool valid = true; //Assume the data is valid unless we find something invalid.
 
             for (int count = 1; count <= numAttributes; count++)
             {
@@ -345,12 +297,6 @@ namespace KNearestNeighbor
             //Validate the K-Value
             string kValue = kValueTB.Text;
             DataValidation.ValidateKValue(errorProviderK, kValue, kValueTB, trainingSet);
-
-            if(errorProviderK.HasErrors())
-            {
-                //Stop from being able to select "next".
-                e.Cancel = true;
-            }
 
             //Check if the data has been normalized properly (or at all). We are HOPING they normalized it properly.
             if (dontNormalizeInputDataCheckBox.Checked)
@@ -374,7 +320,7 @@ namespace KNearestNeighbor
 
                     //They are re-checking information.
                     if (warning == DialogResult.OK)
-                        e.Cancel = true;
+                        valid = false;
                 }
             }
 
@@ -402,17 +348,17 @@ namespace KNearestNeighbor
 
                     //They are re-checking information.
                     if (warning == DialogResult.OK)
-                        e.Cancel = true;
+                        valid = false;
                 }
             }
 
-            //If there are errors, stop from proceeding.
-            if (errorProviderAttributes.HasErrors() == true)
+            if(errorProviderAttributes.HasErrors() || errorProviderK.HasErrors())
+                valid = false;
+            
+            if(valid == false)
             {
-                //Stop from being able to select "next".
                 e.Cancel = true;
             }
-
         }
 
         //Allow me to close the program without having to first fix the errors.
@@ -449,22 +395,14 @@ namespace KNearestNeighbor
 
             //Then it has already been normalized AND confirmed by the user, just set the normalized input list to be the input list.
             else
-            {
                 normalizedInputSet = inputSet;
-            }
             
 
             if(dontNormalizeTrainingDataCheckBox.Checked == false)
-            {
                 normalizedTrainingSet = NormalizeData.Normalize(trainingSet, numAttributes);
-            }
 
             else
-            {
                 normalizedTrainingSet = trainingSet;
-            }
-
-            
 
             //initialize our KNN object.
             knn = new KNearestNeighborAlgorithm(k, inputs: trainingSet, outputs: outputClass); //initialize our algorithm with inputs
@@ -472,33 +410,23 @@ namespace KNearestNeighbor
             inputClass = knn.Compute(inputSet);
 
             label14.Text = Convert.ToString(inputClass);
-
-            
         }
 
         //Custom code for individual steps.
         private void wizardControl2_CurrentStepIndexChanged(object sender, EventArgs e)
         {
-            ////Description step.
-            //if(wizardControl2.CurrentStepIndex == 0)
-            //{
-            //    string fileName = "description.txt";
-            //    using (FileStream file = new FileStream(fileName, FileMode.Open, FileAccess.Read))
-            //    {
-            //        programDescriptionTB.LoadFile(fileName);
-            //    }
-            //}
+            //Data initialize step.
+            if (baseControl.CurrentStepIndex == 0)
+                baseControl.NextButtonEnabled = true;
 
             //Data initialize step.
-            if (wizardControl2.CurrentStepIndex == 1)
-            {
-                wizardControl2.NextButtonEnabled = false;
-            }
+            if (baseControl.CurrentStepIndex == 1)
+                baseControl.NextButtonEnabled = false;
 
             //Data display step.
-            else if (wizardControl2.CurrentStepIndex == 2)
+            else if (baseControl.CurrentStepIndex == 2)
             {
-                wizardControl2.BackButtonEnabled = false;
+                baseControl.BackButtonEnabled = false;
 
                 chart1.Legends.Add("Legend");
 
@@ -597,6 +525,19 @@ namespace KNearestNeighbor
         private void programDescriptionTB_LinkClicked(object sender, LinkClickedEventArgs e)
         {
             Process.Start(e.LinkText);
+        }
+
+        private void Wizard_HelpButtonClicked(object sender, EventArgs e)
+        {
+            string helpfile = "knnhelp.CHM";
+            System.Windows.Forms.Help.ShowHelpIndex(this, helpfile);
+
+            Help.ShowHelp(this, "helpfile.chm", HelpNavigator.TopicId, "1234");
+        }
+
+        private void wizardControl2_BackButtonClick(object sender, CancelEventArgs e)
+        {
+
         }
     }
 }

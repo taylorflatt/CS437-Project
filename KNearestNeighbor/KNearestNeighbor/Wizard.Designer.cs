@@ -30,10 +30,11 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Wizard));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            this.wizardControl2 = new WizardBase.WizardControl();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            this.baseControl = new WizardBase.WizardControl();
             this.descriptionStep1 = new WizardBase.StartStep();
+            this.programDescriptionTB = new System.Windows.Forms.RichTextBox();
             this.initialDataStep2 = new WizardBase.IntermediateStep();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.label12 = new System.Windows.Forms.Label();
@@ -64,13 +65,6 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.displayDataStep3 = new WizardBase.IntermediateStep();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.finishStep = new WizardBase.FinishStep();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.errorProviderK = new System.Windows.Forms.ErrorProvider(this.components);
-            this.errorProviderAttributes = new System.Windows.Forms.ErrorProvider(this.components);
-            this.dataSet1 = new System.Data.DataSet();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.plotButton = new System.Windows.Forms.Button();
             this.label15 = new System.Windows.Forms.Label();
@@ -80,8 +74,16 @@
             this.plotXComboBox = new System.Windows.Forms.ComboBox();
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
-            this.programDescriptionTB = new System.Windows.Forms.RichTextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.finishStep = new WizardBase.FinishStep();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.errorProviderK = new System.Windows.Forms.ErrorProvider(this.components);
+            this.errorProviderAttributes = new System.Windows.Forms.ErrorProvider(this.components);
+            this.dataSet1 = new System.Data.DataSet();
+            this.helpProvider1 = new System.Windows.Forms.HelpProvider();
             this.wizardBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.descriptionStep1.SuspendLayout();
             this.initialDataStep2.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -91,36 +93,37 @@
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.displayDataStep3.SuspendLayout();
+            this.groupBox6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderK)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderAttributes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataSet1)).BeginInit();
-            this.groupBox6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.wizardBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
-            // wizardControl2
+            // baseControl
             // 
-            this.wizardControl2.BackButtonEnabled = false;
-            this.wizardControl2.BackButtonVisible = true;
-            this.wizardControl2.CancelButtonEnabled = true;
-            this.wizardControl2.CancelButtonVisible = true;
-            this.wizardControl2.EulaButtonEnabled = true;
-            this.wizardControl2.EulaButtonText = "eula";
-            this.wizardControl2.EulaButtonVisible = true;
-            this.wizardControl2.HelpButtonEnabled = true;
-            this.wizardControl2.HelpButtonVisible = true;
-            this.wizardControl2.Location = new System.Drawing.Point(2, 0);
-            this.wizardControl2.Name = "wizardControl2";
-            this.wizardControl2.NextButtonEnabled = true;
-            this.wizardControl2.NextButtonVisible = true;
-            this.wizardControl2.Size = new System.Drawing.Size(618, 720);
-            this.wizardControl2.WizardSteps.AddRange(new WizardBase.WizardStep[] {
+            this.baseControl.BackButtonEnabled = true;
+            this.baseControl.BackButtonVisible = true;
+            this.baseControl.CancelButtonEnabled = false;
+            this.baseControl.CancelButtonVisible = false;
+            this.baseControl.EulaButtonEnabled = false;
+            this.baseControl.EulaButtonText = "eula";
+            this.baseControl.EulaButtonVisible = false;
+            this.baseControl.HelpButtonEnabled = true;
+            this.baseControl.HelpButtonVisible = true;
+            this.baseControl.Location = new System.Drawing.Point(2, 0);
+            this.baseControl.Name = "baseControl";
+            this.baseControl.NextButtonEnabled = true;
+            this.baseControl.NextButtonVisible = true;
+            this.baseControl.Size = new System.Drawing.Size(618, 720);
+            this.baseControl.WizardSteps.AddRange(new WizardBase.WizardStep[] {
             this.descriptionStep1,
             this.initialDataStep2,
             this.displayDataStep3,
             this.finishStep});
-            this.wizardControl2.CurrentStepIndexChanged += new System.EventHandler(this.wizardControl2_CurrentStepIndexChanged);
+            this.baseControl.CurrentStepIndexChanged += new System.EventHandler(this.wizardControl2_CurrentStepIndexChanged);
+            this.baseControl.HelpButtonClick += new System.EventHandler(this.Wizard_HelpButtonClicked);
             // 
             // descriptionStep1
             // 
@@ -130,6 +133,20 @@
             this.descriptionStep1.Name = "descriptionStep1";
             this.descriptionStep1.Subtitle = "The non parametric lazy learning algorithm.";
             this.descriptionStep1.Title = "Determine your nearest competitor";
+            // 
+            // programDescriptionTB
+            // 
+            this.programDescriptionTB.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.programDescriptionTB.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.programDescriptionTB.BulletIndent = 30;
+            this.programDescriptionTB.Cursor = System.Windows.Forms.Cursors.Default;
+            this.programDescriptionTB.Location = new System.Drawing.Point(173, 59);
+            this.programDescriptionTB.Name = "programDescriptionTB";
+            this.programDescriptionTB.ReadOnly = true;
+            this.programDescriptionTB.Size = new System.Drawing.Size(432, 618);
+            this.programDescriptionTB.TabIndex = 0;
+            this.programDescriptionTB.Text = "";
+            this.programDescriptionTB.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.programDescriptionTB_LinkClicked);
             // 
             // initialDataStep2
             // 
@@ -353,8 +370,11 @@
             // 
             // button1
             // 
+            this.helpProvider1.SetHelpKeyword(this.button1, "TestKeyWord");
+            this.helpProvider1.SetHelpString(this.button1, "TestString");
             this.button1.Location = new System.Drawing.Point(87, 16);
             this.button1.Name = "button1";
+            this.helpProvider1.SetShowHelp(this.button1, true);
             this.button1.Size = new System.Drawing.Size(70, 23);
             this.button1.TabIndex = 0;
             this.button1.Text = "Browse";
@@ -438,49 +458,12 @@
             // displayDataStep3
             // 
             this.displayDataStep3.BindingImage = ((System.Drawing.Image)(resources.GetObject("displayDataStep3.BindingImage")));
+            this.displayDataStep3.Controls.Add(this.groupBox7);
             this.displayDataStep3.Controls.Add(this.groupBox6);
             this.displayDataStep3.Controls.Add(this.label14);
             this.displayDataStep3.Controls.Add(this.label13);
             this.displayDataStep3.ForeColor = System.Drawing.SystemColors.ControlText;
             this.displayDataStep3.Name = "displayDataStep3";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(289, 219);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(0, 13);
-            this.label14.TabIndex = 1;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(242, 219);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(35, 13);
-            this.label13.TabIndex = 0;
-            this.label13.Text = "Class:";
-            // 
-            // finishStep
-            // 
-            this.finishStep.BindingImage = ((System.Drawing.Image)(resources.GetObject("finishStep.BindingImage")));
-            this.finishStep.Name = "finishStep";
-            // 
-            // openFileDialog1
-            // 
-            this.openFileDialog1.FileName = "openFileDialog1";
-            // 
-            // errorProviderK
-            // 
-            this.errorProviderK.ContainerControl = this;
-            // 
-            // errorProviderAttributes
-            // 
-            this.errorProviderAttributes.ContainerControl = this;
-            // 
-            // dataSet1
-            // 
-            this.dataSet1.DataSetName = "NewDataSet";
             // 
             // groupBox6
             // 
@@ -497,7 +480,7 @@
             this.groupBox6.Size = new System.Drawing.Size(615, 458);
             this.groupBox6.TabIndex = 14;
             this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Output";
+            this.groupBox6.Text = "Graph";
             // 
             // plotButton
             // 
@@ -529,19 +512,19 @@
             // 
             // chart1
             // 
-            chartArea1.AxisX.Interval = 0.05D;
-            chartArea1.AxisX.IsStartedFromZero = false;
-            chartArea1.AxisX.Maximum = 1D;
-            chartArea1.AxisX.Minimum = 0D;
-            chartArea1.AxisY.Interval = 0.05D;
-            chartArea1.AxisY.IsStartedFromZero = false;
-            chartArea1.AxisY.Maximum = 1D;
-            chartArea1.AxisY.Minimum = 0D;
-            chartArea1.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            legend1.Title = "Legend";
-            this.chart1.Legends.Add(legend1);
+            chartArea4.AxisX.Interval = 0.05D;
+            chartArea4.AxisX.IsStartedFromZero = false;
+            chartArea4.AxisX.Maximum = 1D;
+            chartArea4.AxisX.Minimum = 0D;
+            chartArea4.AxisY.Interval = 0.05D;
+            chartArea4.AxisY.IsStartedFromZero = false;
+            chartArea4.AxisY.Maximum = 1D;
+            chartArea4.AxisY.Minimum = 0D;
+            chartArea4.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea4);
+            legend4.Name = "Legend1";
+            legend4.Title = "Legend";
+            this.chart1.Legends.Add(legend4);
             this.chart1.Location = new System.Drawing.Point(6, 47);
             this.chart1.Name = "chart1";
             this.chart1.Size = new System.Drawing.Size(609, 405);
@@ -594,36 +577,72 @@
             this.label18.TabIndex = 0;
             this.label18.Text = "Plot X:";
             // 
-            // programDescriptionTB
+            // label14
             // 
-            this.programDescriptionTB.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.programDescriptionTB.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.programDescriptionTB.BulletIndent = 30;
-            this.programDescriptionTB.Cursor = System.Windows.Forms.Cursors.Default;
-            this.programDescriptionTB.Location = new System.Drawing.Point(173, 59);
-            this.programDescriptionTB.Name = "programDescriptionTB";
-            this.programDescriptionTB.ReadOnly = true;
-            this.programDescriptionTB.Size = new System.Drawing.Size(432, 618);
-            this.programDescriptionTB.TabIndex = 0;
-            this.programDescriptionTB.Text = "";
-            this.programDescriptionTB.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.programDescriptionTB_LinkClicked);
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(289, 219);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(0, 13);
+            this.label14.TabIndex = 1;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(242, 219);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(35, 13);
+            this.label13.TabIndex = 0;
+            this.label13.Text = "Class:";
+            // 
+            // finishStep
+            // 
+            this.finishStep.BindingImage = ((System.Drawing.Image)(resources.GetObject("finishStep.BindingImage")));
+            this.finishStep.Name = "finishStep";
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // errorProviderK
+            // 
+            this.errorProviderK.ContainerControl = this;
+            // 
+            // errorProviderAttributes
+            // 
+            this.errorProviderAttributes.ContainerControl = this;
+            // 
+            // dataSet1
+            // 
+            this.dataSet1.DataSetName = "NewDataSet";
             // 
             // wizardBindingSource
             // 
             this.wizardBindingSource.DataSource = typeof(KNearestNeighbor.Wizard);
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Location = new System.Drawing.Point(6, 72);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(599, 144);
+            this.groupBox7.TabIndex = 18;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "View Data Output";
             // 
             // Wizard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(619, 721);
-            this.Controls.Add(this.wizardControl2);
+            this.Controls.Add(this.baseControl);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(635, 759);
             this.MinimumSize = new System.Drawing.Size(635, 759);
             this.Name = "Wizard";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.Text = "Wizard";
+            this.Text = "K-NN Algorithm Calculator";
+            this.HelpButtonClicked += new System.ComponentModel.CancelEventHandler(this.Wizard_HelpButtonClicked);
             this.descriptionStep1.ResumeLayout(false);
             this.initialDataStep2.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
@@ -637,19 +656,19 @@
             this.groupBox1.ResumeLayout(false);
             this.displayDataStep3.ResumeLayout(false);
             this.displayDataStep3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.errorProviderK)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.errorProviderAttributes)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataSet1)).EndInit();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProviderK)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProviderAttributes)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataSet1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.wizardBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-        private WizardBase.WizardControl wizardControl2;
+        private WizardBase.WizardControl baseControl;
         private WizardBase.StartStep descriptionStep1;
         private WizardBase.IntermediateStep initialDataStep2;
         private WizardBase.IntermediateStep displayDataStep3;
@@ -699,5 +718,7 @@
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.RichTextBox programDescriptionTB;
+        private System.Windows.Forms.HelpProvider helpProvider1;
+        private System.Windows.Forms.GroupBox groupBox7;
     }
 }
