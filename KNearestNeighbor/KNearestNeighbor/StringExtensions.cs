@@ -50,8 +50,6 @@ namespace KNearestNeighbor
             string listItemOrdered = "<ol>";
             string listItemEndOrdered = "</ol>";
 
-            
-
             foreach (string token in tokens)
             {
                 bool isValid = true; //Allows for the first character in the line to be null and assists in handling the beeping problem.
@@ -114,7 +112,7 @@ namespace KNearestNeighbor
                     richTB.SelectedText = token;
             }
 
-            richTB.SelectedText = "\n";
+            //richTB.SelectedText = "\n"; //Generous spacing between elements. (Recommend to remain commented out).
         }
     }   
 }

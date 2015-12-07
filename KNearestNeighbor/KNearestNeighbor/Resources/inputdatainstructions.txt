@@ -1,6 +1,9 @@
 <u>Step 1:</u> Select the training data via the Browse button.
-<u>Step 2:</u> Verify that the number of attributes found are correct.
-<u>Step 3:</u> Verify that the training data has loaded correctly.
-<u>Step 4:</u> Enter in the attributes corresponding to your data point using continuous data.
-<u>Step 5:</u> Enter in a k value (0 < k <= trainingData.Count())
-<u>Step 6:</u> Click the Next button to compute the class of your data point.
+
+<u>Step 2:</u> Verify the number of attributes and training data are correct.
+
+<u>Step 3:</u> Enter your input data (continuous only).
+
+<u>Step 4:</u> Enter in a k value (0 < k <= trainingData.Count())
+
+<u>Step 5:</u> Click the Next button to compute the class of your data point.

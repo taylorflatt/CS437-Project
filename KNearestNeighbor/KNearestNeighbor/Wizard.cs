@@ -399,6 +399,8 @@ namespace KNearestNeighbor
                 //TODO: Investigate the instance in which the doNotNormalizeTrainingData/doNotNormalizeInputData is checked.
                 normalizedInputSet.Clear(); //Remove all members of the input set.
                 normalizedTrainingSet.Clear(); //Remove all members of the training set.
+                plotXComboBox.Items.Clear(); //Remove all of the elements in the dropdown list for the x-coordinate
+                plotYComboBox.Items.Clear(); //Remove all of the elements in the dropdown list for the y-coordinates.
 
                 for (int count = 1; count <= numAttributes; count++)
                 {
@@ -434,7 +436,8 @@ namespace KNearestNeighbor
 
             var listOfDistances = knn.getDistances();
 
-            //Now add the dropdown options.
+            //Now add the dropdown options to the graph section.
+            
 
             foreach (var element in attributeNames)
             {
@@ -464,6 +467,8 @@ namespace KNearestNeighbor
 
                 try
                 {
+                    //Need to clear or else it will loop the text in the box each time a failure occurs.
+                    dataInitializationInstructionsTB.Clear(); 
                     string instructionsDocument = global::KNearestNeighbor.Properties.Resources.inputdatainstructions;
                     string[] lines = instructionsDocument.Split("\r".ToCharArray());
 

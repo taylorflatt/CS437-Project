@@ -176,7 +176,7 @@
             this.groupBox5.Controls.Add(this.dataInitializationInstructionsTB);
             this.groupBox5.Location = new System.Drawing.Point(257, 257);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(348, 175);
+            this.groupBox5.Size = new System.Drawing.Size(348, 194);
             this.groupBox5.TabIndex = 18;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Instructions";
@@ -190,16 +190,16 @@
             this.dataInitializationInstructionsTB.Location = new System.Drawing.Point(9, 19);
             this.dataInitializationInstructionsTB.Name = "dataInitializationInstructionsTB";
             this.dataInitializationInstructionsTB.ReadOnly = true;
-            this.dataInitializationInstructionsTB.Size = new System.Drawing.Size(333, 156);
+            this.dataInitializationInstructionsTB.Size = new System.Drawing.Size(333, 169);
             this.dataInitializationInstructionsTB.TabIndex = 2;
             this.dataInitializationInstructionsTB.Text = "";
             // 
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.dataGridView1);
-            this.groupBox4.Location = new System.Drawing.Point(13, 438);
+            this.groupBox4.Location = new System.Drawing.Point(13, 457);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(592, 239);
+            this.groupBox4.Size = new System.Drawing.Size(592, 220);
             this.groupBox4.TabIndex = 17;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "View Training Data";
@@ -209,7 +209,7 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(6, 19);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(580, 214);
+            this.dataGridView1.Size = new System.Drawing.Size(580, 195);
             this.dataGridView1.TabIndex = 16;
             // 
             // groupBox2
@@ -332,7 +332,7 @@
             this.groupBox1.Controls.Add(this.tableLayoutPanel1);
             this.groupBox1.Location = new System.Drawing.Point(13, 147);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(237, 285);
+            this.groupBox1.Size = new System.Drawing.Size(237, 304);
             this.groupBox1.TabIndex = 13;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Input";
@@ -348,7 +348,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(204, 260);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(217, 279);
             this.tableLayoutPanel1.TabIndex = 16;
             // 
             // displayDataStep3
@@ -499,7 +499,7 @@
             // plotYComboBox
             // 
             this.plotYComboBox.FormattingEnabled = true;
-            this.plotYComboBox.Location = new System.Drawing.Point(235, 17);
+            this.plotYComboBox.Location = new System.Drawing.Point(235, 21);
             this.plotYComboBox.Name = "plotYComboBox";
             this.plotYComboBox.Size = new System.Drawing.Size(121, 21);
             this.plotYComboBox.TabIndex = 3;
@@ -524,7 +524,7 @@
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(7, 20);
+            this.label18.Location = new System.Drawing.Point(7, 22);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(38, 13);
             this.label18.TabIndex = 0;
