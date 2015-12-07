@@ -7,11 +7,11 @@ using System.Windows.Forms;
 using System.IO;
 using NPOI.XSSF.UserModel;
 using NPOI.SS.UserModel;
-using NPOI.SS.Formula.Functions;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Drawing;
 using System.Diagnostics;
-using System.Text.RegularExpressions;
+
+//DON'T FORGET TO CHANGE THE PATHS TO DOCUMENTS AND THE HELP FILE.
 
 namespace KNearestNeighbor
 {
@@ -41,30 +41,72 @@ namespace KNearestNeighbor
 
             //Load the description text into the description step.
             //var fileName = Path.Combine(Directory.GetCurrentDirectory(), "description.txt");
-            string fileName = "description.txt";
+            //string fileName = "description.txt";
+
+            //try
+            //{
+            //    using (FileStream file = new FileStream(Assembly.GetManifestResourceStream("description.txt"), FileMode.Open, FileAccess.Read))
+            //    {
+            //        //programDescriptionTB.LoadFile(fileName, RichTextBoxStreamType.PlainText); //don't need
+
+            //        int orderCount = 0; //Set to zero because in the Regex it adds a whitespace line so it increments falsely by 1.
+            //        foreach (string line in File.ReadLines(fileName))
+            //        {
+            //            StringExtensions.ParseLine(programDescriptionTB, line, orderCount, ref orderCount, 10, "Times New Roman");
+            //            orderCount++;
+            //        }
+            //    }
+            //}
+
+            // try
+            //{
+            //    var assembly = Assembly.GetExecutingAssembly();
+
+            //    //Properties.Resources.description
+
+            //        //global::KNearestNeighbor.Properties.Resources.description;
+
+            //    string[] listOfAssemblies = assembly.GetManifestResourceNames();
+
+            //    using (Stream stream = assembly.GetManifestResourceStream("KNearestNeighbor.description.txt"))
+            //    {
+            //        using (StreamReader reader = new StreamReader(stream))
+            //        {
+            //            //programDescriptionTB.LoadFile(fileName, RichTextBoxStreamType.PlainText); //don't need
+
+            //            int orderCount = 0; //Set to zero because in the Regex it adds a whitespace line so it increments falsely by 1.
+            //            string line = reader.ReadLine();
+
+            //            while (reader.EndOfStream == false)
+            //            {
+            //                StringExtensions.ParseLine(programDescriptionTB, line, orderCount, ref orderCount, 10, "Times New Roman");
+            //                orderCount++;
+            //            }
+            //        }
+            //    }
+            //}
 
             try
             {
-                using (FileStream file = new FileStream(fileName, FileMode.Open, FileAccess.Read))
-                {
-                    //programDescriptionTB.LoadFile(fileName, RichTextBoxStreamType.PlainText); //don't need
+                string descriptionDocument = global::KNearestNeighbor.Properties.Resources.description;
+                string[] lines = descriptionDocument.Split("\r".ToCharArray());
 
-                    int orderCount = 0; //Set to zero because in the Regex it adds a whitespace line so it increments falsely by 1.
-                    foreach (string line in File.ReadLines(fileName))
-                    {
-                        StringExtensions.ParseLine(programDescriptionTB, line, orderCount, ref orderCount, 10, "Times New Roman");
-                        orderCount++;
-                    }
+                int orderCount = 0;
+                for(int index = 0; index < lines.Count(); index++)
+                {
+                    StringExtensions.ParseLine(programDescriptionTB, lines[index], orderCount, ref orderCount, 10, "Times New Roman");
+                    orderCount++;
                 }
             }
-            
-            catch(System.IO.FileNotFoundException error)
+
+            //Maybe display some hard coded instructions so that the program may continue.
+            catch (System.IO.FileNotFoundException error)
             {
                 Console.WriteLine("We could not find the text file to display the instructions for step 1 (description step). ");
                 Console.WriteLine("Packed Message: " + error.Message);
                 Console.WriteLine("Call Stack: " + error.StackTrace);
 
-                DialogResult errorMessage = MessageBox.Show(String.Format("Unfortunately, the {0} file cannot be found. Please check that the file exists and is in the directory of the program. ", fileName),
+                DialogResult errorMessage = MessageBox.Show(String.Format("Unfortunately, the description file cannot be found. Please report this error to the administrator. "),
                     "Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error,
@@ -78,7 +120,6 @@ namespace KNearestNeighbor
             kValueTB.Enabled = false;
             dontNormalizeInputDataCheckBox.Enabled = false;
             dontNormalizeTrainingDataCheckBox.Enabled = false;
-
         }
 
         //After initial validation, it may not be re-validating the form to catch new errors.
@@ -447,19 +488,33 @@ namespace KNearestNeighbor
                 baseControl.NextButtonEnabled = false;
 
                 //Will need to change this path when I throw the program into an exe.
-                string fileName = @"C:\Users\Skittles\Documents\GitHubVisualStudio\KNearestNeighbor\KNearestNeighbor\bin\Debug\inputdatainstructions.txt";
+                //string fileName = @"C:\Users\Skittles\Documents\GitHubVisualStudio\KNearestNeighbor\KNearestNeighbor\bin\Debug\inputdatainstructions.txt";
+
+                //try
+                //{
+                //    using (FileStream file = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+                //    {
+                //        int orderCount = 0; //Set to zero because in the Regex it adds a whitespace line so it increments falsely by 1.
+                //        foreach (string line in File.ReadLines(fileName))
+                //        {
+                //            StringExtensions.ParseLine(dataInitializationInstructionsTB, line, orderCount, ref orderCount, 10, "Times New Roman");
+                //            orderCount++;
+                //        }
+                //    }
+                //}
 
                 try
                 {
-                    using (FileStream file = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+                    string instructionsDocument = global::KNearestNeighbor.Properties.Resources.inputdatainstructions;
+                    string[] lines = instructionsDocument.Split("\r".ToCharArray());
+
+                    int orderCount = 0;
+                    for (int index = 0; index < lines.Count(); index++)
                     {
-                        int orderCount = 0; //Set to zero because in the Regex it adds a whitespace line so it increments falsely by 1.
-                        foreach (string line in File.ReadLines(fileName))
-                        {
-                            StringExtensions.ParseLine(dataInitializationInstructionsTB, line, orderCount, ref orderCount, 10, "Times New Roman");
-                            orderCount++;
-                        }
+                        StringExtensions.ParseLine(dataInitializationInstructionsTB, lines[index], orderCount, ref orderCount, 10, "Times New Roman");
+                        //            orderCount++;
                     }
+
                 }
 
                 catch (System.IO.FileNotFoundException error)
@@ -468,7 +523,7 @@ namespace KNearestNeighbor
                     Console.WriteLine("Packed Message: " + error.Message);
                     Console.WriteLine("Call Stack: " + error.StackTrace);
 
-                    DialogResult errorMessage = MessageBox.Show(String.Format("Unfortunately, the {0} file cannot be found. Please check that the file exists and is in the directory of the program. ", fileName),
+                    DialogResult errorMessage = MessageBox.Show(String.Format("Unfortunately, the instructions file cannot be found. Please report this error to the administrator. "),
                         "Error",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error,
@@ -607,10 +662,42 @@ namespace KNearestNeighbor
 
         private void Wizard_HelpButtonClicked(object sender, EventArgs e)
         {
-            string helpfile = "knnhelp.CHM";
-            System.Windows.Forms.Help.ShowHelpIndex(this, helpfile);
+            //The CHM file will be immediately created upon compile and it will reference it in the created location.
+            try
+            {
+                System.Diagnostics.Process.Start("Resources\\knnHelp.CHM");
+            }
 
-            Help.ShowHelp(this, "helpfile.chm", HelpNavigator.TopicId, "1234");
+            //If the file has been moved, notify the user that we cannot display the help file because it has been moved.
+            catch(System.ComponentModel.Win32Exception error)
+            {
+                Console.WriteLine("We could not find the text file to display the instructions for step 2 (initialize data step). ");
+                Console.WriteLine("Packed Message: " + error.Message);
+                Console.WriteLine("Call Stack: " + error.StackTrace);
+
+                DialogResult errorMessage = MessageBox.Show(String.Format("Unfortunately, the help file cannot be found. Please redownload the program or verify that the help file is in Resources/knnHelp.CHM"),
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error,
+                    MessageBoxDefaultButton.Button1);
+            }
+        }
+
+        private void programDescriptionTB_KeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = true;
+            e.SuppressKeyPress = true;
+        }
+
+        private void programDescriptionTB_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void programDescriptionTB_KeyUp(object sender, KeyEventArgs e)
+        {
+            e.Handled = true;
+            e.SuppressKeyPress = true;
         }
 
         //Threw error. Need to look into this later.

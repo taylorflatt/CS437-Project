@@ -50,8 +50,12 @@ namespace KNearestNeighbor
             string listItemOrdered = "<ol>";
             string listItemEndOrdered = "</ol>";
 
+            
+
             foreach (string token in tokens)
             {
+                bool isValid = true; //Allows for the first character in the line to be null and assists in handling the beeping problem.
+
                 if (bold == token)
                     richTB.SelectionFont = new Font(fontType, fontSize, FontStyle.Bold);
 
@@ -64,10 +68,10 @@ namespace KNearestNeighbor
                 else if (endItalics == token)
                     richTB.SelectionFont = defaultFont;
 
-                else if(underline == token)
+                else if (underline == token)
                     richTB.SelectionFont = new Font(fontType, fontSize, FontStyle.Underline);
 
-                else if(endUnderline == token)
+                else if (endUnderline == token)
                     richTB.SelectionFont = defaultFont;
 
                 else if (h2Start == token)
@@ -102,7 +106,11 @@ namespace KNearestNeighbor
                 else if (constructingOrderedList == true && listItemOrdered != token)
                     richTB.SelectedText = orderCount + ") " + token;
 
-                else
+                //This statement is required else there will be a beep sound heard each time an empty value is added to the textbox.
+                else if (token.Equals(""))
+                    isValid = false;
+
+                else if(isValid == true)
                     richTB.SelectedText = token;
             }
 

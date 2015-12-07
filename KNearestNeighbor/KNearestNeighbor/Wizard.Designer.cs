@@ -101,7 +101,7 @@
             // 
             // baseControl
             // 
-            this.baseControl.BackButtonEnabled = true;
+            this.baseControl.BackButtonEnabled = false;
             this.baseControl.BackButtonVisible = true;
             this.baseControl.CancelButtonEnabled = false;
             this.baseControl.CancelButtonVisible = false;
@@ -140,6 +140,7 @@
             this.programDescriptionTB.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.programDescriptionTB.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.programDescriptionTB.BulletIndent = 30;
+            this.programDescriptionTB.CausesValidation = false;
             this.programDescriptionTB.Cursor = System.Windows.Forms.Cursors.Default;
             this.programDescriptionTB.Location = new System.Drawing.Point(173, 59);
             this.programDescriptionTB.Name = "programDescriptionTB";
@@ -148,6 +149,9 @@
             this.programDescriptionTB.TabIndex = 0;
             this.programDescriptionTB.Text = "";
             this.programDescriptionTB.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.programDescriptionTB_LinkClicked);
+            this.programDescriptionTB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.programDescriptionTB_KeyDown);
+            this.programDescriptionTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.programDescriptionTB_KeyPress);
+            this.programDescriptionTB.KeyUp += new System.Windows.Forms.KeyEventHandler(this.programDescriptionTB_KeyUp);
             // 
             // initialDataStep2
             // 

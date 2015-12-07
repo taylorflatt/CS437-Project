@@ -61,6 +61,34 @@ namespace KNearestNeighbor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;li&gt;
+        ///&lt;ol&gt;text1&lt;/ol&gt;
+        ///&lt;ol&gt;text2&lt;/ol&gt;
+        ///&lt;/li&gt;
+        ///
+        ///&lt;li&gt;
+        ///&lt;ol&gt;text3&lt;/ol&gt;
+        ///&lt;ol&gt;text4&lt;/ol&gt;
+        ///&lt;/li&gt;
+        ///
+        ///&lt;strong&gt;this is some text here&lt;/strong&gt;
+        ///&lt;em&gt;this is some italic text&lt;/em&gt;
+        ///&lt;li&gt;
+        ///&lt;ul&gt;text1&lt;/ul&gt;
+        ///&lt;ul&gt;text2&lt;/ul&gt;
+        ///&lt;/li&gt;
+        ///
+        ///This is some text describing what the KNN algorithm is all about. It is also here to see if we will run off the side of the program or will we wrap around?
+        ///
+        ///&lt;h2&gt;Here is some&lt;/h2&gt;.
+        /// </summary>
+        internal static string description {
+            get {
+                return ResourceManager.GetString("description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap descriptionLeftPanelText {
@@ -77,6 +105,30 @@ namespace KNearestNeighbor.Properties {
             get {
                 object obj = ResourceManager.GetObject("descriptionLeftPanelText1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;u&gt;Step 1:&lt;/u&gt; Select the training data via the Browse button.
+        ///&lt;u&gt;Step 2:&lt;/u&gt; Verify that the number of attributes found are correct.
+        ///&lt;u&gt;Step 3:&lt;/u&gt; Verify that the training data has loaded correctly.
+        ///&lt;u&gt;Step 4:&lt;/u&gt; Enter in the attributes corresponding to your data point using continuous data.
+        ///&lt;u&gt;Step 5:&lt;/u&gt; Enter in a k value (0 &lt; k &lt;= trainingData.Count())
+        ///&lt;u&gt;Step 6:&lt;/u&gt; Click the Next button to compute the class of your data point..
+        /// </summary>
+        internal static string inputdatainstructions {
+            get {
+                return ResourceManager.GetString("inputdatainstructions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] knnHelp {
+            get {
+                object obj = ResourceManager.GetObject("knnHelp", resourceCulture);
+                return ((byte[])(obj));
             }
         }
     }
