@@ -78,8 +78,8 @@
             this.errorProviderAttributes = new System.Windows.Forms.ErrorProvider(this.components);
             this.dataSet1 = new System.Data.DataSet();
             this.helpProvider1 = new System.Windows.Forms.HelpProvider();
-            this.wizardBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.errorProviderPlot = new System.Windows.Forms.ErrorProvider(this.components);
+            this.wizardBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.descriptionStep1.SuspendLayout();
             this.initialDataStep2.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -95,16 +95,17 @@
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderK)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderAttributes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataSet1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.wizardBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderPlot)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.wizardBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // baseControl
             // 
-            this.baseControl.BackButtonEnabled = false;
+            this.baseControl.BackButtonEnabled = true;
             this.baseControl.BackButtonVisible = true;
             this.baseControl.CancelButtonEnabled = false;
             this.baseControl.CancelButtonVisible = false;
+            this.baseControl.CausesValidation = false;
             this.baseControl.EulaButtonEnabled = false;
             this.baseControl.EulaButtonText = "eula";
             this.baseControl.EulaButtonVisible = false;
@@ -120,8 +121,10 @@
             this.initialDataStep2,
             this.displayDataStep3,
             this.finishStep});
+            this.baseControl.BackButtonClick += new System.ComponentModel.CancelEventHandler(this.baseControl_BackButtonClick);
             this.baseControl.CurrentStepIndexChanged += new System.EventHandler(this.wizardControl2_CurrentStepIndexChanged);
             this.baseControl.HelpButtonClick += new System.EventHandler(this.Wizard_HelpButtonClicked);
+            this.baseControl.NextButtonClick += new WizardBase.GenericCancelEventHandler<WizardBase.WizardControl>(this.baseControl_NextButtonClick);
             // 
             // descriptionStep1
             // 
@@ -565,18 +568,19 @@
             // 
             this.dataSet1.DataSetName = "NewDataSet";
             // 
-            // wizardBindingSource
-            // 
-            this.wizardBindingSource.DataSource = typeof(KNearestNeighbor.Wizard);
-            // 
             // errorProviderPlot
             // 
             this.errorProviderPlot.ContainerControl = this;
+            // 
+            // wizardBindingSource
+            // 
+            this.wizardBindingSource.DataSource = typeof(KNearestNeighbor.Wizard);
             // 
             // Wizard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CausesValidation = false;
             this.ClientSize = new System.Drawing.Size(619, 721);
             this.Controls.Add(this.baseControl);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -608,8 +612,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderK)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderAttributes)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataSet1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.wizardBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderPlot)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.wizardBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }

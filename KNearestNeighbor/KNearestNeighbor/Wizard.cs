@@ -38,6 +38,7 @@ namespace KNearestNeighbor
         public Wizard()
         {
             InitializeComponent();
+            this.AutoValidate = AutoValidate.Disable; //Don't let the form validate anything.
 
             //Load the description text into the description step.
             //var fileName = Path.Combine(Directory.GetCurrentDirectory(), "description.txt");
@@ -131,8 +132,8 @@ namespace KNearestNeighbor
                 DialogResult result = openFileDialog1.ShowDialog();
 
                 //If they cancel out of the dialog (not selecting a file).
-                //if (result == DialogResult.Cancel || result == DialogResult.Abort)
-                //    initialDataStep2.CausesValidation = false;
+                if (result == DialogResult.Cancel || result == DialogResult.Abort)
+                    initialDataStep2.CausesValidation = false;
 
                 //They have chosen a file.
                 if (result == DialogResult.OK)
@@ -410,8 +411,14 @@ namespace KNearestNeighbor
             
             if(valid == false)
             {
+                //Setting it to currentStep - 1 because after this method call the step will be incremented. (Out of my control).
+                baseControl.CurrentStepIndex = 0;
                 e.Cancel = true;
             }
+
+            //Now that the data is true, let's make an explicit call to the validation method for Step2.
+            else if(valid == true)
+                initialDataStep2_Validated(sender, e);
         }
 
         //Allow me to close the program without having to first fix the errors.
@@ -466,6 +473,8 @@ namespace KNearestNeighbor
             closestCompetitorClass.Text = Convert.ToString(inputClass);
             closestCompetitorName.Text = outputClassNames.ElementAt(inputClass);
 
+            var listOfDistances = knn.getDistances();
+
             //Now add the dropdown options.
 
             foreach (var element in attributeNames)
@@ -484,24 +493,15 @@ namespace KNearestNeighbor
 
             //Data initialize step.
             if (baseControl.CurrentStepIndex == 1)
-            {
-                baseControl.NextButtonEnabled = false;
+            { 
+                //If they haven't chosen a file yet (the label hasn't been changed), don't let them proceed to the next step.
+                if (fileLocationLabel.Text.Equals("N/A"))
+                    baseControl.NextButtonEnabled = false;
 
-                //Will need to change this path when I throw the program into an exe.
-                //string fileName = @"C:\Users\Skittles\Documents\GitHubVisualStudio\KNearestNeighbor\KNearestNeighbor\bin\Debug\inputdatainstructions.txt";
-
-                //try
-                //{
-                //    using (FileStream file = new FileStream(fileName, FileMode.Open, FileAccess.Read))
-                //    {
-                //        int orderCount = 0; //Set to zero because in the Regex it adds a whitespace line so it increments falsely by 1.
-                //        foreach (string line in File.ReadLines(fileName))
-                //        {
-                //            StringExtensions.ParseLine(dataInitializationInstructionsTB, line, orderCount, ref orderCount, 10, "Times New Roman");
-                //            orderCount++;
-                //        }
-                //    }
-                //}
+                //If they entered a file, then clicked "back" and then came back to this step, then let them go to the next 
+                //step since they have already entered a file if the file name field has already been populated.
+                else
+                    baseControl.NextButtonEnabled = true;
 
                 try
                 {
@@ -540,7 +540,30 @@ namespace KNearestNeighbor
             {
                 baseControl.BackButtonEnabled = false;
 
-                chart1.Legends.Add("Legend");
+                //Make sure the legend doesn't already exist.
+                if(chart1.Legends.Count < 1)
+                    chart1.Legends.Add("Legend");
+
+                //Remove all generated information from the chart if any exist.
+                chart1.Series.Clear();
+
+                //try
+                //{
+                //    chart1.Legends.Add("Legend");
+                //}
+
+                //catch(System.ArgumentException error)
+                //{
+                //    Console.WriteLine("The back button was pressed but the legend for the chart was already added. ");
+                //    Console.WriteLine("Packed Message: " + error.Message);
+                //    Console.WriteLine("Call Stack: " + error.StackTrace);
+
+                //    DialogResult errorMessage = MessageBox.Show(String.Format("Unfortunately, the instructions file cannot be found. Please report this error to the administrator. "),
+                //        "Error",
+                //        MessageBoxButtons.OK,
+                //        MessageBoxIcon.Error,
+                //        MessageBoxDefaultButton.Button1);
+                //}
 
                 Random randomGen = new Random();
 
@@ -566,6 +589,9 @@ namespace KNearestNeighbor
 
                 int count = 0;
                 int temp312 = outputClass.Distinct().Count();
+
+                
+
                 while (count < outputClass.Distinct().Count())
                 {
                     chart1.Series.Add("Class " + count);
@@ -647,7 +673,7 @@ namespace KNearestNeighbor
 
                     //Just for the case in which x-coord: Attribute1 and y-coord: Attribute2
 
-                    Plot.PlotPoints(chart1, xCoord, yCoord, normalizedTrainingSet, normalizedInputSet, inputClass, outputClass, outputClassNames);
+                    Plot.PlotPoints(chart1, xCoord, yCoord, normalizedTrainingSet, normalizedInputSet, inputClass, outputClass, outputClassNames, attributeNames);
 
                     chart1.Show();
                 }                 
@@ -700,6 +726,47 @@ namespace KNearestNeighbor
             e.SuppressKeyPress = true;
         }
 
+        //We don't want to run any validation when we click the back button. We don't need to.
+        private void baseControl_BackButtonClick(object sender, CancelEventArgs e)
+        {
+            descriptionStep1.CausesValidation = false;
+            initialDataStep2.CausesValidation = false;
+            displayDataStep3.CausesValidation = false;
+        }
+
+        private void baseControl_NextButtonClick(object sender, CancelEventArgs e)
+        {
+            //var nextStep = this.initialDataStep2.Name; //This is the step you expect to be on after hitting the "next" button.
+
+            // currentStep = 0: descriptionStep1
+            // currentStep = 1: initialDataStep2
+            // currentStep = 2: displayDataStep3
+            // ...
+            // This will get the current index. Since I know which step is at which index, I can just compare the numbers.
+            var currentStep = this.baseControl.CurrentStepIndex; 
+
+            // Enable validation for the InitialDataStep2 if I am coming FROM descriptionStep1.
+            if (currentStep == 0)
+                initialDataStep2.CausesValidation = true;
+
+            //Force validation to occur on the InitialDataStep2 if trying to go TO DataDisplayStep.
+            //The case we are accounting for here is when I go from Step 1 to Step 2 (load a file), then back to Step 1 and then attempt 
+            //to go onto Step 3 without adding anymore information. We need to validate the data and tell the user there is an error.
+            if (currentStep == 1)
+            {
+                CancelEventArgs temp = new CancelEventArgs(); //Won't need/use.
+                this.initialDataStep2_Validating(sender, temp);
+                
+                
+                
+
+                var tempasfas = baseControl.CurrentStepIndex;
+
+                displayDataStep3.CausesValidation = true;
+            }
+        }
+
+        #region drawPoints
         //Threw error. Need to look into this later.
         //private void chart1_PostPaint(object sender, ChartPaintEventArgs e)
         //{
@@ -801,5 +868,6 @@ namespace KNearestNeighbor
         //        Console.WriteLine("Call Stack: " + error.StackTrace);
         //    }
         //}
+        #endregion 
     }
 }

@@ -157,8 +157,7 @@
     <Compile Include="CustomException.cs" />
     <Compile Include="DataValidation.cs" />
     <Compile Include="ErrorProviderExtensions.cs" />
-    <Compile Include="EuclideanDistance.cs" />
-    <Compile Include="HelperFunctions.cs" />
+    <Compile Include="MathFunctions.cs" />
     <Compile Include="HelpForm.cs">
       <SubType>Form</SubType>
     </Compile>

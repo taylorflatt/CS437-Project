@@ -9,7 +9,7 @@ namespace KNearestNeighbor
     {
         //data must be normalized prior to plotting (assumes normalized dataset).
         public static void PlotPoints(Chart chart, int xCoordChoice, int yCoordChoice, List<List<double>> normalizedTrainingSet, 
-            List<double> normalizedInputSet, int inputClass, List<int> outputClass, List<string> outputClassName)
+            List<double> normalizedInputSet, int inputClass, List<int> outputClass, List<string> outputClassName, List<string> attributeNames)
         {
             //I want to go trainingRow by trainingRow and plot the appropriate set of coordinates grabbing the correct outputClass to 
             //categorize it correctly (aka add it to the correct series).
@@ -27,6 +27,11 @@ namespace KNearestNeighbor
                 {
                     string xInputCoord = StringExtensions.Truncate(Convert.ToString(chart.Series[trainingSetClass].Points[point].XValue), 4);
                     string yInputCoord = StringExtensions.Truncate(Convert.ToString(chart.Series[trainingSetClass].Points[point].YValues[0]), 4);
+
+                    //Label the axis with the appropriate attribute names.
+                    chart.ChartAreas[trainingSetClass].AxisX.Title = attributeNames[xCoordChoice];
+                    chart.ChartAreas[trainingSetClass].AxisY.Title = attributeNames[yCoordChoice];
+
 
                     chart.Series[trainingSetClass].Points[point].ToolTip = string.Format("Coordinate: ({0},{1}) " + "\n"
                     + "Class: {2}", xInputCoord, yInputCoord, className);
