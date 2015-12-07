@@ -14,15 +14,15 @@ namespace KNearestNeighbor
             return value.Length <= maxLength ? value : value.Substring(0, maxLength);
         }
 
-        public static void ParseLine(RichTextBox richTB, string line, int orderCount, ref int newCount)
+        public static void ParseLine(RichTextBox richTB, string line, int orderCount, ref int newCount, int fontSize, string fontType)
         {
-            Regex r = new Regex("(\\<strong\\>)|(\\<\\/strong\\>)|(\\<em\\>)|(\\<\\/em\\>)|(\\<li\\>)|(\\<\\/li\\>)|(\\<ul\\>)|(\\<\\/ul\\>)|(\\<ol\\>)|(\\<\\/ol\\>)|(\\<h2\\>)|(\\<\\/h2\\>)");
+            Regex r = new Regex("(\\<strong\\>)|(\\<\\/strong\\>)|(\\<em\\>)|(\\<\\/em\\>)|(\\<li\\>)|(\\<\\/li\\>)|(\\<ul\\>)|(\\<\\/ul\\>)|(\\<ol\\>)|(\\<\\/ol\\>)|(\\<h2\\>)|(\\<\\/h2\\>)|(\\<u\\>)|(\\<\\/u\\>)");
             string[] tokens = r.Split(line);
 
             // Set the tokens default color and font. 
             richTB.SelectionColor = Color.Black;
 
-            Font defaultFont = new Font("Courier New", 10, FontStyle.Regular);
+            Font defaultFont = new Font(fontType, fontSize, FontStyle.Regular);
             richTB.SelectionFont = defaultFont;
 
             bool constructingUnrderedList = false;
@@ -34,6 +34,9 @@ namespace KNearestNeighbor
 
             string italics = "<em>";
             string endItalics = "</em>";
+
+            string underline = "<u>";
+            string endUnderline = "</u>";
 
             string h2Start = "<h2>";
             string h2End = "</h2>";
@@ -50,19 +53,25 @@ namespace KNearestNeighbor
             foreach (string token in tokens)
             {
                 if (bold == token)
-                    richTB.SelectionFont = new Font("Courier New", 10, FontStyle.Bold);
+                    richTB.SelectionFont = new Font(fontType, fontSize, FontStyle.Bold);
 
                 else if (endBold == token)
                     richTB.SelectionFont = defaultFont;
 
                 else if (italics == token)
-                    richTB.SelectionFont = new Font("Courier New", 10, FontStyle.Italic);
+                    richTB.SelectionFont = new Font(fontType, fontSize, FontStyle.Italic);
 
                 else if (endItalics == token)
                     richTB.SelectionFont = defaultFont;
 
+                else if(underline == token)
+                    richTB.SelectionFont = new Font(fontType, fontSize, FontStyle.Underline);
+
+                else if(endUnderline == token)
+                    richTB.SelectionFont = defaultFont;
+
                 else if (h2Start == token)
-                    richTB.SelectionFont = new Font("Courier New", 24, FontStyle.Regular);
+                    richTB.SelectionFont = new Font(fontType, 24, FontStyle.Regular);
 
                 else if (h2End == token)
                     richTB.SelectionFont = defaultFont;

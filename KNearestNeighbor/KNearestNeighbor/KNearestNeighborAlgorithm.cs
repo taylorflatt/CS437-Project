@@ -131,13 +131,9 @@ namespace KNearestNeighbor
 
             int[] nearestIndices = Matrix.Indices(0, normalizedTrainingSet.Count);
 
-            List<int> tempArray = new List<int>(nearestIndices);
-
-            tempArray.Sort();
+            Array.Sort(distances.ToArray(), nearestIndices);
 
             double[] scores = new double[classCount];
-
-            var temklsafk = k;
 
             for (int i = 0; i < k; i++)
             {
@@ -158,32 +154,31 @@ namespace KNearestNeighbor
         }
 
         //Returns the index of the nearest competitor.
-        public int FindNearestCompetitor(List<double> input, int attribute1, int attribute2)
+        public int FindNearestCompetitor(List<double> normalizedInput, List<List<double>> normalizedTrainingSet, int attribute1, int attribute2)
         {
             List<double> tempInputList = new List<double>();
-            List<double> tempTrainingList = new List<double>();
+            
+
+            tempInputList.Add(normalizedInput[attribute1]);
+            tempInputList.Add(normalizedInput[attribute2]);
 
             for (int index = 0; index < trainingData.Count; index++)
             {
-                tempInputList.Add(input[attribute1]);
-                tempInputList.Add(input[attribute2]);
-
-                //tempTrainingList.Add( new List<double> {trainingData[index][attribute1]});
-                //tempTrainingList.Add( new List<double> {trainingData[index][attribute2]});
-
-                tempTrainingList.Add(trainingData[index][attribute1]);
-                tempTrainingList.Add(trainingData[index][attribute2]);
+                List<double> tempTrainingList = new List<double>();
+                tempTrainingList.Add(normalizedTrainingSet[index][attribute1]);
+                tempTrainingList.Add(normalizedTrainingSet[index][attribute2]);
 
                 double distance = EuclideanDistance.Euclidean(tempInputList, tempTrainingList);
 
                 distances[index] = distance;
+
+                tempTrainingList.Remove(0);
+                tempTrainingList.Remove(1);
             }
 
-            int[] nearestIndices = Matrix.Indices(0, trainingData.Count);
+            int[] nearestIndices = Matrix.Indices(0, normalizedTrainingSet.Count);
 
-            List<int> tempArray = new List<int>(nearestIndices);
-
-            tempArray.Sort();
+            Array.Sort(distances.ToArray(), nearestIndices);
 
             double[] scores = new double[classCount];
 
@@ -204,9 +199,7 @@ namespace KNearestNeighbor
 
             int closestCompetitorIndex = scores.IndexOf(scores.Max());
 
-            
-
-            return outputs.ElementAt(closestCompetitorIndex); ;
+            return closestCompetitorIndex; 
         }
     }
 }

@@ -37,18 +37,7 @@
             this.programDescriptionTB = new System.Windows.Forms.RichTextBox();
             this.initialDataStep2 = new WizardBase.IntermediateStep();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.dataInitializationInstructionsTB = new System.Windows.Forms.RichTextBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -71,6 +60,8 @@
             this.label20 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.closestCompetitorSpecificLabel = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
             this.plotButton = new System.Windows.Forms.Button();
             this.label15 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
@@ -88,6 +79,7 @@
             this.dataSet1 = new System.Data.DataSet();
             this.helpProvider1 = new System.Windows.Forms.HelpProvider();
             this.wizardBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.errorProviderPlot = new System.Windows.Forms.ErrorProvider(this.components);
             this.descriptionStep1.SuspendLayout();
             this.initialDataStep2.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -104,6 +96,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderAttributes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataSet1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.wizardBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProviderPlot)).BeginInit();
             this.SuspendLayout();
             // 
             // baseControl
@@ -133,11 +126,14 @@
             // descriptionStep1
             // 
             this.descriptionStep1.BindingImage = ((System.Drawing.Image)(resources.GetObject("descriptionStep1.BindingImage")));
+            this.descriptionStep1.CausesValidation = false;
             this.descriptionStep1.Controls.Add(this.programDescriptionTB);
-            this.descriptionStep1.Icon = ((System.Drawing.Image)(resources.GetObject("descriptionStep1.Icon")));
+            this.descriptionStep1.Icon = null;
+            this.errorProviderAttributes.SetIconAlignment(this.descriptionStep1, System.Windows.Forms.ErrorIconAlignment.MiddleLeft);
             this.descriptionStep1.Name = "descriptionStep1";
             this.descriptionStep1.Subtitle = "The non parametric lazy learning algorithm.";
-            this.descriptionStep1.Title = "Determine your nearest competitor";
+            this.descriptionStep1.SubtitleAppearence = ((WizardBase.TextAppearence)(resources.GetObject("descriptionStep1.SubtitleAppearence")));
+            this.descriptionStep1.Title = "Welcome to the KNN Calculator";
             // 
             // programDescriptionTB
             // 
@@ -170,18 +166,7 @@
             // 
             // groupBox5
             // 
-            this.groupBox5.Controls.Add(this.label12);
-            this.groupBox5.Controls.Add(this.label11);
-            this.groupBox5.Controls.Add(this.label10);
-            this.groupBox5.Controls.Add(this.label9);
-            this.groupBox5.Controls.Add(this.label7);
-            this.groupBox5.Controls.Add(this.label8);
-            this.groupBox5.Controls.Add(this.label6);
-            this.groupBox5.Controls.Add(this.label5);
-            this.groupBox5.Controls.Add(this.label3);
-            this.groupBox5.Controls.Add(this.label4);
-            this.groupBox5.Controls.Add(this.label2);
-            this.groupBox5.Controls.Add(this.label1);
+            this.groupBox5.Controls.Add(this.dataInitializationInstructionsTB);
             this.groupBox5.Location = new System.Drawing.Point(257, 257);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(348, 175);
@@ -189,119 +174,18 @@
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Instructions";
             // 
-            // label12
+            // dataInitializationInstructionsTB
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(53, 147);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(217, 13);
-            this.label12.TabIndex = 11;
-            this.label12.Text = "Click next to compute the KNN of your input.";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(6, 147);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(41, 13);
-            this.label11.TabIndex = 10;
-            this.label11.Text = "Step 6:";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(53, 127);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(274, 13);
-            this.label10.TabIndex = 9;
-            this.label10.Text = "Enter in a valid k-value (0 < k < # of training data points).";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(6, 127);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(41, 13);
-            this.label9.TabIndex = 8;
-            this.label9.Text = "Step 5:";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(53, 98);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(281, 26);
-            this.label7.TabIndex = 7;
-            this.label7.Text = "Enter in the attributes for your data point using continuous \r\ndata.\r\n";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(6, 98);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(41, 13);
-            this.label8.TabIndex = 6;
-            this.label8.Text = "Step 4:";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(53, 75);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(244, 13);
-            this.label6.TabIndex = 5;
-            this.label6.Text = "Verify that the training data appears correct below.\r\n";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(6, 75);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(41, 13);
-            this.label5.TabIndex = 4;
-            this.label5.Text = "Step 3:";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(53, 39);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(281, 26);
-            this.label3.TabIndex = 3;
-            this.label3.Text = "Verify the number of attributes in the training data appears \r\ncorrect.\r\n";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(6, 39);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(41, 13);
-            this.label4.TabIndex = 2;
-            this.label4.Text = "Step 2:";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(53, 16);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(230, 13);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Select the training data from an excel file (.xlsx).";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(6, 16);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(41, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Step 1:";
+            this.dataInitializationInstructionsTB.BackColor = System.Drawing.SystemColors.Control;
+            this.dataInitializationInstructionsTB.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dataInitializationInstructionsTB.BulletIndent = 30;
+            this.dataInitializationInstructionsTB.Cursor = System.Windows.Forms.Cursors.Default;
+            this.dataInitializationInstructionsTB.Location = new System.Drawing.Point(9, 19);
+            this.dataInitializationInstructionsTB.Name = "dataInitializationInstructionsTB";
+            this.dataInitializationInstructionsTB.ReadOnly = true;
+            this.dataInitializationInstructionsTB.Size = new System.Drawing.Size(333, 156);
+            this.dataInitializationInstructionsTB.TabIndex = 2;
+            this.dataInitializationInstructionsTB.Text = "";
             // 
             // groupBox4
             // 
@@ -504,7 +388,7 @@
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(10, 54);
+            this.label20.Location = new System.Drawing.Point(7, 54);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(128, 13);
             this.label20.TabIndex = 1;
@@ -521,6 +405,8 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.closestCompetitorSpecificLabel);
+            this.groupBox6.Controls.Add(this.label21);
             this.groupBox6.Controls.Add(this.plotButton);
             this.groupBox6.Controls.Add(this.label15);
             this.groupBox6.Controls.Add(this.label16);
@@ -535,6 +421,24 @@
             this.groupBox6.TabIndex = 14;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Graph";
+            // 
+            // closestCompetitorSpecificLabel
+            // 
+            this.closestCompetitorSpecificLabel.AutoSize = true;
+            this.closestCompetitorSpecificLabel.Location = new System.Drawing.Point(568, 21);
+            this.closestCompetitorSpecificLabel.Name = "closestCompetitorSpecificLabel";
+            this.closestCompetitorSpecificLabel.Size = new System.Drawing.Size(27, 13);
+            this.closestCompetitorSpecificLabel.TabIndex = 16;
+            this.closestCompetitorSpecificLabel.Text = "N/A";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(464, 20);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(97, 13);
+            this.label21.TabIndex = 15;
+            this.label21.Text = "Closest Competitor:";
             // 
             // plotButton
             // 
@@ -588,12 +492,6 @@
             // plotYComboBox
             // 
             this.plotYComboBox.FormattingEnabled = true;
-            this.plotYComboBox.Items.AddRange(new object[] {
-            "Attribute1",
-            "Attribute2",
-            "Attribute3",
-            "Attribute4",
-            "Attribute5"});
             this.plotYComboBox.Location = new System.Drawing.Point(235, 17);
             this.plotYComboBox.Name = "plotYComboBox";
             this.plotYComboBox.Size = new System.Drawing.Size(121, 21);
@@ -602,12 +500,6 @@
             // plotXComboBox
             // 
             this.plotXComboBox.FormattingEnabled = true;
-            this.plotXComboBox.Items.AddRange(new object[] {
-            "Attribute1",
-            "Attribute2",
-            "Attribute3",
-            "Attribute4",
-            "Attribute5"});
             this.plotXComboBox.Location = new System.Drawing.Point(52, 20);
             this.plotXComboBox.Name = "plotXComboBox";
             this.plotXComboBox.Size = new System.Drawing.Size(121, 21);
@@ -673,6 +565,10 @@
             // 
             this.wizardBindingSource.DataSource = typeof(KNearestNeighbor.Wizard);
             // 
+            // errorProviderPlot
+            // 
+            this.errorProviderPlot.ContainerControl = this;
+            // 
             // Wizard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -691,7 +587,6 @@
             this.descriptionStep1.ResumeLayout(false);
             this.initialDataStep2.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.groupBox2.ResumeLayout(false);
@@ -710,13 +605,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderAttributes)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataSet1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.wizardBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProviderPlot)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
         private WizardBase.WizardControl baseControl;
-        private WizardBase.StartStep descriptionStep1;
         private WizardBase.IntermediateStep initialDataStep2;
         private WizardBase.IntermediateStep displayDataStep3;
         private WizardBase.FinishStep finishStep;
@@ -739,18 +634,6 @@
         private System.Windows.Forms.ErrorProvider errorProviderK;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.ErrorProvider errorProviderAttributes;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label13;
         private System.Data.DataSet dataSet1;
@@ -771,5 +654,10 @@
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Label closestCompetitorName;
         private System.Windows.Forms.Label closestCompetitorClass;
+        private System.Windows.Forms.Label closestCompetitorSpecificLabel;
+        private System.Windows.Forms.Label label21;
+        protected internal WizardBase.StartStep descriptionStep1;
+        private System.Windows.Forms.RichTextBox dataInitializationInstructionsTB;
+        private System.Windows.Forms.ErrorProvider errorProviderPlot;
     }
 }

@@ -180,6 +180,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="descriptionLeftPanelText.png" />
     <None Include="packages.config" />
     <None Include="Properties\DataSources\KNearestNeighborTest.datasource" />
     <None Include="Properties\DataSources\Wizard.datasource" />

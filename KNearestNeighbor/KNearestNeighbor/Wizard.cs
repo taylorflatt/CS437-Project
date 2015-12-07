@@ -15,6 +15,7 @@ using System.Text.RegularExpressions;
 
 namespace KNearestNeighbor
 {
+    [Serializable()]
     public partial class Wizard : Form
     {
         protected int k;
@@ -51,7 +52,7 @@ namespace KNearestNeighbor
                     int orderCount = 0; //Set to zero because in the Regex it adds a whitespace line so it increments falsely by 1.
                     foreach (string line in File.ReadLines(fileName))
                     {
-                        StringExtensions.ParseLine(programDescriptionTB, line, orderCount, ref orderCount);
+                        StringExtensions.ParseLine(programDescriptionTB, line, orderCount, ref orderCount, 10, "Times New Roman");
                         orderCount++;
                     }
                 }
@@ -222,9 +223,7 @@ namespace KNearestNeighbor
                 for (int j = row.FirstCellNum; j < cellCount; j++)
                 {
                     if (row.GetCell(j) != null)
-                    {
                         dataRow[j] = row.GetCell(j).ToString();
-                    }
                 }
 
                 table.Rows.Add(dataRow);
@@ -279,8 +278,8 @@ namespace KNearestNeighbor
         private void initialDataStep2_Validating(object sender, CancelEventArgs e)
         {
             //THESE TWO LINES ARE REQUIRED OR THE VALIDATION WON'T WORK PROPERLY.
-            DataValidation.removeErrors(errorProviderAttributes); //Zero out the errors.
-            DataValidation.removeErrors(errorProviderK); //Zero out the errors.
+            DataValidation.RemoveProviderErrors(errorProviderAttributes); //Zero out the errors.
+            DataValidation.RemoveProviderErrors(errorProviderK); //Zero out the errors.
 
             int numAttributes = attributeNames.Count;
             bool valid = true; //Assume the data is valid unless we find something invalid.
@@ -417,17 +416,22 @@ namespace KNearestNeighbor
             else
                 normalizedTrainingSet = trainingSet;
 
+            string kValue = kValueTB.Text;
             //initialize our KNN object.
-            knn = new KNearestNeighborAlgorithm(k, trainingData: trainingSet, outputs: outputClass); //initialize our algorithm with inputs
+            knn = new KNearestNeighborAlgorithm(Convert.ToInt32(kValueTB.Text), trainingData: trainingSet, outputs: outputClass); //initialize our algorithm with inputs
 
             inputClass = knn.Compute(normalizedInputSet, normalizedTrainingSet);
 
             closestCompetitorClass.Text = Convert.ToString(inputClass);
             closestCompetitorName.Text = outputClassNames.ElementAt(inputClass);
 
-            //Not getting the correct result yet.
-            //int indexOfClosestCompetitor = knn.FindNearestCompetitor(inputSet, 0, 1);
-            //var closestCompetitorData = trainingSet[indexOfClosestCompetitor];
+            //Now add the dropdown options.
+
+            foreach (var element in attributeNames)
+            {
+                plotXComboBox.Items.Add(element);
+                plotYComboBox.Items.Add(element);
+            }
         }
 
         //Custom code for individual steps.
@@ -439,7 +443,42 @@ namespace KNearestNeighbor
 
             //Data initialize step.
             if (baseControl.CurrentStepIndex == 1)
+            {
                 baseControl.NextButtonEnabled = false;
+
+                //Will need to change this path when I throw the program into an exe.
+                string fileName = @"C:\Users\Skittles\Documents\GitHubVisualStudio\KNearestNeighbor\KNearestNeighbor\bin\Debug\inputdatainstructions.txt";
+
+                try
+                {
+                    using (FileStream file = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+                    {
+                        int orderCount = 0; //Set to zero because in the Regex it adds a whitespace line so it increments falsely by 1.
+                        foreach (string line in File.ReadLines(fileName))
+                        {
+                            StringExtensions.ParseLine(dataInitializationInstructionsTB, line, orderCount, ref orderCount, 10, "Times New Roman");
+                            orderCount++;
+                        }
+                    }
+                }
+
+                catch (System.IO.FileNotFoundException error)
+                {
+                    Console.WriteLine("We could not find the text file to display the instructions for step 2 (initialize data step). ");
+                    Console.WriteLine("Packed Message: " + error.Message);
+                    Console.WriteLine("Call Stack: " + error.StackTrace);
+
+                    DialogResult errorMessage = MessageBox.Show(String.Format("Unfortunately, the {0} file cannot be found. Please check that the file exists and is in the directory of the program. ", fileName),
+                        "Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error,
+                        MessageBoxDefaultButton.Button1);
+
+                    if (errorMessage == DialogResult.OK)
+                        Environment.Exit(1);
+                }
+            }
+                
 
             //Data display step.
             else if (baseControl.CurrentStepIndex == 2)
@@ -475,6 +514,7 @@ namespace KNearestNeighbor
                 while (count < outputClass.Distinct().Count())
                 {
                     chart1.Series.Add("Class " + count);
+                    chart1.Series[count].LegendText = outputClassNames[count];
                     chart1.Series[count].ChartType = SeriesChartType.Point; //Point graph.
                     chart1.Series[count].MarkerStyle = MarkerStyle.Circle;
                     chart1.Series[count].MarkerSize = 6; //Might look into parameterizing this to give the user the option of increasing the size.
@@ -514,27 +554,48 @@ namespace KNearestNeighbor
                 chart1.Series[count].MarkerColor = acceptableColorList.ElementAt(0); //Set the color to be the first in the list.
                 chart1.Series[count].MarkerStyle = MarkerStyle.Square;
                 chart1.Series[count].MarkerSize = 7; //Might look into parameterizing this to give the user the option of increasing the size.
-
-
-
             }
         }
 
         private void plotButton_Click(object sender, EventArgs e)
         {
+            //Remove errors (if any) so we can revalidate during the next iteration.
+            DataValidation.RemoveProviderErrors(errorProviderPlot);
+
+            bool valid = true;
+
             try
             {
+                //Clear previous data (if any) from the canvas.
+                foreach(var series in chart1.Series)
+                    series.Points.Clear();
+
                 int xCoord = plotXComboBox.SelectedIndex;
                 int yCoord = plotYComboBox.SelectedIndex;
 
-                //NEED TO ACCOUNT FOR THE CASE THE PERSON JUST HITS "PLOT" and doesn't choose two values. Maybe just set the values to 
-                //two default "Attribute1 and Attribute2 values. No - we want them to choose them so it will look good and display right.
+                DataValidation.ValidateCoordinates(errorProviderPlot, xCoord, yCoord, plotXComboBox, plotYComboBox);
 
-                //Just for the case in which x-coord: Attribute1 and y-coord: Attribute2
+                if (errorProviderPlot.HasErrors())
+                    valid = false;
 
-                Plot.PlotPoints(chart1, xCoord, yCoord, normalizedTrainingSet, normalizedInputSet, inputClass, outputClass, outputClassNames);
+                //Go ahead and plot everything, there are no errors.
+                if (valid == true)
+                {
+                    //Find the closest competitor given the two chosen attributes.
+                    int indexOfClosestCompetitor = knn.FindNearestCompetitor(normalizedInputSet, normalizedTrainingSet, xCoord, yCoord);
+                    var closestCompetitorData = trainingSet[indexOfClosestCompetitor];
 
-                chart1.Show();
+                    closestCompetitorSpecificLabel.Text = outputClassNames.ElementAt(indexOfClosestCompetitor);
+
+                    //NEED TO ACCOUNT FOR THE CASE THE PERSON JUST HITS "PLOT" and doesn't choose two values. Maybe just set the values to 
+                    //two default "Attribute1 and Attribute2 values. No - we want them to choose them so it will look good and display right.
+
+                    //Just for the case in which x-coord: Attribute1 and y-coord: Attribute2
+
+                    Plot.PlotPoints(chart1, xCoord, yCoord, normalizedTrainingSet, normalizedInputSet, inputClass, outputClass, outputClassNames);
+
+                    chart1.Show();
+                }                 
             }
             catch { }
         }
@@ -552,9 +613,106 @@ namespace KNearestNeighbor
             Help.ShowHelp(this, "helpfile.chm", HelpNavigator.TopicId, "1234");
         }
 
-        private void wizardControl2_BackButtonClick(object sender, CancelEventArgs e)
-        {
+        //Threw error. Need to look into this later.
+        //private void chart1_PostPaint(object sender, ChartPaintEventArgs e)
+        //{
+        //    var g = this.CreateGraphics();
+        //    var blackPen = new Pen(Brushes.Black, 3);
 
-        }
+        //    //Always going to be drawing FROM our input data point.
+        //    float inputXCoord = (float)chart1.Series[outputClass.Count - 1].Points[0].XValue;
+        //    float inputYCoord = (float)chart1.Series[outputClass.Count - 1].Points[0].YValues[0];
+
+        //    for (int row = 0; row < normalizedTrainingSet.Count; row++)
+        //    {
+        //        float tempXCoord = (float)chart1.Series[Convert.ToString(outputClass)].Points[row].XValue;
+        //        float tempYCoord = (float)chart1.Series[Convert.ToString(outputClass)].Points[row].YValues[row];
+
+        //        g.DrawLine(blackPen, inputXCoord, inputYCoord, tempXCoord, tempYCoord);
+        //    }
+        //}
+
+        //private void plotXComboBox_Validating(object sender, CancelEventArgs e)
+        //{
+        //    try
+        //    {
+        //        int xCoord = plotXComboBox.SelectedIndex;
+        //        int yCoord = plotYComboBox.SelectedIndex;
+
+        //        //Must remove all items to make sure the list is clear and then readd them all so 
+        //        //duplicates aren't added and when different values the list elements don't just get 
+        //        //removed slowly.
+        //        plotXComboBox.Items.Clear(); //Remove all items from the x-comboBox.
+        //        plotYComboBox.Items.Clear(); //Remove all items from the y-comboBox.
+
+        //        //Add all of the possible elements back to each list.
+        //        int curElement = 0;
+        //        foreach (var element in attributeNames)
+        //        {
+        //            if (yCoord != curElement)
+        //                plotXComboBox.Items.Add(element);
+
+        //            if (xCoord != curElement)
+        //                plotYComboBox.Items.Add(element);
+
+        //            curElement++;
+        //        }
+
+        //        //Need to re-set the selected index to display the value in the box.
+        //        plotXComboBox.SelectedIndex = xCoord;
+
+        //        //Now remove the item selected in the x-comboBox from the y-comboBox.
+        //        plotYComboBox.Items.RemoveAt(xCoord);
+        //    }
+
+        //    catch (System.ArgumentOutOfRangeException error)
+        //    {
+        //        Console.WriteLine("The user simply clicked on the combobox but did not select a value since there is no selected index in the combobox. This exception is ok. It was a trade off. ");
+        //        Console.WriteLine("Packed Message: " + error.Message);
+        //        Console.WriteLine("Call Stack: " + error.StackTrace);
+        //    }
+        //}
+
+        //private void plotYComboBox_Validating(object sender, CancelEventArgs e)
+        //{
+        //    try
+        //    {
+        //        //Must be first so we can store the initial chosen coordinate.
+        //        int xCoord = plotXComboBox.SelectedIndex;
+        //        int yCoord = plotYComboBox.SelectedIndex;
+
+        //        //Must remove all items to make sure the list is clear and then readd them all so 
+        //        //duplicates aren't added and when different values the list elements don't just get 
+        //        //removed slowly.
+        //        plotXComboBox.Items.Clear(); //Remove all items from the x-comboBox.
+        //        plotYComboBox.Items.Clear(); //Remove all items from the y-comboBox.
+
+        //        //Add all of the possible elements back to each list.
+        //        int curElement = 0;
+        //        foreach (var element in attributeNames)
+        //        {
+        //            if(yCoord != curElement)
+        //                plotXComboBox.Items.Add(element);
+
+        //            if (xCoord != curElement)
+        //                plotYComboBox.Items.Add(element);
+
+        //            curElement++;
+        //        }
+
+        //        //Need to re-set the selected index to display the value in the box.
+        //        plotYComboBox.SelectedIndex = yCoord;
+
+        //        //Now remove the item selected in the x-comboBox from the y-comboBox.
+        //        plotXComboBox.Items.RemoveAt(yCoord);
+        //    }
+
+        //    catch (System.ArgumentOutOfRangeException error)
+        //    {
+        //        Console.WriteLine("The user simply clicked on the combobox but did not select a value since there is no selected index in the combobox. This exception is ok. It was a trade off. ");
+        //        Console.WriteLine("Packed Message: " + error.Message);
+        //        Console.WriteLine("Call Stack: " + error.StackTrace);
+        //    }
+        //}
     }
 }

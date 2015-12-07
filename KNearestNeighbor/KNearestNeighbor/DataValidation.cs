@@ -69,7 +69,7 @@ namespace KNearestNeighbor
             }
         }
 
-        public static void ValidateCoordinates(this ErrorProvider ep, string xCoord, string yCoord, ComboBox comboboxX, ComboBox comboboxY, double[][] inputs)
+        public static void ValidateCoordinates(this ErrorProvider ep, int xCoord, int yCoord, ComboBox comboboxX, ComboBox comboboxY)
         {
             //If the X-coordinate and Y-coordinate are the same attributes, pick different ones.
             if (xCoord.Equals(yCoord) || yCoord.Equals(xCoord))
@@ -80,7 +80,7 @@ namespace KNearestNeighbor
         }
 
 
-        public static void removeErrors(this ErrorProvider ep)
+        public static void RemoveProviderErrors(this ErrorProvider ep)
         {
             ep.RemoveErrors();
             ep.Clear();

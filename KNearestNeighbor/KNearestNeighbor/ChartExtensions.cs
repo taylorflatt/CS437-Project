@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace KNearestNeighbor
 {
@@ -55,8 +56,23 @@ namespace KNearestNeighbor
                 }
             }
 
-            //Now I need to plot my data point.
-            chart.Series[outputClass.Count - 1].Points.AddXY(normalizedInputSet[xCoordChoice], normalizedInputSet[yCoordChoice]);
+            try
+            {
+                string xInputCoord = StringExtensions.Truncate(Convert.ToString(chart.Series[0].Points[point].XValue), 4);
+                string yInputCoord = StringExtensions.Truncate(Convert.ToString(chart.Series[0].Points[point].YValues[0]), 4);
+
+                //Now I need to plot my data point.
+                chart.Series[outputClass.Count - 1].Points.AddXY(normalizedInputSet[xCoordChoice], normalizedInputSet[yCoordChoice]);
+                chart.Series[outputClass.Count - 1].Points[0].ToolTip = string.Format("Coordinate: ({0},{1}) " + "\n"
+                        + "My Data Point", xInputCoord, yInputCoord);
+            }
+
+            catch (Exception error)
+            {
+                Console.WriteLine("The input data point has an error. Please review the call stack to see more information. ");
+                Console.WriteLine("Packed Message: " + error.Message);
+                Console.WriteLine("Call Stack: " + error.StackTrace);
+            }
         }
     }
 }
