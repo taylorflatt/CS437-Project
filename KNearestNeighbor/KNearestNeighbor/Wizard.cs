@@ -38,54 +38,7 @@ namespace KNearestNeighbor
         public Wizard()
         {
             InitializeComponent();
-            this.AutoValidate = AutoValidate.Disable; //Don't let the form validate anything.
-
-            //Load the description text into the description step.
-            //var fileName = Path.Combine(Directory.GetCurrentDirectory(), "description.txt");
-            //string fileName = "description.txt";
-
-            //try
-            //{
-            //    using (FileStream file = new FileStream(Assembly.GetManifestResourceStream("description.txt"), FileMode.Open, FileAccess.Read))
-            //    {
-            //        //programDescriptionTB.LoadFile(fileName, RichTextBoxStreamType.PlainText); //don't need
-
-            //        int orderCount = 0; //Set to zero because in the Regex it adds a whitespace line so it increments falsely by 1.
-            //        foreach (string line in File.ReadLines(fileName))
-            //        {
-            //            StringExtensions.ParseLine(programDescriptionTB, line, orderCount, ref orderCount, 10, "Times New Roman");
-            //            orderCount++;
-            //        }
-            //    }
-            //}
-
-            // try
-            //{
-            //    var assembly = Assembly.GetExecutingAssembly();
-
-            //    //Properties.Resources.description
-
-            //        //global::KNearestNeighbor.Properties.Resources.description;
-
-            //    string[] listOfAssemblies = assembly.GetManifestResourceNames();
-
-            //    using (Stream stream = assembly.GetManifestResourceStream("KNearestNeighbor.description.txt"))
-            //    {
-            //        using (StreamReader reader = new StreamReader(stream))
-            //        {
-            //            //programDescriptionTB.LoadFile(fileName, RichTextBoxStreamType.PlainText); //don't need
-
-            //            int orderCount = 0; //Set to zero because in the Regex it adds a whitespace line so it increments falsely by 1.
-            //            string line = reader.ReadLine();
-
-            //            while (reader.EndOfStream == false)
-            //            {
-            //                StringExtensions.ParseLine(programDescriptionTB, line, orderCount, ref orderCount, 10, "Times New Roman");
-            //                orderCount++;
-            //            }
-            //        }
-            //    }
-            //}
+            this.AutoValidate = AutoValidate.Disable; //Don't let the form validate anything. I have custom validation handling.
 
             try
             {
@@ -441,6 +394,12 @@ namespace KNearestNeighbor
 
             if (dontNormalizeInputDataCheckBox.Checked == false)
             {
+                //In the event we compute the KNN (procede successfully to view the data) and then click the "back" button and decide to change 
+                //the information.
+                //TODO: Investigate the instance in which the doNotNormalizeTrainingData/doNotNormalizeInputData is checked.
+                normalizedInputSet.Clear(); //Remove all members of the input set.
+                normalizedTrainingSet.Clear(); //Remove all members of the training set.
+
                 for (int count = 1; count <= numAttributes; count++)
                 {
                     string textBoxName = "attribute" + count + "TB"; //create textbox name
@@ -538,7 +497,7 @@ namespace KNearestNeighbor
             //Data display step.
             else if (baseControl.CurrentStepIndex == 2)
             {
-                baseControl.BackButtonEnabled = false;
+                //baseControl.BackButtonEnabled = false;
 
                 //Make sure the legend doesn't already exist.
                 if(chart1.Legends.Count < 1)
