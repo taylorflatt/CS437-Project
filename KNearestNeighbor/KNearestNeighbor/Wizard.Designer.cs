@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Wizard));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             this.baseControl = new WizardBase.WizardControl();
             this.descriptionStep1 = new WizardBase.StartStep();
             this.programDescriptionTB = new System.Windows.Forms.RichTextBox();
@@ -65,6 +65,11 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.displayDataStep3 = new WizardBase.IntermediateStep();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.closestCompetitorName = new System.Windows.Forms.Label();
+            this.closestCompetitorClass = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.plotButton = new System.Windows.Forms.Button();
             this.label15 = new System.Windows.Forms.Label();
@@ -83,7 +88,6 @@
             this.dataSet1 = new System.Data.DataSet();
             this.helpProvider1 = new System.Windows.Forms.HelpProvider();
             this.wizardBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.descriptionStep1.SuspendLayout();
             this.initialDataStep2.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -93,6 +97,7 @@
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.displayDataStep3.SuspendLayout();
+            this.groupBox7.SuspendLayout();
             this.groupBox6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderK)).BeginInit();
@@ -182,7 +187,7 @@
             this.groupBox5.Size = new System.Drawing.Size(348, 175);
             this.groupBox5.TabIndex = 18;
             this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Information";
+            this.groupBox5.Text = "Instructions";
             // 
             // label12
             // 
@@ -465,6 +470,55 @@
             this.displayDataStep3.ForeColor = System.Drawing.SystemColors.ControlText;
             this.displayDataStep3.Name = "displayDataStep3";
             // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.closestCompetitorName);
+            this.groupBox7.Controls.Add(this.closestCompetitorClass);
+            this.groupBox7.Controls.Add(this.label20);
+            this.groupBox7.Controls.Add(this.label19);
+            this.groupBox7.Location = new System.Drawing.Point(0, 72);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(615, 144);
+            this.groupBox7.TabIndex = 18;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "View Data Output";
+            // 
+            // closestCompetitorName
+            // 
+            this.closestCompetitorName.AutoSize = true;
+            this.closestCompetitorName.Location = new System.Drawing.Point(145, 54);
+            this.closestCompetitorName.Name = "closestCompetitorName";
+            this.closestCompetitorName.Size = new System.Drawing.Size(27, 13);
+            this.closestCompetitorName.TabIndex = 3;
+            this.closestCompetitorName.Text = "N/A";
+            // 
+            // closestCompetitorClass
+            // 
+            this.closestCompetitorClass.AutoSize = true;
+            this.closestCompetitorClass.Location = new System.Drawing.Point(141, 31);
+            this.closestCompetitorClass.Name = "closestCompetitorClass";
+            this.closestCompetitorClass.Size = new System.Drawing.Size(27, 13);
+            this.closestCompetitorClass.TabIndex = 2;
+            this.closestCompetitorClass.Text = "N/A";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(10, 54);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(128, 13);
+            this.label20.TabIndex = 1;
+            this.label20.Text = "Closest Competitor Name:";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(6, 31);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(128, 13);
+            this.label19.TabIndex = 0;
+            this.label19.Text = "Closest Competitor Class: ";
+            // 
             // groupBox6
             // 
             this.groupBox6.Controls.Add(this.plotButton);
@@ -512,19 +566,19 @@
             // 
             // chart1
             // 
-            chartArea4.AxisX.Interval = 0.05D;
-            chartArea4.AxisX.IsStartedFromZero = false;
-            chartArea4.AxisX.Maximum = 1D;
-            chartArea4.AxisX.Minimum = 0D;
-            chartArea4.AxisY.Interval = 0.05D;
-            chartArea4.AxisY.IsStartedFromZero = false;
-            chartArea4.AxisY.Maximum = 1D;
-            chartArea4.AxisY.Minimum = 0D;
-            chartArea4.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea4);
-            legend4.Name = "Legend1";
-            legend4.Title = "Legend";
-            this.chart1.Legends.Add(legend4);
+            chartArea1.AxisX.Interval = 0.05D;
+            chartArea1.AxisX.IsStartedFromZero = false;
+            chartArea1.AxisX.Maximum = 1D;
+            chartArea1.AxisX.Minimum = 0D;
+            chartArea1.AxisY.Interval = 0.05D;
+            chartArea1.AxisY.IsStartedFromZero = false;
+            chartArea1.AxisY.Maximum = 1D;
+            chartArea1.AxisY.Minimum = 0D;
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            legend1.Title = "Legend";
+            this.chart1.Legends.Add(legend1);
             this.chart1.Location = new System.Drawing.Point(6, 47);
             this.chart1.Name = "chart1";
             this.chart1.Size = new System.Drawing.Size(609, 405);
@@ -619,15 +673,6 @@
             // 
             this.wizardBindingSource.DataSource = typeof(KNearestNeighbor.Wizard);
             // 
-            // groupBox7
-            // 
-            this.groupBox7.Location = new System.Drawing.Point(6, 72);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(599, 144);
-            this.groupBox7.TabIndex = 18;
-            this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "View Data Output";
-            // 
             // Wizard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -656,6 +701,8 @@
             this.groupBox1.ResumeLayout(false);
             this.displayDataStep3.ResumeLayout(false);
             this.displayDataStep3.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
@@ -720,5 +767,9 @@
         private System.Windows.Forms.RichTextBox programDescriptionTB;
         private System.Windows.Forms.HelpProvider helpProvider1;
         private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label closestCompetitorName;
+        private System.Windows.Forms.Label closestCompetitorClass;
     }
 }

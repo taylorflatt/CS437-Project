@@ -17,8 +17,8 @@ namespace KNearestNeighbor
         /// <param name="inputs">The input data points.</param>
         /// <param name="outputs">The associated labels for the input points.</param>
         /// 
-        public KNearestNeighborAlgorithm(int k, List<List<double>> inputs, List<int> outputs)
-            : base(k, inputs, outputs, EuclideanDistance.SquareEuclidean)
+        public KNearestNeighborAlgorithm(int k, List<List<double>> trainingData, List<int> outputs)
+            : base(k, trainingData, outputs, EuclideanDistance.SquareEuclidean)
         { }
     }
 
@@ -31,7 +31,7 @@ namespace KNearestNeighbor
     public class KNearestNeighbor<T>
     {
         private int k;
-        private List<List<double>> inputs;
+        private List<List<double>> trainingData;
         private List<int> outputs;
         private int classCount;
         private Func<List<double>, List<double>, double> distance;
@@ -43,23 +43,23 @@ namespace KNearestNeighbor
         /// 
         /// <param name="k">The number of nearest neighbors to be used in the decision.</param>
         /// 
-        /// <param name="inputs">The input data points.</param>
+        /// <param name="trainingData">The input data points.</param>
         /// <param name="outputs">The associated labels for the input points.</param>
         /// <param name="distance">The distance measure to use in the decision.</param>
         /// 
-        public KNearestNeighbor(int k, List<List<double>> inputs, List<int> outputs, Func<List<double>, List<double>, double> distance)
+        public KNearestNeighbor(int k, List<List<double>> trainingData, List<int> outputs, Func<List<double>, List<double>, double> distance)
         {
-            this.inputs = inputs;
+            this.trainingData = trainingData;
             this.outputs = outputs;
 
             this.k = k;
             this.classCount = outputs.Distinct().Count();
 
             this.distance = distance;
-            this.distances = new List<double>(inputs.Count);
+            this.distances = new List<double>(trainingData.Count);
 
             //Add the requisite number of elements to the distance list.
-            for (int index = 0; index < inputs.Count; index++)
+            for (int index = 0; index < trainingData.Count; index++)
                 this.distances.Add(0);
         }
         
@@ -80,7 +80,7 @@ namespace KNearestNeighbor
         /// 
         public List<List<double>> Inputs
         {
-            get { return inputs; }
+            get { return trainingData; }
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace KNearestNeighbor
             get { return k; }
             set
             {
-                if (value <= 0 || value > inputs.Count)
+                if (value <= 0 || value > trainingData.Count)
                     throw new ArgumentOutOfRangeException("value",
                         "The value for k should be greater than zero and less than total number of input points.");
 
@@ -121,17 +121,65 @@ namespace KNearestNeighbor
         /// 
         /// <returns>The most likely label for the given point.</returns>
         /// 
-        public int Compute(List<double> input)
+        public int Compute(List<double> normalizedInput, List<List<double>> normalizedTrainingSet)
         {
-            var temp = inputs.Count; //10
-            for (int i = 0; i < inputs.Count; i++)
+            for (int i = 0; i < normalizedTrainingSet.Count; i++)
             {
-                double distance = EuclideanDistance.Euclidean(input, inputs[i]); //compute the distance
+                double distance = EuclideanDistance.Euclidean(normalizedInput, normalizedTrainingSet[i]); //compute the distance
                 distances[i] = distance; //store distance in this array.
             }
-                //distances[i] = distance(input, inputs[i]);
 
-            int[] nearestIndices = Matrix.Indices(0, inputs.Count);
+            int[] nearestIndices = Matrix.Indices(0, normalizedTrainingSet.Count);
+
+            List<int> tempArray = new List<int>(nearestIndices);
+
+            tempArray.Sort();
+
+            double[] scores = new double[classCount];
+
+            var temklsafk = k;
+
+            for (int i = 0; i < k; i++)
+            {
+                int j = nearestIndices[i];
+
+                int label = outputs[j];
+                double d = distances[j];
+
+                scores[label] += 1.0 / d;
+            }
+
+            // Get the maximum weighted score
+            int result;
+
+            scores.Max(out result);
+
+            return result;
+        }
+
+        //Returns the index of the nearest competitor.
+        public int FindNearestCompetitor(List<double> input, int attribute1, int attribute2)
+        {
+            List<double> tempInputList = new List<double>();
+            List<double> tempTrainingList = new List<double>();
+
+            for (int index = 0; index < trainingData.Count; index++)
+            {
+                tempInputList.Add(input[attribute1]);
+                tempInputList.Add(input[attribute2]);
+
+                //tempTrainingList.Add( new List<double> {trainingData[index][attribute1]});
+                //tempTrainingList.Add( new List<double> {trainingData[index][attribute2]});
+
+                tempTrainingList.Add(trainingData[index][attribute1]);
+                tempTrainingList.Add(trainingData[index][attribute2]);
+
+                double distance = EuclideanDistance.Euclidean(tempInputList, tempTrainingList);
+
+                distances[index] = distance;
+            }
+
+            int[] nearestIndices = Matrix.Indices(0, trainingData.Count);
 
             List<int> tempArray = new List<int>(nearestIndices);
 
@@ -150,9 +198,15 @@ namespace KNearestNeighbor
             }
 
             // Get the maximum weighted score
-            int result; scores.Max(out result);
+            int result;
 
-            return result;
+            scores.Max(out result);
+
+            int closestCompetitorIndex = scores.IndexOf(scores.Max());
+
+            
+
+            return outputs.ElementAt(closestCompetitorIndex); ;
         }
     }
 }

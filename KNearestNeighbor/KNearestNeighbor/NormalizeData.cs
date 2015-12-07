@@ -13,6 +13,7 @@ namespace KNearestNeighbor
             double currentValue = Convert.ToDouble(curVal);
             double normalizedValue = 0;
 
+            //Don't account for the case in which the INPUT point is the smallest value.
             for (int row = 0; row < training.Count; row++)
             {
                 if (row == 0)
@@ -23,6 +24,12 @@ namespace KNearestNeighbor
 
                 if (training[row][colNum] < min)
                     min = training[row][colNum];
+
+                if (currentValue < min)
+                    min = currentValue;
+
+                if (currentValue > max)
+                    max = currentValue;
             }
 
             normalizedValue = (currentValue - min) / (max - min);
@@ -31,7 +38,7 @@ namespace KNearestNeighbor
         }
 
         //For training data
-        public static List<List<double>> Normalize(List<List<double>> training, int numAttributes)
+        public static List<List<double>> Normalize(List<List<double>> training, List<double> inputSet, int numAttributes)
         {
             double[] max = new double[numAttributes];
             double[] min = new double[numAttributes];
@@ -49,6 +56,12 @@ namespace KNearestNeighbor
 
                     if (training[row][column] < min[column])
                         min[column] = training[row][column];
+
+                    if (inputSet[column] > max[column])
+                        max[column] = inputSet[column];
+
+                    if (inputSet[column] < min[column])
+                        min[column] = inputSet[column];
                 }
             }
 

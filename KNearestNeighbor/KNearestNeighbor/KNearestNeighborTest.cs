@@ -42,14 +42,14 @@ namespace KNearestNeighbor
             //will be biased and we won't get a real answer. But if we make it too small then we might not get an 
             //accurate representation of then data. So we need to have a LARGE data set in order to have truly 
             //accurate results.
-            KNearestNeighborAlgorithm knn = new KNearestNeighborAlgorithm(k: 10, inputs: inputs, outputs: outputs);
+            KNearestNeighborAlgorithm knn = new KNearestNeighborAlgorithm(k: 10, trainingData: inputs, outputs: outputs);
 
 
             // After the algorithm has been created, we can classify a new car instance so we can see which 
             //car is our competitor.
             //double[] data = { 9, 5, 2, 1, 0 };
             List<double> data = new List<double>() { 9, 5, 2, 1, 0 };
-            int answer = knn.Compute(data); // answer will depend on the k-value since data set is small.
+            //int answer = knn.Compute(data); // answer will depend on the k-value since data set is small.
 
             //Display (debug) information
             int count = 0;
@@ -70,7 +70,7 @@ namespace KNearestNeighbor
 
             Console.WriteLine("");
             Console.WriteLine("");
-            Console.WriteLine("Class: " + answer);
+            //Console.WriteLine("Class: " + answer);
         }
     }
 }

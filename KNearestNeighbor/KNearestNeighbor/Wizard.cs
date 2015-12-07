@@ -302,15 +302,21 @@ namespace KNearestNeighbor
             if (dontNormalizeInputDataCheckBox.Checked)
             {
                 int count = 0;
-                foreach (var element in inputSet)
+                for (int index = 1; index <= numAttributes; index++)
                 {
-                    //If the elements are smaller than 1, our data is already normalized.
-                    if (element < 1)
+                    string textBoxName = "attribute" + index + "TB";
+                    System.Windows.Forms.TextBox textBox = (System.Windows.Forms.TextBox)this.tableLayoutPanel1.Controls[textBoxName];
+                    string value = this.tableLayoutPanel1.Controls[textBoxName].Text;
+
+                    if (Convert.ToDouble(value) > 1)
+                    {
                         count++;
+                        break; //Exit the loop to save time.
+                    }
                 }
 
                 //If even 1 value isn't less than 1, the data isn't normalized. Prompt the user.
-                if (count < inputSet.Count)
+                if (count > 0)
                 {
                     DialogResult warning = MessageBox.Show("We noticed at least one input was greater than 1. Your inputs haven't been normalized properly. Please review your data. Or uncheck the \"Don't Normalize Input Data\" option. ",
                     "Warning",
@@ -328,17 +334,24 @@ namespace KNearestNeighbor
             if (dontNormalizeTrainingDataCheckBox.Checked)
             {
                 int count = 0;
-                foreach (var listElement in inputSet)
+                foreach (var listElement in trainingSet)
                 {
-                    foreach(var element in inputSet)
+                    foreach(var element in listElement)
                     {
                         if (element > 1)
+                        {
                             count++;
+                            break; //Exit the loop to save time.
+                        }
                     }
+
+                    //No need to keep going if we found a single un-normalized value.
+                    if (count > 0)
+                        break;
                 }
 
                 //If even 1 value isn't less than 1, the data isn't normalized. Prompt the user.
-                if (count != 0)
+                if (count > 0)
                 {
                     DialogResult warning = MessageBox.Show("We noticed at least one training data point was greater than 1. The training data hasn't been normalized properly. Please review your data. Or uncheck the \"Don't Normalize Training Data\" option. ",
                     "Warning",
@@ -399,17 +412,22 @@ namespace KNearestNeighbor
             
 
             if(dontNormalizeTrainingDataCheckBox.Checked == false)
-                normalizedTrainingSet = NormalizeData.Normalize(trainingSet, numAttributes);
+                normalizedTrainingSet = NormalizeData.Normalize(trainingSet, inputSet, numAttributes);
 
             else
                 normalizedTrainingSet = trainingSet;
 
             //initialize our KNN object.
-            knn = new KNearestNeighborAlgorithm(k, inputs: trainingSet, outputs: outputClass); //initialize our algorithm with inputs
+            knn = new KNearestNeighborAlgorithm(k, trainingData: trainingSet, outputs: outputClass); //initialize our algorithm with inputs
 
-            inputClass = knn.Compute(inputSet);
+            inputClass = knn.Compute(normalizedInputSet, normalizedTrainingSet);
 
-            label14.Text = Convert.ToString(inputClass);
+            closestCompetitorClass.Text = Convert.ToString(inputClass);
+            closestCompetitorName.Text = outputClassNames.ElementAt(inputClass);
+
+            //Not getting the correct result yet.
+            //int indexOfClosestCompetitor = knn.FindNearestCompetitor(inputSet, 0, 1);
+            //var closestCompetitorData = trainingSet[indexOfClosestCompetitor];
         }
 
         //Custom code for individual steps.
@@ -443,7 +461,6 @@ namespace KNearestNeighbor
                     Color.DarkBlue,
                     Color.SlateGray,
                     Color.DarkGreen,
-                    Color.Gold,
                     Color.LightCoral,
                     Color.Red,
                     Color.BlueViolet
