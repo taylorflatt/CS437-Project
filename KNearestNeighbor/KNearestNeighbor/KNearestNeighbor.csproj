@@ -154,7 +154,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChartExtensions.cs" />
-    <Compile Include="CustomException.cs" />
     <Compile Include="DataValidation.cs" />
     <Compile Include="ErrorProviderExtensions.cs" />
     <Compile Include="MathFunctions.cs" />

@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Accord.Math;
 
 namespace KNearestNeighbor
 {
@@ -46,7 +41,6 @@ namespace KNearestNeighbor
             return System.Math.Sqrt(SquareEuclidean(x, y));
         }
 
-        #region Generic matrices
         /// <summary>
         ///   Returns a matrix with all elements set to a given value.
         /// </summary>
@@ -75,7 +69,6 @@ namespace KNearestNeighbor
 
             return Create(size, size, value);
         }
-        #endregion
 
         public static int[] Indices(int from, int to)
         {

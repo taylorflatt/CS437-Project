@@ -1,15 +1,15 @@
-﻿using System;
+﻿using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using System.IO;
-using NPOI.XSSF.UserModel;
-using NPOI.SS.UserModel;
 using System.Windows.Forms.DataVisualization.Charting;
-using System.Drawing;
-using System.Diagnostics;
 
 //DON'T FORGET TO CHANGE THE PATHS TO DOCUMENTS AND THE HELP FILE.
 
@@ -33,27 +33,52 @@ namespace KNearestNeighbor
         protected List<string> outputClassNames = new List<string>(); //Name we read from the data. (Assume this is first).
         protected List<string> attributeNames = new List<string>(); //without make/model
 
-        protected int inputClass;
-        protected string fileUrl;
+        protected int inputClass; //Classification of the input data.
 
+        /// <summary>
+        /// Initialize the form as well as turn off validation. I also display the description of the program in this step.
+        /// </summary>
         public Wizard()
         {
             InitializeComponent();
-            this.AutoValidate = AutoValidate.Disable; //Don't let the form validate anything. I have custom validation handling.
+
+            //Don't let the form handle the validation. I have custom validation.
+            this.AutoValidate = AutoValidate.Disable;
 
             //So the user can't enter their own data in the combobox.
             plotXComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             plotYComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
 
+            ///Display the description on the first step using a document resource.
+            displayProgramDescription(programDescriptionTB);
+            displayDataStep3.
+
+            //Don't let them manipulate the training data until it has been entered.
+            kValueTB.Enabled = false;
+            dontNormalizeInputDataCheckBox.Enabled = false;
+            dontNormalizeTrainingDataCheckBox.Enabled = false;
+        }
+
+        #region Global Methods
+
+        /// <summary>
+        /// Will display the program description or return an error.
+        /// </summary>
+        /// <param name="textbox"> The ouput location of the text from the resource file.</param>
+        private static void displayProgramDescription(RichTextBox textbox)
+        {
             try
             {
                 string descriptionDocument = global::KNearestNeighbor.Properties.Resources.description;
                 string[] lines = descriptionDocument.Split("\r".ToCharArray());
 
+                //orderCount will preserve the ordering.
                 int orderCount = 0;
-                for(int index = 0; index < lines.Count(); index++)
+
+                //Parse line-by-line.
+                for (int index = 0; index < lines.Count(); index++)
                 {
-                    StringExtensions.ParseLine(programDescriptionTB, lines[index], orderCount, ref orderCount, 10, "Times New Roman");
+                    StringExtensions.ParseLine(textbox, lines[index], orderCount, ref orderCount, 10, "Times New Roman");
                     orderCount++;
                 }
             }
@@ -71,34 +96,440 @@ namespace KNearestNeighbor
                     MessageBoxIcon.Error,
                     MessageBoxDefaultButton.Button1);
 
+                //Safely exit the program.
                 if (errorMessage == DialogResult.OK)
                     Environment.Exit(1);
             }
-
-            //Don't let them manipulate the training data until it has been entered.
-            kValueTB.Enabled = false;
-            dontNormalizeInputDataCheckBox.Enabled = false;
-            dontNormalizeTrainingDataCheckBox.Enabled = false;
         }
 
-        //After initial validation, it may not be re-validating the form to catch new errors.
+        /// <summary>
+        /// Will display the initial data instructions to the user or return an error.
+        /// </summary>
+        /// <param name="textbox"> The ouput location of the text from the resource file.</param>
+        private static void displayInitialDataInstructions(RichTextBox textbox)
+        {
+            try
+            {
+                //Need to clear or else it will loop the text in the box each time a failure occurs.
+                textbox.Clear();
+                string instructionsDocument = global::KNearestNeighbor.Properties.Resources.inputdatainstructions;
+                string[] lines = instructionsDocument.Split("\r".ToCharArray());
 
-        private void button1_Click(object sender, EventArgs e)
+                //orderCount will preserve the ordering.
+                int orderCount = 0;
+
+                //Parse line-by-line.
+                for (int index = 0; index < lines.Count(); index++)
+                    StringExtensions.ParseLine(textbox, lines[index], orderCount, ref orderCount, 10, "Times New Roman");
+            }
+
+            catch (System.IO.FileNotFoundException error)
+            {
+                Console.WriteLine("We could not find the text file to display the instructions for step 2 (initialize data step). ");
+                Console.WriteLine("Packed Message: " + error.Message);
+                Console.WriteLine("Call Stack: " + error.StackTrace);
+
+                DialogResult errorMessage = MessageBox.Show(String.Format("Unfortunately, the instructions file cannot be found. Please report this error to the administrator. "),
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error,
+                    MessageBoxDefaultButton.Button1);
+
+                //Safely exit the program.
+                if (errorMessage == DialogResult.OK)
+                    Environment.Exit(1);
+            }
+        }
+
+        //What about taking the data sheet itself as the input and then creating the view from the excel file directly?
+        /// <summary>
+        /// This will generate the DGV information using an excel spreadsheet.
+        /// </summary>
+        /// <param name="xssfwb">The particular excel file you would like to load.</param>
+        /// <param name="sheet">The sheet you wish to read into the program.</param>
+        private void populateDataGrid(XSSFWorkbook xssfwb, ISheet sheet)
+        {
+            DataTable table = new DataTable(); //Create a new table.
+            IRow headerRow = sheet.GetRow(0); //The first row will always be considered the header.
+
+            int cellCount = headerRow.LastCellNum; //Use the header to determine the length of the row.
+
+            //Add the header row to the table.
+            for (int i = headerRow.FirstCellNum; i < cellCount; i++)
+            {
+                DataColumn column = new DataColumn(headerRow.GetCell(i).StringCellValue);
+                table.Columns.Add(column);
+            }
+
+            int rowCount = sheet.LastRowNum; //Stores the number of rows in the sheet.
+
+            /// We bypass the first header row by setting the starting value of i to be the first row + 1.
+            /// Now we just add each row to the table.
+            for (int i = (sheet.FirstRowNum + 1); i <= sheet.LastRowNum; i++)
+            {
+                IRow row = sheet.GetRow(i);
+                DataRow dataRow = table.NewRow();
+                for (int j = row.FirstCellNum; j < cellCount; j++)
+                {
+                    if (row.GetCell(j) != null)
+                        dataRow[j] = row.GetCell(j).ToString();
+                }
+
+                table.Rows.Add(dataRow); //Add each row to the table.
+            }
+
+            dataGridView1.DataSource = table; //Set the source of the DGV to be the table we created.
+        }
+
+        /// <summary>
+        /// This method will generate the attribute textboxes and their labels dynamically based on the training data. 
+        /// This is a vestigial method that won't be called unless I fix the text location problem. 
+        /// </summary>
+        /// <param name="previousText"> The list that contains all of the previous values.</param>
+        private void populateAttributeList(List<Object> previousText)
+        {
+            tableLayoutPanel1.Controls.Clear(); //If they keep changing the value then we should remove the current rows.
+
+            int numAttributes = attributeNames.Count;
+
+            //Add values starting from zero to value - 1.
+            int column = 2;
+            for (int count = 1; count <= numAttributes; count++)
+            {
+                int row = count;
+
+                System.Windows.Forms.Label temp = new System.Windows.Forms.Label();
+                temp.Text = attributeNames.ElementAt(count - 1).ToString() + ": ";
+
+                tableLayoutPanel1.Controls.Add(temp, 0, row);
+
+                //I need to be explicit and set a name so I can reference the fields later.
+                System.Windows.Forms.TextBox tempTB = new System.Windows.Forms.TextBox();
+                tempTB.Name = "attribute" + count + "TB"; //attribute1TB, attribute2TB...
+
+                // If there is ANY text in the textbox from before, let's put it back.
+                if (Convert.ToString(previousText[count - 1]) != "")
+                    tempTB.Text = Convert.ToString(previousText[count - 1]);
+
+
+                tableLayoutPanel1.Controls.Add(tempTB, column, row);
+            }
+        }
+
+        /// <summary>
+        /// This method will generate the attribute textboxes and their labels dynamically based on the training data.
+        /// </summary>
+        private void populateAttributeList()
+        {
+            tableLayoutPanel1.Controls.Clear(); //If they keep changing the value then we should remove the current rows.
+
+            int numAttributes = attributeNames.Count;
+
+            //Add values starting from zero to value - 1.
+            int column = 2;
+            for (int count = 1; count <= numAttributes; count++)
+            {
+                int row = count;
+
+                System.Windows.Forms.Label temp = new System.Windows.Forms.Label();
+                temp.Text = attributeNames.ElementAt(count - 1).ToString() + ": ";
+
+                tableLayoutPanel1.Controls.Add(temp, 0, row);
+
+                //I need to be explicit and set a name so I can reference the fields later.
+                System.Windows.Forms.TextBox tempTB = new System.Windows.Forms.TextBox();
+                tempTB.Name = "attribute" + count + "TB"; //attribute1TB, attribute2TB...
+
+                tableLayoutPanel1.Controls.Add(tempTB, column, row);
+            }
+        }
+
+        /// <summary>
+        /// Allows for the program to close any any point by clicking the "X" button.
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            e.Cancel = false;
+            base.OnClosing(e);
+        }
+
+        //Custom code for individual steps.
+        /// <summary>
+        /// This method checks whether the current step has changed and run custom code based on the next step.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void wizardControl2_CurrentStepIndexChanged(object sender, EventArgs e)
+        {
+            //Program description step.
+            if (baseControl.CurrentStepIndex == 0)
+                baseControl.NextButtonEnabled = true;
+
+            //Data initialize step.
+            if (baseControl.CurrentStepIndex == 1)
+            {
+                //If they haven't chosen a file yet (the label hasn't been changed), don't let them proceed to the next step.
+                if (fileLocationLabel.Text.Equals("N/A"))
+                    baseControl.NextButtonEnabled = false;
+
+                /// Case: If they entered a file, then clicked "back" coming back to this step. 
+                /// Solution: We let them go to the next step since they have entered a file.
+                else
+                    baseControl.NextButtonEnabled = true;
+
+                //Display the instructions to the user.
+                displayInitialDataInstructions(dataInitializationInstructionsTB);
+            }
+
+            //Data display step.
+            else if (baseControl.CurrentStepIndex == 2)
+            {
+                /// We are renaming the cancel button to NEW and its function is to restart the program.
+                baseControl.CancelButtonEnabled = true;
+                baseControl.CancelButtonText = "New";
+                baseControl.CancelButtonVisible = true;
+
+                //Make sure the legend doesn't already exist.
+                if (chart1.Legends.Count < 1)
+                    chart1.Legends.Add("Legend");
+
+                //Remove all generated information from the chart if any exist.
+                chart1.Series.Clear();
+
+                Random randomGen = new Random();
+
+                /// List of colors for the first 11 attributes. The first element is the input data point's color.
+                /// In the event that there are more than 11 attributes, we randomly generate a color below.
+                List<Color> acceptableColorList = new List<Color>
+                {
+                    Color.Maroon, //This will be our input data point color.
+                    Color.Orange,
+                    Color.Fuchsia,
+                    Color.Lime,
+                    Color.Aqua,
+                    Color.LightBlue,
+                    Color.DarkBlue,
+                    Color.SlateGray,
+                    Color.DarkGreen,
+                    Color.LightCoral,
+                    Color.Red,
+                    Color.BlueViolet
+                };
+
+                //Colors that have already been chosen.
+                List<int> pickedColors = new List<int>();
+
+                int count = 0;
+
+                //Generate the general characteristics for each series.
+                while (count < outputClass.Distinct().Count())
+                {
+                    chart1.Series.Add("Class " + count);
+                    chart1.Series[count].LegendText = outputClassNames[count];
+                    chart1.Series[count].ChartType = SeriesChartType.Point; //Point graph.
+                    chart1.Series[count].MarkerStyle = MarkerStyle.Circle;
+                    chart1.Series[count].MarkerSize = 6; //Might look into parameterizing this to give the user the option of increasing the size.
+
+                    bool uniqueColor = false;
+
+                    while (uniqueColor == false)
+                    {
+                        int colorPositionInList = randomGen.Next(1, acceptableColorList.Count - 1);
+
+                        //If the color is unique, we will add it. Otherwise, we will pick a random color.
+                        if (!pickedColors.Contains(colorPositionInList))
+                        {
+                            //Set the series color.
+                            chart1.Series[count].MarkerColor = acceptableColorList.ElementAt(colorPositionInList);
+
+                            //Add the element location to our list so we don't pick the same color again.
+                            pickedColors.Add(colorPositionInList);
+
+                            //Drop from the while loop.
+                            uniqueColor = true;
+                        }
+
+                        //If there are more than 11 attributes, then we will generate a random color.
+                        if (pickedColors.Count >= (acceptableColorList.Count - 1))
+                        {
+                            chart1.Series[count].MarkerColor = Color.FromArgb((byte)randomGen.Next(255), (byte)randomGen.Next(255), (byte)randomGen.Next(255));
+                        }
+                    }
+
+                    count++;
+                }
+
+                //Generate the general characteristics for the input point.
+                chart1.Series.Add("My Input");
+                chart1.Series[count].ChartType = SeriesChartType.Point; //Point graph.
+                chart1.Series[count].MarkerColor = acceptableColorList.ElementAt(0); //Set the color to be the first in the list.
+                chart1.Series[count].MarkerStyle = MarkerStyle.Square;
+                chart1.Series[count].MarkerSize = 7; //Might look into parameterizing this to give the user the option of increasing the size.
+            }
+        }
+
+        /// <summary>
+        /// When the help button is clicked (at any point), a CHM file will be loaded and displayed to the user.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Wizard_HelpButtonClicked(object sender, EventArgs e)
+        {
+            //The CHM file will be immediately created upon compile and it will reference it in the created location.
+            try
+            {
+                System.Diagnostics.Process.Start("Resources\\knnHelp.CHM");
+            }
+
+            //If the file has been moved/deleted, notify the user that we cannot display the help file because it has been moved.
+            catch (System.ComponentModel.Win32Exception error)
+            {
+                Console.WriteLine("We could not find the text file to display the instructions for step 2 (initialize data step). ");
+                Console.WriteLine("Packed Message: " + error.Message);
+                Console.WriteLine("Call Stack: " + error.StackTrace);
+
+                DialogResult errorMessage = MessageBox.Show(String.Format("Unfortunately, the help file cannot be found. Please redownload the program or verify that the help file is in Resources/knnHelp.CHM"),
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error,
+                    MessageBoxDefaultButton.Button1);
+            }
+        }
+
+        /// <summary>
+        /// We don't want any validation to occur when we select the "back" option. We don't care about validating 
+        /// information moving backwards.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void baseControl_BackButtonClick(object sender, CancelEventArgs e)
+        {
+            descriptionStep1.CausesValidation = false;
+            initialDataStep2.CausesValidation = false;
+            displayDataStep3.CausesValidation = false;
+        }
+
+        /// <summary>
+        /// We want to validate only select steps when we choose the "next" option. This validation is direction specific as well.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void baseControl_NextButtonClick(object sender, CancelEventArgs e)
+        {
+            // currentStep = 0: descriptionStep1
+            // currentStep = 1: initialDataStep2
+            // currentStep = 2: displayDataStep3
+            // ...
+            // This will get the current index. Since I know which step is at which index, I can just compare the numbers.
+            var currentStep = this.baseControl.CurrentStepIndex;
+
+            // Enable validation for the InitialDataStep2 if I am coming FROM descriptionStep1.
+            if (currentStep == 0)
+                initialDataStep2.CausesValidation = true;
+
+            //Force validation to occur on the InitialDataStep2 if trying to go TO DataDisplayStep.
+            //The case we are accounting for here is when I go from Step 1 to Step 2 (load a file), then back to Step 1 and then attempt 
+            //to go onto Step 3 without adding anymore information. We need to validate the data and tell the user there is an error.
+            if (currentStep == 1)
+            {
+                CancelEventArgs temp = new CancelEventArgs(); //Won't need/use.
+                this.initialDataStep2_Validating(sender, temp);
+
+                displayDataStep3.CausesValidation = true;
+            }
+        }
+
+        /// <summary>
+        /// If the user selects the "new" option in the data display step, then the program will restart at the first step.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void baseControl_CancelButtonClick(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start(Application.ExecutablePath);
+            Application.Exit();
+        }
+
+        #endregion
+
+        #region Description Step
+
+        /// <summary>
+        /// Allows me to click and open a link in a browser from the description richtextbox.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void programDescriptionTB_LinkClicked(object sender, LinkClickedEventArgs e)
+        {
+            Process.Start(e.LinkText);
+        }
+
+        /// <summary>
+        /// We don't want any action to occur when a key is pressed in the description richtextbox. This will
+        /// remove the default beeps from occuring.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void programDescriptionTB_KeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = true;
+            e.SuppressKeyPress = true;
+        }
+
+        /// <summary>
+        /// We don't want any action to occur when a key is pressed in the description richtextbox. This will
+        /// remove the default beeps from occuring.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void programDescriptionTB_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        /// <summary>
+        /// We don't want any action to occur when a key is pressed in the description richtextbox. This will
+        /// remove the default beeps from occuring.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void programDescriptionTB_KeyUp(object sender, KeyEventArgs e)
+        {
+            e.Handled = true;
+            e.SuppressKeyPress = true;
+        }
+        #endregion
+
+        #region Initial Data Step
+
+        /// <summary>
+        /// When we choose the "browse" button, we need to handle what will happen. There are several cases to manage.
+        /// 
+        /// Case 1: They cancel from the browse dialog box.
+        /// Case 2: They select a file from the browse dialog box.
+        /// Case 2a: The selected file isn't the proper file type.
+        /// Case 2b: The selected file is changed to a DIFFERENT file.
+        /// Case 2c: The selected file is change to the SAME file (same result as 2b).
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void browseButton_Click(object sender, EventArgs e)
         {
             try
             {
                 DialogResult result = openFileDialog1.ShowDialog();
-                
 
-                //If they cancel out of the dialog (not selecting a file).
+                /// Case 1: If they close the dialog box, don't validate the step yet.
                 if (result == DialogResult.Cancel || result == DialogResult.Abort)
                     initialDataStep2.CausesValidation = false;
 
-                //They have chosen a file.
+                /// Case 2: Add the file that they have selected.
                 if (result == DialogResult.OK)
                 {
-                    //initialDataStep2.CausesValidation = true;
                     XSSFWorkbook xssfwb;
+
+                    //Read the file they have chosen.
                     using (FileStream file = new FileStream(openFileDialog1.FileName, FileMode.Open, FileAccess.Read))
                     {
                         xssfwb = new XSSFWorkbook(file);
@@ -107,57 +538,31 @@ namespace KNearestNeighbor
 
                     List<Object> tempInputArray = new List<Object>();
 
-                    //If it is a new file, then just clear the fields.
-                    if (openFileDialog1.FileName != fileUrl)
-                    {
-                        attributeNames.Clear(); //Clear the attributes.
-                        kValueTB.Clear(); //Clear the k-value.
+                    /// In the event that this method is called multiple times (they attempt to enter multiple documents at different times)
+                    /// then we need to remove the previous data. We can just re-add the data from the new file chosen by the user.
+                    attributeNames.Clear(); //Clear attribute names list
+                    kValueTB.Clear(); //Clear the k value.
 
-                        //Clear our data sets as well.
-                        inputSet.Clear();
-                        trainingSet.Clear();
-                        normalizedInputSet.Clear();
-                        normalizedTrainingSet.Clear();
-                        outputClassNames.Clear();
-                        outputClass.Clear();
-                    }
+                    //Clear our data sets as well.
+                    inputSet.Clear();
+                    trainingSet.Clear();
+                    normalizedInputSet.Clear();
+                    normalizedTrainingSet.Clear();
+                    outputClassNames.Clear();
+                    outputClass.Clear();
 
-                    if (openFileDialog1.FileName == fileUrl)
-                    {
-                        int numAttributes = attributeNames.Count;
-
-                         //We don't care about the information in the boxes. Just carry it over.
-                        //List<int> nullPositions = new List<int>(); //need another array to track null values and their position.
-
-                        for (int count = 1; count <= numAttributes; count++)
-                        {
-                            string textBoxName = "attribute" + count + "TB"; //create textbox name
-                            System.Windows.Forms.TextBox textBox = (System.Windows.Forms.TextBox)this.tableLayoutPanel1.Controls[textBoxName];
-                            string value = this.tableLayoutPanel1.Controls[textBoxName].Text; //get the value in that textbox
-
-                            DataValidation.ValidateAttributes(errorProviderAttributes, value, textBox, false);
-
-                            tempInputArray.Add(value);
-                        }
-
-                        //reset the attribute names first.
-                        attributeNames.Clear();
-                    }
-
-                    //We only clear the data if they have selected a NEW file.
-                    else if (openFileDialog1.FileName != fileUrl)
-                    {
-                        dataGridView1.ClearSelection();
-                    }
-
+                    //We default to the first sheet always.
                     ISheet sheet = xssfwb.GetSheet("Sheet1");
 
-                    int location = 2; //so we skip make/model
+                    int location = 2; //We skip the class position (0), and the label name (1).
+
+                    //We add the training data to the list.
                     for (int row = 0; row <= sheet.LastRowNum; row++)
                     {
                         //First row and it isn't empty, these are our attribute names.
                         if (row.Equals(0) && sheet.GetRow(row) != null)
                         {
+                            //We generate the list of attributes (we exlude the first two columns).
                             while (sheet.GetRow(0).GetCell(location) != null)
                             {
                                 attributeNames.Add(Convert.ToString(sheet.GetRow(row).GetCell(location).StringCellValue));
@@ -165,13 +570,14 @@ namespace KNearestNeighbor
                             }
                         }
 
-                        else if (sheet.GetRow(row) != null) //null is when the row only contains empty cells 
+                        //Now we add our training data to our training data list. This is null only when the row contains all empty cells.
+                        else if (sheet.GetRow(row) != null) 
                         {
-                            //Assumption 1: The class will always be the first value in the row.
-                            //Only add the outputClassName IF it is distinct so we can 1-to-1 match with outputClass.
+                            /// Assumpetion 1: The class name will always be the first value in a row. 
+                            /// We only add the class name if it is a new value (distinct).
                             string className = Convert.ToString(sheet.GetRow(row).GetCell(0).StringCellValue);
 
-                            //if the outputClassNames list ISN'T already contained the current class name, then we don't add it to the list.
+                            //If the class name is already in the class name list, then we don't add it.
                             if (outputClassNames.Contains(className) == false)
                                 outputClassNames.Add(className);
 
@@ -179,38 +585,37 @@ namespace KNearestNeighbor
                             if (outputClassNames.Contains(className) == true)
                                 outputClass.Add(outputClassNames.IndexOf(className));
 
-                            //Assumption 2: The data label will always be the second value in the row.
+                            /// Assumption 2: The training data label will always be the second value in a row.
                             trainingSetLabel.Add(Convert.ToString(sheet.GetRow(row).GetCell(1).StringCellValue));
 
-                            //Always going to start adding the training attributes at location 2 in excel.
+                            //Reset the location to 2 so we start with the first attribute and not the class.
                             location = 2;
 
                             //temp list to store the current training set attributes.
-                            List<double> temp = new List<double>();
+                            List<double> currentRowValues = new List<double>();
 
                             //While there are still values in the row we add them to our training set data.
                             while (sheet.GetRow(row).GetCell(location) != null)
                             {
-                                temp.Add(Convert.ToDouble(sheet.GetRow(row).GetCell(location).NumericCellValue));
+                                currentRowValues.Add(Convert.ToDouble(sheet.GetRow(row).GetCell(location).NumericCellValue));
                                 location++;
                             }
 
-                            trainingSet.Add(temp); //Add the list of temp values to the training set.
+                            //Add the list of temp values to the training set.
+                            trainingSet.Add(currentRowValues); 
                         }
                     }
 
-                    fileUrl = openFileDialog1.FileName; //Need to set the value of the current file.
+                    //We give the user our count of the number of attributes.
                     predictAttributeNumLabel.Text = string.Format("We see {0} attributes.", attributeNames.Count);
+
+                    //Now actually display the DGV with our data.
                     populateDataGrid(xssfwb, sheet);
 
-                    //There are no previous values.
-                    if(tempInputArray.Count == 0)
-                        populateAttributeList();
+                    //Now display the list of attributes dynamically.
+                    populateAttributeList();
 
-                    else
-                        populateAttributeList(tempInputArray);
-
-                    //Now allow them to be able to manipulate the data.
+                    //Now allow them to be able to manipulate the data and attempt to click next.
                     kValueTB.Enabled = true;
                     dontNormalizeInputDataCheckBox.Enabled = true;
                     dontNormalizeTrainingDataCheckBox.Enabled = true;
@@ -230,8 +635,8 @@ namespace KNearestNeighbor
                     MessageBoxIcon.Error,
                     MessageBoxDefaultButton.Button1);
 
-                if(errorMessage == DialogResult.OK)
-                    button1_Click(sender, e); //Restart the dialog process.
+                if (errorMessage == DialogResult.OK)
+                    browseButton_Click(sender, e); //Restart the dialog process.
             }
 
             catch (System.IO.IOException error)
@@ -248,102 +653,16 @@ namespace KNearestNeighbor
                     MessageBoxDefaultButton.Button1);
 
                 if (errorMessage == DialogResult.OK)
-                    button1_Click(sender, e); //Restart the dialog process.
+                    browseButton_Click(sender, e); //Restart the dialog process.
             }
         }
 
-        //What about taking the data sheet itself as the input and then creating the view from the excel file directly?
-        private void populateDataGrid(XSSFWorkbook xssfwb, ISheet sheet)
-        {
-
-            DataTable table = new DataTable();
-            IRow headerRow = sheet.GetRow(0);
-
-            int cellCount = headerRow.LastCellNum;
-
-            for (int i = headerRow.FirstCellNum; i < cellCount; i++)
-            {
-                DataColumn column = new DataColumn(headerRow.GetCell(i).StringCellValue);
-                table.Columns.Add(column);
-            }
-
-            int rowCount = sheet.LastRowNum;
-            //set i to sheet.FirstRowNum + 1 so it bypasses the first (header) row.
-            for (int i = (sheet.FirstRowNum + 1); i <= sheet.LastRowNum; i++)
-            {
-                IRow row = sheet.GetRow(i);
-                DataRow dataRow = table.NewRow();
-                for (int j = row.FirstCellNum; j < cellCount; j++)
-                {
-                    if (row.GetCell(j) != null)
-                        dataRow[j] = row.GetCell(j).ToString();
-                }
-
-                table.Rows.Add(dataRow);
-            }
-
-                dataGridView1.DataSource = table;
-            }
-
-        //If there is any previous data, then we need to pass it in.
-        private void populateAttributeList(List<Object> previousText)
-        {
-            tableLayoutPanel1.Controls.Clear(); //If they keep changing the value then we should remove the current rows.
-
-            int numAttributes = attributeNames.Count;
-
-            //Add values starting from zero to value - 1.
-            int column = 2;
-            for (int count = 1; count <= numAttributes; count++)
-            {
-                int row = count;
-                //inputSet.Add(count - 1);
-
-                System.Windows.Forms.Label temp = new System.Windows.Forms.Label();
-                temp.Text = attributeNames.ElementAt(count - 1).ToString() + ": ";
-
-                tableLayoutPanel1.Controls.Add(temp, 0, row);
-
-                //I need to be explicit and set a name so I can reference the fields later.
-                System.Windows.Forms.TextBox tempTB = new System.Windows.Forms.TextBox();
-                tempTB.Name = "attribute" + count + "TB"; //attribute1TB, attribute2TB...
-
-                // If there is ANY text in the textbox from before, let's put it back.
-                if (Convert.ToString(previousText[count - 1]) != "")
-                    tempTB.Text = Convert.ToString(previousText[count - 1]);
-
-                
-                tableLayoutPanel1.Controls.Add(tempTB, column, row);
-            }
-        }
-
-        //There is no previous data so we don't need to call that method.
-        private void populateAttributeList()
-        {
-            tableLayoutPanel1.Controls.Clear(); //If they keep changing the value then we should remove the current rows.
-
-            int numAttributes = attributeNames.Count;
-
-            //Add values starting from zero to value - 1.
-            int column = 2;
-            for (int count = 1; count <= numAttributes; count++)
-            {
-                int row = count;
-                //inputSet.Add(count - 1);
-
-                System.Windows.Forms.Label temp = new System.Windows.Forms.Label();
-                temp.Text = attributeNames.ElementAt(count - 1).ToString() + ": ";
-
-                tableLayoutPanel1.Controls.Add(temp, 0, row);
-
-                //I need to be explicit and set a name so I can reference the fields later.
-                System.Windows.Forms.TextBox tempTB = new System.Windows.Forms.TextBox();
-                tempTB.Name = "attribute" + count + "TB"; //attribute1TB, attribute2TB...
-
-                tableLayoutPanel1.Controls.Add(tempTB, column, row);
-            }
-        }
-
+        /// <summary>
+        /// Set the k value enetered into the textbox to the value entered. Then perform validation on that value.
+        /// Display any errors if the value is not permitted.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void kValueTB_TextChanged(object sender, EventArgs e)
         {
             string kValue = kValueTB.Text;
@@ -351,20 +670,21 @@ namespace KNearestNeighbor
             DataValidation.ValidateKValue(errorProviderK, kValue, kValueTB, trainingSet);
         }
 
-        private void groupBox1_TextChanged(object sender, EventArgs e)
-        {
-            string value = tableLayoutPanel1.GetControlFromPosition(2, 1).Text;
-        }
-
+        /// <summary>
+        /// This method contians the validation rules for the inital data step.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void initialDataStep2_Validating(object sender, CancelEventArgs e)
         {
             //THESE TWO LINES ARE REQUIRED OR THE VALIDATION WON'T WORK PROPERLY.
-            DataValidation.RemoveProviderErrors(errorProviderAttributes); //Zero out the errors.
-            DataValidation.RemoveProviderErrors(errorProviderK); //Zero out the errors.
+            DataValidation.RemoveProviderErrors(errorProviderAttributes); //Zero out the previous errors (if any).
+            DataValidation.RemoveProviderErrors(errorProviderK); //Zero out the previous errors (if any).
 
             int numAttributes = attributeNames.Count;
             bool valid = true; //Assume the data is valid unless we find something invalid.
 
+            //Run validation on each attribute entered.
             for (int count = 1; count <= numAttributes; count++)
             {
                 string textBoxName = "attribute" + count + "TB";
@@ -374,20 +694,22 @@ namespace KNearestNeighbor
                 DataValidation.ValidateAttributes(errorProviderAttributes, value, textBox, false);
             }
 
-            //Validate the K-Value
+            //Run validation on the K-Value
             string kValue = kValueTB.Text;
             DataValidation.ValidateKValue(errorProviderK, kValue, kValueTB, trainingSet);
 
             //Check if the data has been normalized properly (or at all). We are HOPING they normalized it properly.
             if (dontNormalizeInputDataCheckBox.Checked)
             {
-                int count = 0;
+                int count = 0; //So we can display an error message.
                 for (int index = 1; index <= numAttributes; index++)
                 {
                     string textBoxName = "attribute" + index + "TB";
                     System.Windows.Forms.TextBox textBox = (System.Windows.Forms.TextBox)this.tableLayoutPanel1.Controls[textBoxName];
                     string value = this.tableLayoutPanel1.Controls[textBoxName].Text;
 
+                    //If there is a single attribute value that isn't in the range [0,1], then the data cannot possibly be normalized.
+                    //We already exclude negative numbers so we just check that it is less than 1.
                     if (Convert.ToDouble(value) > 1)
                     {
                         count++;
@@ -413,11 +735,13 @@ namespace KNearestNeighbor
             //Check if the training data has been normalized properly (or at all).
             if (dontNormalizeTrainingDataCheckBox.Checked)
             {
-                int count = 0;
+                int count = 0; //So we can display an error message.
                 foreach (var listElement in trainingSet)
                 {
-                    foreach(var element in listElement)
+                    foreach (var element in listElement)
                     {
+                        //If there is a single attribute value that isn't in the range [0,1], then the data cannot possibly be normalized.
+                        //We already exclude negative numbers so we just check that it is less than 1.
                         if (element > 1)
                         {
                             count++;
@@ -445,57 +769,59 @@ namespace KNearestNeighbor
                 }
             }
 
-            if(errorProviderAttributes.HasErrors() || errorProviderK.HasErrors())
+            //Invalidate this step if there are any errors in the attributes or k value.
+            if (errorProviderAttributes.HasErrors() || errorProviderK.HasErrors())
                 valid = false;
-            
-            if(valid == false)
+
+            //There are errors, so we DO NOT move onto the initialDataStep2_Validated method. Instead we tell the user to fix their issues.
+            if (valid == false)
             {
                 //Setting it to currentStep - 1 because after this method call the step will be incremented. (Out of my control).
                 baseControl.CurrentStepIndex = 0;
                 e.Cancel = true;
             }
 
-            //Now that the data is true, let's make an explicit call to the validation method for Step2.
-            else if(valid == true)
+            //If there are no errors, then we move onto the initialDataStep2_Validated method.
+            else if (valid == true)
                 initialDataStep2_Validated(sender, e);
         }
 
-        //Allow me to close the program without having to first fix the errors.
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            e.Cancel = false;
-            base.OnClosing(e);
-        }
-
-        //If all the information is correct, compute the KNN.
-
-        //If the user checked "don't normalize input data" AND it validated properly, then we are assuming the data is normalized. We just need to 
-        //handle the case in which we have to normalize the data. (Most likely the majority of situations).
-
-        //If the user checked "don't normalize training data" AND it validated properly, then we are assuming the data is normalized. We just need
-        //to handle the case in which we have to normalize the data. (Most likely the majority of situations).
+        /// <summary>
+        /// This method runs only after the data in step 2 (initial data step) has been successfully validated. This is where we actually 
+        /// call the compute method for the K-NN algorithm. This method also serves as a sort of initializer for the display data step.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void initialDataStep2_Validated(object sender, EventArgs e)
         {
             int numAttributes = attributeNames.Count;
 
+            /// Case: In the event we compute the KNN (procede successfully to view the data) and then click the "back" option and decide 
+            /// to change the information.
+            /// Solution: Reset ALL of the values prior to entering new ones.
+            normalizedInputSet.Clear(); //Remove all members of the input set.
+            normalizedTrainingSet.Clear(); //Remove all members of the training set.
+            plotXComboBox.Items.Clear(); //Remove all of the elements in the dropdown list for the x-coordinate
+            plotYComboBox.Items.Clear(); //Remove all of the elements in the dropdown list for the y-coordinates.
+            plotXComboBox.ResetText(); //Set the text back to blank.
+            plotYComboBox.ResetText(); //Set the text back to blank.
+            plotXComboBox.SelectedIndex = -1; //Set the selected index to the default index.
+            plotYComboBox.SelectedIndex = -1; //Set the selected index to the default index.
+            showKDistancesRadioButton.Checked = false; //Reset the k distances radio button.
+            showAllDistancesRadioButton.Checked = false; //Reset the ALL distances radio button.
+
+            closestCompetitorNameLabel.Text = "N/A"; //Set the name label back to default.
+            closestCompetitorClassLabel.Text = "N/A"; //Set the class name label back to default.
+            closestCompetitorDistanceLabel.Text = "N/A"; //Set the distance label back to default.
+
+            // The input data has been normalized by the user AND we validated that it *appeared* to be normalized.
+            if(dontNormalizeInputDataCheckBox.Checked == true)
+                normalizedInputSet = inputSet;
+
+            //We need to normalize the input data.
             if (dontNormalizeInputDataCheckBox.Checked == false)
             {
-                //In the event we compute the KNN (procede successfully to view the data) and then click the "back" button and decide to change 
-                //the information.
-                //TODO: Investigate the instance in which the doNotNormalizeTrainingData/doNotNormalizeInputData is checked.
-                normalizedInputSet.Clear(); //Remove all members of the input set.
-                normalizedTrainingSet.Clear(); //Remove all members of the training set.
-                plotXComboBox.Items.Clear(); //Remove all of the elements in the dropdown list for the x-coordinate
-                plotYComboBox.Items.Clear(); //Remove all of the elements in the dropdown list for the y-coordinates.
-                plotXComboBox.ResetText(); //Set the text back to blank.
-                plotYComboBox.ResetText(); //Set the text back to blank.
-                plotXComboBox.SelectedIndex = -1; //Set the selected index to the default index.
-                plotYComboBox.SelectedIndex = -1; //Set the selected index to the default index.
-
-                closestCompetitorNameLabel.Text = "N/A"; //Set the name label back to default.
-                closestCompetitorClassLabel.Text = "N/A"; //Set the class name label back to default.
-                closestCompetitorDistanceLabel.Text = "N/A"; //Set the distance label back to default.
-
+                //Add the normalized inputs to the normalizedInputs list.
                 for (int count = 1; count <= numAttributes; count++)
                 {
                     string textBoxName = "attribute" + count + "TB"; //create textbox name
@@ -508,30 +834,27 @@ namespace KNearestNeighbor
                 }
             }
 
-            //Then it has already been normalized AND confirmed by the user, just set the normalized input list to be the input list.
-            else
-                normalizedInputSet = inputSet;
-            
-
-            if(dontNormalizeTrainingDataCheckBox.Checked == false)
-                normalizedTrainingSet = NormalizeData.Normalize(trainingSet, inputSet, numAttributes);
-
-            else
+            //We don't need to normalize the training data.
+            if (dontNormalizeTrainingDataCheckBox.Checked == true)
                 normalizedTrainingSet = trainingSet;
 
-            string kValue = kValueTB.Text;
-            //initialize our KNN object.
-            knn = new KNearestNeighborAlgorithm(Convert.ToInt32(kValueTB.Text), trainingData: trainingSet, outputs: outputClass); //initialize our algorithm with inputs
+            //We need to normalize the training data.
+            else if (dontNormalizeTrainingDataCheckBox.Checked == false)
+                normalizedTrainingSet = NormalizeData.Normalize(trainingSet, inputSet, numAttributes);
 
+            //Set the validated k-value in the textbox to be our k.
+            k = Convert.ToInt32(kValueTB.Text);
+
+            //Initialize our KNN object with the chosen k-value and our training set with its classes.
+            knn = new KNearestNeighborAlgorithm(Convert.ToInt32(kValueTB.Text), trainingData: trainingSet, outputs: outputClass);
+
+            //We classify our input with relative to the normalized input and training set and the k-value.
             inputClass = knn.Compute(normalizedInputSet, normalizedTrainingSet);
 
+            //Show the closest competitor
             closestCompetitor.Text = Convert.ToString(outputClassNames.ElementAt(inputClass));
 
-            var listOfDistances = knn.getDistances();
-
-            //Now add the dropdown options to the graph section.
-            
-
+            //Add the dropdown choices for plotting attributes.
             foreach (var element in attributeNames)
             {
                 plotXComboBox.Items.Add(element);
@@ -539,157 +862,25 @@ namespace KNearestNeighbor
             }
         }
 
-        //Custom code for individual steps.
-        private void wizardControl2_CurrentStepIndexChanged(object sender, EventArgs e)
-        {
-            //Data initialize step.
-            if (baseControl.CurrentStepIndex == 0)
-                baseControl.NextButtonEnabled = true;
+        #endregion
 
-            //Data initialize step.
-            if (baseControl.CurrentStepIndex == 1)
-            { 
-                //If they haven't chosen a file yet (the label hasn't been changed), don't let them proceed to the next step.
-                if (fileLocationLabel.Text.Equals("N/A"))
-                    baseControl.NextButtonEnabled = false;
+        #region Data Display Step
 
-                //If they entered a file, then clicked "back" and then came back to this step, then let them go to the next 
-                //step since they have already entered a file if the file name field has already been populated.
-                else
-                    baseControl.NextButtonEnabled = true;
-
-                try
-                {
-                    //Need to clear or else it will loop the text in the box each time a failure occurs.
-                    dataInitializationInstructionsTB.Clear(); 
-                    string instructionsDocument = global::KNearestNeighbor.Properties.Resources.inputdatainstructions;
-                    string[] lines = instructionsDocument.Split("\r".ToCharArray());
-
-                    int orderCount = 0;
-                    for (int index = 0; index < lines.Count(); index++)
-                    {
-                        StringExtensions.ParseLine(dataInitializationInstructionsTB, lines[index], orderCount, ref orderCount, 10, "Times New Roman");
-                        //            orderCount++;
-                    }
-
-                }
-
-                catch (System.IO.FileNotFoundException error)
-                {
-                    Console.WriteLine("We could not find the text file to display the instructions for step 2 (initialize data step). ");
-                    Console.WriteLine("Packed Message: " + error.Message);
-                    Console.WriteLine("Call Stack: " + error.StackTrace);
-
-                    DialogResult errorMessage = MessageBox.Show(String.Format("Unfortunately, the instructions file cannot be found. Please report this error to the administrator. "),
-                        "Error",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error,
-                        MessageBoxDefaultButton.Button1);
-
-                    if (errorMessage == DialogResult.OK)
-                        Environment.Exit(1);
-                }
-            }
-                
-
-            //Data display step.
-            else if (baseControl.CurrentStepIndex == 2)
-            {
-                //baseControl.BackButtonEnabled = false;
-
-                baseControl.CancelButtonEnabled = true;
-                baseControl.CancelButtonText = "New";
-                baseControl.CancelButtonVisible = true;
-
-                //Make sure the legend doesn't already exist.
-                if(chart1.Legends.Count < 1)
-                    chart1.Legends.Add("Legend");
-
-                //Remove all generated information from the chart if any exist.
-                chart1.Series.Clear();
-
-                Random randomGen = new Random();
-
-                List<Color> acceptableColorList = new List<Color>
-                {
-                    Color.Maroon, //This will be our input data point color.
-                    Color.Orange,
-                    Color.Fuchsia,
-                    Color.Lime,
-                    Color.Aqua,
-                    Color.LightBlue,
-                    Color.DarkBlue,
-                    Color.SlateGray,
-                    Color.DarkGreen,
-                    Color.LightCoral,
-                    Color.Red,
-                    Color.BlueViolet
-
-                    //In the case that there are more than 12 classes, just generate a random color.
-                };
-
-                List<int> pickedColors = new List<int>();
-
-                int count = 0;
-                int temp312 = outputClass.Distinct().Count();
-
-                
-
-                while (count < outputClass.Distinct().Count())
-                {
-                    chart1.Series.Add("Class " + count);
-                    chart1.Series[count].LegendText = outputClassNames[count];
-                    chart1.Series[count].ChartType = SeriesChartType.Point; //Point graph.
-                    chart1.Series[count].MarkerStyle = MarkerStyle.Circle;
-                    chart1.Series[count].MarkerSize = 6; //Might look into parameterizing this to give the user the option of increasing the size.
-
-                    bool uniqueColor = false;
-
-                    while(uniqueColor == false)
-                    {
-                        int colorPositionInList = randomGen.Next(1, acceptableColorList.Count - 1);
-
-                        //If the color is unique, we will add it. Otherwise, we will pick another color from the list.
-                        if(!pickedColors.Contains(colorPositionInList))
-                        {
-                            //Set the series color.
-                            chart1.Series[count].MarkerColor = acceptableColorList.ElementAt(colorPositionInList);
-
-                            //Add the element location to our list so we don't pick the same color again.
-                            pickedColors.Add(colorPositionInList); 
-
-                            //Drop from the while loop.
-                            uniqueColor = true;
-                        }
-
-                        //If we have assigned all of the static colors, then we need to grab a random color.
-                        if(pickedColors.Count >= (acceptableColorList.Count - 1))
-                        {
-                            chart1.Series[count].MarkerColor = Color.FromArgb((byte)randomGen.Next(255), (byte)randomGen.Next(255), (byte)randomGen.Next(255));
-                        }
-                    }
-
-                    count++;
-                }
-
-                //Create out input data point.
-                chart1.Series.Add("My Input");
-                chart1.Series[count].ChartType = SeriesChartType.Point; //Point graph.
-                chart1.Series[count].MarkerColor = acceptableColorList.ElementAt(0); //Set the color to be the first in the list.
-                chart1.Series[count].MarkerStyle = MarkerStyle.Square;
-                chart1.Series[count].MarkerSize = 7; //Might look into parameterizing this to give the user the option of increasing the size.
-            }
-        }
-
+        /// <summary>
+        /// Runs validation and actually plots the points on the graph when the plot button is clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void plotButton_Click(object sender, EventArgs e)
         {
             //Remove errors (if any) so we can revalidate during the next iteration.
             DataValidation.RemoveProviderErrors(errorProviderPlot);
 
+            //We assume there aren't any errors in the plot.
             bool valid = true;
 
             //Clear previous data (if any) from the canvas.
-            foreach(var series in chart1.Series)
+            foreach (var series in chart1.Series)
                 series.Points.Clear();
 
             int xCoord = plotXComboBox.SelectedIndex;
@@ -697,234 +888,56 @@ namespace KNearestNeighbor
 
             DataValidation.ValidateCoordinates(errorProviderPlot, xCoord, yCoord, plotXComboBox, plotYComboBox);
 
+            //If the user selected incorrect values in the PlotX and PlotY dropdowns (or any error involving the selection).
             if (errorProviderPlot.HasErrors())
                 valid = false;
 
             //Go ahead and plot everything, there are no errors.
             if (valid == true)
             {
-                bool returnKDistances = false;
+                bool returnKDistances = false; //Flag to check if the user wants to show the distances.
+                bool showAllDistances = false; //Flag to check if the user wants to show ALL distances.
+                int showDistanceKValue = 0; //Value we pass into the plot to plot k values (could be some or all).
 
                 //User wants to display the k distances
-                if(showKDistancesCheckBox.Checked == true)
+                if (showKDistancesRadioButton.Checked == true)
                 {
                     returnKDistances = true;
-                    
+                    showDistanceKValue = k; //Will only send k points.
+                }
+
+                //User wants to display all the distances.
+                else if(showAllDistancesRadioButton.Checked == true)
+                {
+                    returnKDistances = true;
+                    showAllDistances = true;
+                    showDistanceKValue = trainingSet.Count; //Will send every point.
                 }
 
                 //Find the closest competitor given the two chosen attributes.
-                List<List<Object>> closestCompetitor = knn.FindNearestCompetitor(normalizedInputSet, normalizedTrainingSet, xCoord, yCoord, returnKDistances, Convert.ToInt32(kValueTB.Text));
+                List<List<Object>> closestCompetitor = knn.FindNearestCompetitor(normalizedInputSet, normalizedTrainingSet, xCoord, yCoord, returnKDistances, showDistanceKValue);
 
-                var closestCompetitorNameIndex = (int) closestCompetitor[0][0];
-                var closestCompetitorClassIndex = (int) closestCompetitor[0][1];
+                //Set the outputs for the closest competitor given the two attributes.
+                var closestCompetitorNameIndex = (int)closestCompetitor[0][0];
+                var closestCompetitorClassIndex = (int)closestCompetitor[0][1];
                 var closestCompetitorDistance = closestCompetitor[0][2];
 
                 closestCompetitorNameLabel.Text = trainingSetLabel[closestCompetitorNameIndex];
                 closestCompetitorClassLabel.Text = Convert.ToString(outputClassNames[closestCompetitorClassIndex]);
                 closestCompetitorDistanceLabel.Text = StringExtensions.Truncate(Convert.ToString(closestCompetitorDistance), 8);
 
+                var listOfDistances = knn.getclosestCompetitorDistances();
+
                 //Now remove that first input (we don't need it anymore).
                 closestCompetitor.RemoveAt(0);
 
-                Plot.PlotPoints(chart1, xCoord, yCoord, normalizedTrainingSet, normalizedInputSet, outputClass, outputClassNames, attributeNames, trainingSetLabel);
+                //Plot the graph given our parameters.
+                Plot.PlotPoints(chart1, xCoord, yCoord, normalizedTrainingSet, normalizedInputSet, outputClass, outputClassNames, attributeNames, trainingSetLabel, returnKDistances, listOfDistances, showDistanceKValue, showAllDistances);
 
+                //Display the graph.
                 chart1.Show();
             }
         }
-
-        private void programDescriptionTB_LinkClicked(object sender, LinkClickedEventArgs e)
-        {
-            Process.Start(e.LinkText);
-        }
-
-        private void Wizard_HelpButtonClicked(object sender, EventArgs e)
-        {
-            //The CHM file will be immediately created upon compile and it will reference it in the created location.
-            try
-            {
-                System.Diagnostics.Process.Start("Resources\\knnHelp.CHM");
-            }
-
-            //If the file has been moved, notify the user that we cannot display the help file because it has been moved.
-            catch(System.ComponentModel.Win32Exception error)
-            {
-                Console.WriteLine("We could not find the text file to display the instructions for step 2 (initialize data step). ");
-                Console.WriteLine("Packed Message: " + error.Message);
-                Console.WriteLine("Call Stack: " + error.StackTrace);
-
-                DialogResult errorMessage = MessageBox.Show(String.Format("Unfortunately, the help file cannot be found. Please redownload the program or verify that the help file is in Resources/knnHelp.CHM"),
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error,
-                    MessageBoxDefaultButton.Button1);
-            }
-        }
-
-        private void programDescriptionTB_KeyDown(object sender, KeyEventArgs e)
-        {
-            e.Handled = true;
-            e.SuppressKeyPress = true;
-        }
-
-        private void programDescriptionTB_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            e.Handled = true;
-        }
-
-        private void programDescriptionTB_KeyUp(object sender, KeyEventArgs e)
-        {
-            e.Handled = true;
-            e.SuppressKeyPress = true;
-        }
-
-        //We don't want to run any validation when we click the back button. We don't need to.
-        private void baseControl_BackButtonClick(object sender, CancelEventArgs e)
-        {
-            descriptionStep1.CausesValidation = false;
-            initialDataStep2.CausesValidation = false;
-            displayDataStep3.CausesValidation = false;
-        }
-
-        private void baseControl_NextButtonClick(object sender, CancelEventArgs e)
-        {
-            //var nextStep = this.initialDataStep2.Name; //This is the step you expect to be on after hitting the "next" button.
-
-            // currentStep = 0: descriptionStep1
-            // currentStep = 1: initialDataStep2
-            // currentStep = 2: displayDataStep3
-            // ...
-            // This will get the current index. Since I know which step is at which index, I can just compare the numbers.
-            var currentStep = this.baseControl.CurrentStepIndex; 
-
-            // Enable validation for the InitialDataStep2 if I am coming FROM descriptionStep1.
-            if (currentStep == 0)
-                initialDataStep2.CausesValidation = true;
-
-            //Force validation to occur on the InitialDataStep2 if trying to go TO DataDisplayStep.
-            //The case we are accounting for here is when I go from Step 1 to Step 2 (load a file), then back to Step 1 and then attempt 
-            //to go onto Step 3 without adding anymore information. We need to validate the data and tell the user there is an error.
-            if (currentStep == 1)
-            {
-                CancelEventArgs temp = new CancelEventArgs(); //Won't need/use.
-                this.initialDataStep2_Validating(sender, temp);
-                
-                
-                
-
-                var tempasfas = baseControl.CurrentStepIndex;
-
-                displayDataStep3.CausesValidation = true;
-            }
-        }
-
-        #region drawPoints
-        //Threw error. Need to look into this later.
-        //private void chart1_PostPaint(object sender, ChartPaintEventArgs e)
-        //{
-        //    var g = this.CreateGraphics();
-        //    var blackPen = new Pen(Brushes.Black, 3);
-
-        //    //Always going to be drawing FROM our input data point.
-        //    float inputXCoord = (float)chart1.Series[outputClass.Count - 1].Points[0].XValue;
-        //    float inputYCoord = (float)chart1.Series[outputClass.Count - 1].Points[0].YValues[0];
-
-        //    for (int row = 0; row < normalizedTrainingSet.Count; row++)
-        //    {
-        //        float tempXCoord = (float)chart1.Series[Convert.ToString(outputClass)].Points[row].XValue;
-        //        float tempYCoord = (float)chart1.Series[Convert.ToString(outputClass)].Points[row].YValues[row];
-
-        //        g.DrawLine(blackPen, inputXCoord, inputYCoord, tempXCoord, tempYCoord);
-        //    }
-        //}
-
-        //private void plotXComboBox_Validating(object sender, CancelEventArgs e)
-        //{
-        //    try
-        //    {
-        //        int xCoord = plotXComboBox.SelectedIndex;
-        //        int yCoord = plotYComboBox.SelectedIndex;
-
-        //        //Must remove all items to make sure the list is clear and then readd them all so 
-        //        //duplicates aren't added and when different values the list elements don't just get 
-        //        //removed slowly.
-        //        plotXComboBox.Items.Clear(); //Remove all items from the x-comboBox.
-        //        plotYComboBox.Items.Clear(); //Remove all items from the y-comboBox.
-
-        //        //Add all of the possible elements back to each list.
-        //        int curElement = 0;
-        //        foreach (var element in attributeNames)
-        //        {
-        //            if (yCoord != curElement)
-        //                plotXComboBox.Items.Add(element);
-
-        //            if (xCoord != curElement)
-        //                plotYComboBox.Items.Add(element);
-
-        //            curElement++;
-        //        }
-
-        //        //Need to re-set the selected index to display the value in the box.
-        //        plotXComboBox.SelectedIndex = xCoord;
-
-        //        //Now remove the item selected in the x-comboBox from the y-comboBox.
-        //        plotYComboBox.Items.RemoveAt(xCoord);
-        //    }
-
-        //    catch (System.ArgumentOutOfRangeException error)
-        //    {
-        //        Console.WriteLine("The user simply clicked on the combobox but did not select a value since there is no selected index in the combobox. This exception is ok. It was a trade off. ");
-        //        Console.WriteLine("Packed Message: " + error.Message);
-        //        Console.WriteLine("Call Stack: " + error.StackTrace);
-        //    }
-        //}
-
-        //private void plotYComboBox_Validating(object sender, CancelEventArgs e)
-        //{
-        //    try
-        //    {
-        //        //Must be first so we can store the initial chosen coordinate.
-        //        int xCoord = plotXComboBox.SelectedIndex;
-        //        int yCoord = plotYComboBox.SelectedIndex;
-
-        //        //Must remove all items to make sure the list is clear and then readd them all so 
-        //        //duplicates aren't added and when different values the list elements don't just get 
-        //        //removed slowly.
-        //        plotXComboBox.Items.Clear(); //Remove all items from the x-comboBox.
-        //        plotYComboBox.Items.Clear(); //Remove all items from the y-comboBox.
-
-        //        //Add all of the possible elements back to each list.
-        //        int curElement = 0;
-        //        foreach (var element in attributeNames)
-        //        {
-        //            if(yCoord != curElement)
-        //                plotXComboBox.Items.Add(element);
-
-        //            if (xCoord != curElement)
-        //                plotYComboBox.Items.Add(element);
-
-        //            curElement++;
-        //        }
-
-        //        //Need to re-set the selected index to display the value in the box.
-        //        plotYComboBox.SelectedIndex = yCoord;
-
-        //        //Now remove the item selected in the x-comboBox from the y-comboBox.
-        //        plotXComboBox.Items.RemoveAt(yCoord);
-        //    }
-
-        //    catch (System.ArgumentOutOfRangeException error)
-        //    {
-        //        Console.WriteLine("The user simply clicked on the combobox but did not select a value since there is no selected index in the combobox. This exception is ok. It was a trade off. ");
-        //        Console.WriteLine("Packed Message: " + error.Message);
-        //        Console.WriteLine("Call Stack: " + error.StackTrace);
-        //    }
-        //}
         #endregion
-
-        private void baseControl_CancelButtonClick(object sender, EventArgs e)
-        {
-            System.Diagnostics.Process.Start(Application.ExecutablePath);
-            Application.Exit();
-        }
     }
 }

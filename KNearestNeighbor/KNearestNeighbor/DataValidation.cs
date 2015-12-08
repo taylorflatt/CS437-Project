@@ -8,84 +8,112 @@ namespace KNearestNeighbor
 {
     public static class DataValidation
     {
+        /// <summary>
+        /// This method validates the k-value that was entered.
+        /// 
+        /// Input criteria:
+        ///     -Must be a natural number.
+        ///     -Cannot be larger than the number of data points in the training set.
+        /// </summary>
+        /// <param name="ep">The error provider handling the error.</param>
+        /// <param name="value">The value that was entered into the textbox.</param>
+        /// <param name="textbox">The textbox that is being validated and where the error will display.</param>
+        /// <param name="trainingData">The set of training data.</param>
         public static void ValidateKValue(this ErrorProvider ep, string value, TextBox textbox, List<List<double>> trainingData)
         {
-            //If there are any letters or symbols, we throw an error.
+            //The input contained something other than a number.
             if (Regex.Matches(value, @"[a-zA-Z\D]").Count > 0)
             {
                 ep.SetErrorWithCount(textbox, "K-Value cannot contain letters.");
             }
 
-            //If there is nothing typed at all OR if there are no numbers typed, we throw an error.
+            //There was nothing typed.
             else if (value.Count() == 0 || Regex.Matches(value, @"[0-9]").Count == 0)
             {
                 ep.SetErrorWithCount(textbox, "K-Value must contain a number.");
             }
 
-            //If there is a negative number OR there is only a zero typed, we throw an error.
+            //A negative number was entered or just a zero.
             else if (value.Contains("-") || (value.Length == 1 && value.Contains("0")))
             {
                 ep.SetErrorWithCount(textbox, "K-Value must contain a positive number greater than zero.");
             }
 
-            //If the value typed is out of bounds (k-value is larger than our training set size), we throw an error.
+            //The value entered was valid in type but not in size. It was larger than the total number of training inputs.
             else if (Convert.ToInt32(value) > trainingData.Count)
             {
-                ep.SetErrorWithCount(textbox, "K-Value must be less than the number of inputs");
+                ep.SetErrorWithCount(textbox, "K-Value must be less than the number of training set inputs");
             }
         }
 
-        public static void ValidateModel(this ErrorProvider ep, string value, TextBox textbox, double[][] inputs)
-        {
-            if (value.Count() == 0)
-            {
-                ep.SetErrorWithCount(textbox, "The model must have at least 1 character.");
-            }
-
-            else if (value.Count() > 15)
-            {
-                ep.SetErrorWithCount(textbox, "The model cannot be longer than 15 characters.");
-            }
-        }
-
+        /// <summary>
+        /// This method validates the attribute that was entered.
+        /// 
+        /// Input criteria:
+        ///     -Must be a positive real number.
+        /// 
+        /// If discreteValue flag is true, then we should allow letter inputs. But that functionality hasn't be added yet. We 
+        /// would have to populate boxes to determine how to quantify (and normalize) the discrete values.
+        /// </summary>
+        /// <param name="ep">The error provider handling the error.</param>
+        /// <param name="value">The value that was entered into the textbox.</param>
+        /// <param name="textbox">The textbox that is being validated and where the error will display.</param>
+        /// <param name="discreteValue">Flag to check if we allow discrete data. This flag has no function yet.</param>
         public static void ValidateAttributes(this ErrorProvider ep, string value, TextBox textbox, bool discreteValue)
         {
-            //If there are any letters or symbols (except a decimal which we allow), we throw an error.
+            //A symbol (apart from the decimal) or letter was entered.
             if (discreteValue == false && Regex.Matches(value, "[-a-zA-Z/!$%^&*()_+|~=`{}\\[\\]:\"; '<>?,\\/]").Count > 0)
             {
-                ep.SetErrorWithCount(textbox, "This attribute cannot contain letters or symbols apart from numbers.");
+                ep.SetErrorWithCount(textbox, "This attribute cannot contain letters or symbols apart from a decimal point.");
             }
 
-            //If there is nothing typed at all OR if there are no numbers typed, we throw an error.
+            //There was nothing typed.
             else if (value.Count() == 0 || Regex.Matches(value, @"[0-9]").Count == 0)
             {
                 ep.SetErrorWithCount(textbox, "This attribute must contain a number.");
             }
 
-            //If there is a negative number, we throw an error.
+            //A negative number was entered.
             else if (value.Contains("-"))
             {
                 ep.SetErrorWithCount(textbox, "This attribute must contain a positive number greater than zero.");
             }
         }
 
+        /// <summary>
+        /// Validates the dropdown boxes for plotting coordinates on the graph.
+        /// 
+        /// Input criteria:
+        ///     -There must be an x-coordinate and y-coordinate chosen.
+        ///     -The x-coordinate and y-coordinate must not be the same.
+        /// </summary>
+        /// <param name="ep">The error provider handling the error.</param>
+        /// <param name="xCoord">The index of the chosen x-coordinate. It corresponds to a specific attribute index.</param>
+        /// <param name="yCoord">The index of the chosen y-coordinate. It corresponds to a specific attribute index.</param>
+        /// <param name="comboboxX">The combo box that is being validated and where the error will display.</param>
+        /// <param name="comboboxY">The combo box that is being validated and where the error will display.</param>
         public static void ValidateCoordinates(this ErrorProvider ep, int xCoord, int yCoord, ComboBox comboboxX, ComboBox comboboxY)
         {
-            //If the X-coordinate and Y-coordinate are the same attributes, pick different ones.
+            //The x-coordinate and y-coordinate inputs are identical.
             if (xCoord.Equals(yCoord) || yCoord.Equals(xCoord))
             {
                 ep.SetErrorWithCount(comboboxX, "You need to pick two different attributes to plot.");
                 ep.SetErrorWithCount(comboboxY, "You need to pick two different attributes to plot.");
             }
 
+            //No x-coordinate was chosen.
             else if (xCoord == -1)
                 ep.SetErrorWithCount(comboboxX, "You need to select an attribute to plot. ");
 
+            //No y-coordinate was chosen.
             else if (yCoord == -1)
                 ep.SetErrorWithCount(comboboxY, "You need to select an attribute to plot. ");
         }
 
-
+        /// <summary>
+        /// Removes the errors of a specific error provider so that validation may occur as many times as needed.
+        /// </summary>
+        /// <param name="ep">The error provider handling the error.</param>
         public static void RemoveProviderErrors(this ErrorProvider ep)
         {
             ep.RemoveErrors();

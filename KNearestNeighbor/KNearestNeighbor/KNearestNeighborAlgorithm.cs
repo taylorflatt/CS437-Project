@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-//using Accord.Math;
 using System.Collections.Generic;
 
 namespace KNearestNeighbor
@@ -72,19 +71,35 @@ namespace KNearestNeighbor
             }
         }
         
+        /// <summary>
+        /// Empty constructor.
+        /// </summary>
         public KNearestNeighbor() { }
 
+        /// <summary>
+        /// Sets the value of k given a new value.
+        /// </summary>
+        /// <param name="newK">The new k value.</param>
+        /// <returns></returns>
         public int setKValue(int newK)
         {
             k = newK;
             return k;
         }
 
+        /// <summary>
+        /// Returns the list of distances.
+        /// </summary>
+        /// <returns></returns>
         public List<double> getDistances()
         {
             return this.distances;
         }
 
+        /// <summary>
+        /// Returns the list of closest competitor distances (within a k range).
+        /// </summary>
+        /// <returns></returns>
         public List<double> getclosestCompetitorDistances()
         {
             return this.closestCompetitorDistances;
@@ -132,14 +147,14 @@ namespace KNearestNeighbor
             }
         }
 
-        ///// <summary>
-        /////   Computes the most likely label of a new given point.
-        ///// </summary>
-        ///// 
-        ///// <param name="input">A point to be classificated.</param>
-        ///// 
-        ///// <returns>The most likely label for the given point.</returns>
-        ///// 
+        /// <summary>
+        ///   Computes the most likely label of a new given point.
+        /// </summary>
+        /// 
+        /// <param name="input">A point to be classificated.</param>
+        /// 
+        /// <returns>The most likely label for the given point.</returns>
+        /// 
         public int Compute(List<double> normalizedInput, List<List<double>> normalizedTrainingSet)
         {
             for (int i = 0; i < normalizedTrainingSet.Count; i++)
@@ -161,7 +176,7 @@ namespace KNearestNeighbor
                 int label = outputs[j];
                 double d = distances[j];
 
-                scores[label] += 1.0 / d;
+                scores[label] += 1.0 / d; //weights the score.
             }
 
             // Get the maximum weighted score
@@ -172,12 +187,24 @@ namespace KNearestNeighbor
             return result;
         }
 
-
-        //Returns the index of the closest competitor (trainingData), the index of the class (outputClass), and the distance it was from our point.
-        //The FIRST element will ALWAYS be the nearest competitor in the following format:
-        //(the index of the closest competitor (trainingData), the index of the class (outputClass), and the distance it was from our point)
-        //Then the idea is that after we add that information, we print the k number of closest competitor distances so we can display/view them.
-        public List<List<Object>> FindNearestCompetitor(List<double> normalizedInput, List<List<double>> normalizedTrainingSet, int attribute1, int attribute2, bool returnKDistances, int k)
+        /// <summary>
+        /// The output is a List of List objects whose first row is always the closest point to the input data. The rest of the rows 
+        /// (if any)  are the next k closest points to the input point.
+        /// 
+        /// Returns a List of List objects that whose first element will always be the index of the closest competitor (trainingData), the index 
+        /// of the class (outputClass), and the distanace it was from our point. The boolean flag returnKDistances will also add further elements 
+        /// to the list. It will add the k-closest competitors in terms of the index of the closest competitor (trainingData), the index of the 
+        /// class (outputClass), and the distance it was from the input point.
+        /// </summary>
+        /// <param name="normalizedInput">The normalized list of inputs.</param>
+        /// <param name="normalizedTrainingSet">The normalized list of training poitns.</param>
+        /// <param name="attribute1">The first attribute to consider.</param>
+        /// <param name="attribute2">The second attribute to consider.</param>
+        /// <param name="returnKDistances">A boolean to determine if you want to display the closest competitor (k = 1, given attribute 1 
+        /// and attribute 2) or the k-closest competitors (k = dynamic, given attribute 1 and attribute 2) </param>
+        /// <param name="numDistancesToShow">The number of k closest points to show.</param>
+        /// <returns></returns>
+        public List<List<Object>> FindNearestCompetitor(List<double> normalizedInput, List<List<double>> normalizedTrainingSet, int attribute1, int attribute2, bool returnKDistances, int numDistancesToShow)
         {
             List<double> tempInputList = new List<double>(); //Temporary list to hold our normalized inputs.
 
@@ -199,8 +226,6 @@ namespace KNearestNeighbor
                 tempTrainingList.Remove(1); //Remove the second normalized training data point since we are finished with it.
             }
 
-            //distances.Sort(); //Sort the distance array (closest values will be at the top of the list)
-
             //Corresponds to the ROW location in the training set.
             int[] nearestIndices = MathFunctions.Indices(0, normalizedTrainingSet.Count); //Instantiate the nearestIndices list to the right size.
 
@@ -218,99 +243,22 @@ namespace KNearestNeighbor
                             new List<Object> { closestCompetitor, closestCompetitorClass, distanceFromInput }
                         );
 
+            //If we want to add more than the closest competitor:
             if (returnKDistances == true)
             {
-                //Add the closest competitor distances 
-                for (int index = 0; index < k; index++)
+                //Add the closest competitor distances.
+                for (int index = 0; index < numDistancesToShow; index++)
                 {
                     //The indexing for this will START at 1 (so element 1 will be the distance for element 0 in the normalizedTrainingSet).
                     //But we eventually remove the first element in our main class restoring the correct indexing.
                     value.Add
                         (
-                            new List<Object> { closestCompetitorDistances }
+                            new List<Object> { closestCompetitorDistances[index] }
                         );
                 }
             }
             
             return value; 
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        ////Returns the index of the closest competitor (trainingData), the index of the class (outputClass), and the distance it was from our point.
-        //public double[] FindNearestCompetitor(List<double> normalizedInput, List<List<double>> normalizedTrainingSet, int attribute1, int attribute2)
-        //{
-        //    List<double> tempInputList = new List<double>(); //Temporary list to hold our normalized inputs.
-
-        //    tempInputList.Add(normalizedInput[attribute1]); //Add normalized input value for the first given attribute.
-        //    tempInputList.Add(normalizedInput[attribute2]); //Add normalized input value for the second given attribute.
-
-        //    //Iterate through the normalized training data and compute the distance from the data points and out given input points.
-        //    for (int index = 0; index < normalizedTrainingSet.Count; index++)
-        //    {
-        //        List<double> tempTrainingList = new List<double>();
-        //        tempTrainingList.Add(normalizedTrainingSet[index][attribute1]);
-        //        tempTrainingList.Add(normalizedTrainingSet[index][attribute2]);
-
-        //        double distance = MathFunctions.Euclidean(tempInputList, tempTrainingList); //Compute the distance between the two points.
-
-        //        distances[index] = distance; //Add the computed distance to the distances array.
-
-        //        tempTrainingList.Remove(0); //Remove the first normalized training data point since we are finished with it.
-        //        tempTrainingList.Remove(1); //Remove the second normalized training data point since we are finished with it.
-        //    }
-
-        //    //distances.Sort(); //Sort the distance array (closest values will be at the top of the list)
-
-        //    //Corresponds to the ROW location in the training set.
-        //    int[] nearestIndices = MathFunctions.Indices(0, normalizedTrainingSet.Count); //Instantiate the nearestIndices list to the right size.
-
-        //    //Sort the distances stored in the distances array and rearrange the elements in the nearestIndices array to match.
-        //    Array.Sort(distances.ToArray(), nearestIndices);
-
-        //    int closestCompetitor = nearestIndices[0]; //grabs the first element of the array (corresponds to a row in the training set).
-        //    int closestCompetitorClass = outputs[closestCompetitor]; //grabs the class that the element j belongs to.
-        //    double distanceFromInput = distances[closestCompetitor]; //grabs the distance computed (distance the training point is from the input data point)
-
-        //    double[] value = new double[]
-        //    {
-        //        closestCompetitor,
-        //        closestCompetitorClass,
-        //        distanceFromInput
-        //    };
-
-        //    return value;
-        //}
     }
 }

@@ -45,7 +45,7 @@
             this.chooseTrainingDataLabel = new System.Windows.Forms.Label();
             this.predictAttributeNumLabel = new System.Windows.Forms.Label();
             this.numClassesLabel = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.browseButton = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.dontNormalizeInputDataCheckBox = new System.Windows.Forms.CheckBox();
             this.kValueTB = new System.Windows.Forms.TextBox();
@@ -67,6 +67,8 @@
             this.label19 = new System.Windows.Forms.Label();
             this.closestCompetitor = new System.Windows.Forms.Label();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.showAllDistancesRadioButton = new System.Windows.Forms.RadioButton();
+            this.showKDistancesRadioButton = new System.Windows.Forms.RadioButton();
             this.plotButton = new System.Windows.Forms.Button();
             this.label15 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
@@ -230,7 +232,7 @@
             this.groupBox2.Controls.Add(this.chooseTrainingDataLabel);
             this.groupBox2.Controls.Add(this.predictAttributeNumLabel);
             this.groupBox2.Controls.Add(this.numClassesLabel);
-            this.groupBox2.Controls.Add(this.button1);
+            this.groupBox2.Controls.Add(this.browseButton);
             this.groupBox2.Location = new System.Drawing.Point(13, 68);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(592, 73);
@@ -276,19 +278,19 @@
             this.numClassesLabel.TabIndex = 6;
             this.numClassesLabel.Text = "Number of Attributes:";
             // 
-            // button1
+            // browseButton
             // 
-            this.helpProvider1.SetHelpKeyword(this.button1, "TestKeyWord");
-            this.helpProvider1.SetHelpString(this.button1, "TestString");
-            this.button1.Location = new System.Drawing.Point(87, 16);
-            this.button1.Name = "button1";
-            this.helpProvider1.SetShowHelp(this.button1, true);
-            this.button1.Size = new System.Drawing.Size(70, 23);
-            this.button1.TabIndex = 0;
-            this.button1.TabStop = false;
-            this.button1.Text = "Browse";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.helpProvider1.SetHelpKeyword(this.browseButton, "TestKeyWord");
+            this.helpProvider1.SetHelpString(this.browseButton, "TestString");
+            this.browseButton.Location = new System.Drawing.Point(87, 16);
+            this.browseButton.Name = "browseButton";
+            this.helpProvider1.SetShowHelp(this.browseButton, true);
+            this.browseButton.Size = new System.Drawing.Size(70, 23);
+            this.browseButton.TabIndex = 0;
+            this.browseButton.TabStop = false;
+            this.browseButton.Text = "Browse";
+            this.browseButton.UseVisualStyleBackColor = true;
+            this.browseButton.Click += new System.EventHandler(this.browseButton_Click);
             // 
             // groupBox3
             // 
@@ -349,7 +351,6 @@
             this.groupBox1.TabIndex = 13;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Input";
-            this.groupBox1.TextChanged += new System.EventHandler(this.groupBox1_TextChanged);
             // 
             // tableLayoutPanel1
             // 
@@ -373,8 +374,6 @@
             this.displayDataStep3.Controls.Add(this.label13);
             this.displayDataStep3.ForeColor = System.Drawing.SystemColors.ControlText;
             this.displayDataStep3.Name = "displayDataStep3";
-            this.displayDataStep3.Subtitle = resources.GetString("displayDataStep3.Subtitle");
-            this.displayDataStep3.Title = "Data Output";
             // 
             // groupBox7
             // 
@@ -497,6 +496,8 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.showAllDistancesRadioButton);
+            this.groupBox6.Controls.Add(this.showKDistancesRadioButton);
             this.groupBox6.Controls.Add(this.plotButton);
             this.groupBox6.Controls.Add(this.label15);
             this.groupBox6.Controls.Add(this.label16);
@@ -511,6 +512,28 @@
             this.groupBox6.TabIndex = 14;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Graph";
+            // 
+            // showAllDistancesRadioButton
+            // 
+            this.showAllDistancesRadioButton.AutoSize = true;
+            this.showAllDistancesRadioButton.Location = new System.Drawing.Point(363, 37);
+            this.showAllDistancesRadioButton.Name = "showAllDistancesRadioButton";
+            this.showAllDistancesRadioButton.Size = new System.Drawing.Size(116, 17);
+            this.showAllDistancesRadioButton.TabIndex = 16;
+            this.showAllDistancesRadioButton.TabStop = true;
+            this.showAllDistancesRadioButton.Text = "Show All Distances";
+            this.showAllDistancesRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // showKDistancesRadioButton
+            // 
+            this.showKDistancesRadioButton.AutoSize = true;
+            this.showKDistancesRadioButton.Location = new System.Drawing.Point(363, 14);
+            this.showKDistancesRadioButton.Name = "showKDistancesRadioButton";
+            this.showKDistancesRadioButton.Size = new System.Drawing.Size(152, 17);
+            this.showKDistancesRadioButton.TabIndex = 15;
+            this.showKDistancesRadioButton.TabStop = true;
+            this.showKDistancesRadioButton.Text = "Show K-Nearest Distances";
+            this.showKDistancesRadioButton.UseVisualStyleBackColor = true;
             // 
             // plotButton
             // 
@@ -555,9 +578,9 @@
             legend1.Name = "Legend1";
             legend1.Title = "Legend";
             this.chart1.Legends.Add(legend1);
-            this.chart1.Location = new System.Drawing.Point(6, 47);
+            this.chart1.Location = new System.Drawing.Point(6, 53);
             this.chart1.Name = "chart1";
-            this.chart1.Size = new System.Drawing.Size(603, 405);
+            this.chart1.Size = new System.Drawing.Size(603, 399);
             this.chart1.TabIndex = 4;
             this.chart1.Text = "chart1";
             // 
@@ -690,7 +713,7 @@
         private System.Windows.Forms.Label kValueLabel;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button browseButton;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.CheckBox dontNormalizeTrainingDataCheckBox;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
@@ -733,5 +756,7 @@
         private System.Windows.Forms.GroupBox groupBox8;
         private System.Windows.Forms.Label closestCompetitorDistanceLabel;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.RadioButton showAllDistancesRadioButton;
+        private System.Windows.Forms.RadioButton showKDistancesRadioButton;
     }
 }

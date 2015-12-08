@@ -6,14 +6,41 @@ namespace KNearestNeighbor
 {
     public static class StringExtensions
     {
+        /// <summary>
+        /// Truncates a given string to a certain length.
+        /// </summary>
+        /// <param name="value">The string that is to be truncated.</param>
+        /// <param name="maxLength">The maximum lenght of the string.</param>
+        /// <returns>A truncated version of the input value string.</returns>
         public static string Truncate(this string value, int maxLength)
         {
+            //If there is nothing there, just return the value. Nothing to truncate.
             if (string.IsNullOrEmpty(value))
                 return value;
 
             return value.Length <= maxLength ? value : value.Substring(0, maxLength);
         }
 
+        /// <summary>
+        /// Parses text based on several key phrases using regex.
+        /// 
+        /// All values are enclosed in <> </> brackets.
+        /// 
+        /// Phrases:
+        ///     strong - Will bold text.
+        ///     em - Will italicize text.
+        ///     u - Will underline text.
+        ///     h2 - Will increase the size of the font to 24 (default h2 font size).
+        ///     li - Will start a list.
+        ///     ul - Will create an un-ordered list with square bullets.
+        ///     ol - Will create an ordered list with numbers starting at orderCount.
+        /// </summary>
+        /// <param name="richTB">The location of the text.</param>
+        /// <param name="line">The particular line of text to be parsed.</param>
+        /// <param name="orderCount">The starting order number for lists.</param>
+        /// <param name="newCount">The resulting order number for the last list created.</param>
+        /// <param name="fontSize">The font size for the text.</param>
+        /// <param name="fontType">The font type for the text.</param>
         public static void ParseLine(RichTextBox richTB, string line, int orderCount, ref int newCount, int fontSize, string fontType)
         {
             Regex r = new Regex("(\\<strong\\>)|(\\<\\/strong\\>)|(\\<em\\>)|(\\<\\/em\\>)|(\\<li\\>)|(\\<\\/li\\>)|(\\<ul\\>)|(\\<\\/ul\\>)|(\\<ol\\>)|(\\<\\/ol\\>)|(\\<h2\\>)|(\\<\\/h2\\>)|(\\<u\\>)|(\\<\\/u\\>)");
@@ -54,30 +81,35 @@ namespace KNearestNeighbor
             {
                 bool isValid = true; //Allows for the first character in the line to be null and assists in handling the beeping problem.
 
+                //<strong></strong>
                 if (bold == token)
                     richTB.SelectionFont = new Font(fontType, fontSize, FontStyle.Bold);
 
                 else if (endBold == token)
                     richTB.SelectionFont = defaultFont;
 
+                //<em></em>
                 else if (italics == token)
                     richTB.SelectionFont = new Font(fontType, fontSize, FontStyle.Italic);
 
                 else if (endItalics == token)
                     richTB.SelectionFont = defaultFont;
 
+                //<u></u>
                 else if (underline == token)
                     richTB.SelectionFont = new Font(fontType, fontSize, FontStyle.Underline);
 
                 else if (endUnderline == token)
                     richTB.SelectionFont = defaultFont;
 
+                //<h2></h2>
                 else if (h2Start == token)
                     richTB.SelectionFont = new Font(fontType, 24, FontStyle.Regular);
 
                 else if (h2End == token)
                     richTB.SelectionFont = defaultFont;
 
+                //Maintenance
                 else if (listStart == token)
                     newCount = 0; //Reset numbering
 

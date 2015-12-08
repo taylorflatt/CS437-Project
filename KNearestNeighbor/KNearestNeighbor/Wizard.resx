@@ -2036,9 +2036,6 @@
   <data name="initialDataStep2.Subtitle" xml:space="preserve">
     <value>We assume that the training data's first column for each row is the class of the data point. Further, we assume that the second column is the point's label The rest are considered attributes. After entering all the values, click next to compute KNN.</value>
   </data>
-  <data name="displayDataStep3.Subtitle" xml:space="preserve">
-    <value>The closest neighbor to your input given the k value is on the left. Then you may plot two attibutes viewing their relationship to the input data point. The closest neighbor information is also computed for your input given those two attributes only. Click back or next to enter new data.</value>
-  </data>
   <metadata name="openFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
