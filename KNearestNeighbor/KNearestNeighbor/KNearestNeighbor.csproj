@@ -187,6 +187,10 @@
     <None Include="packages.config" />
     <None Include="Properties\DataSources\KNearestNeighborTest.datasource" />
     <None Include="Properties\DataSources\Wizard.datasource" />
+    <None Include="Resources\icon.ico" />
+    <None Include="openofficeorg_math_2ze_icon.ico" />
+    <None Include="orange-light-top.png" />
+    <None Include="orange-light-main-top.png" />
     <Content Include="Resources\knnHelp.CHM">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -197,8 +201,8 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Wizard.resx">
       <DependentUpon>Wizard.cs</DependentUpon>

@@ -33,12 +33,17 @@ namespace KNearestNeighbor
         protected List<string> outputClassNames = new List<string>(); //Name we read from the data. (Assume this is first).
         protected List<string> attributeNames = new List<string>(); //without make/model
 
-        int inputClass;
+        protected int inputClass;
+        protected string fileUrl;
 
         public Wizard()
         {
             InitializeComponent();
             this.AutoValidate = AutoValidate.Disable; //Don't let the form validate anything. I have custom validation handling.
+
+            //So the user can't enter their own data in the combobox.
+            plotXComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            plotYComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
 
             try
             {
@@ -83,6 +88,7 @@ namespace KNearestNeighbor
             try
             {
                 DialogResult result = openFileDialog1.ShowDialog();
+                
 
                 //If they cancel out of the dialog (not selecting a file).
                 if (result == DialogResult.Cancel || result == DialogResult.Abort)
@@ -97,6 +103,51 @@ namespace KNearestNeighbor
                     {
                         xssfwb = new XSSFWorkbook(file);
                         fileLocationLabel.Text = openFileDialog1.SafeFileName;
+                    }
+
+                    List<Object> tempInputArray = new List<Object>();
+
+                    //If it is a new file, then just clear the fields.
+                    if (openFileDialog1.FileName != fileUrl)
+                    {
+                        attributeNames.Clear(); //Clear the attributes.
+                        kValueTB.Clear(); //Clear the k-value.
+
+                        //Clear our data sets as well.
+                        inputSet.Clear();
+                        trainingSet.Clear();
+                        normalizedInputSet.Clear();
+                        normalizedTrainingSet.Clear();
+                        outputClassNames.Clear();
+                        outputClass.Clear();
+                    }
+
+                    if (openFileDialog1.FileName == fileUrl)
+                    {
+                        int numAttributes = attributeNames.Count;
+
+                         //We don't care about the information in the boxes. Just carry it over.
+                        //List<int> nullPositions = new List<int>(); //need another array to track null values and their position.
+
+                        for (int count = 1; count <= numAttributes; count++)
+                        {
+                            string textBoxName = "attribute" + count + "TB"; //create textbox name
+                            System.Windows.Forms.TextBox textBox = (System.Windows.Forms.TextBox)this.tableLayoutPanel1.Controls[textBoxName];
+                            string value = this.tableLayoutPanel1.Controls[textBoxName].Text; //get the value in that textbox
+
+                            DataValidation.ValidateAttributes(errorProviderAttributes, value, textBox, false);
+
+                            tempInputArray.Add(value);
+                        }
+
+                        //reset the attribute names first.
+                        attributeNames.Clear();
+                    }
+
+                    //We only clear the data if they have selected a NEW file.
+                    else if (openFileDialog1.FileName != fileUrl)
+                    {
+                        dataGridView1.ClearSelection();
                     }
 
                     ISheet sheet = xssfwb.GetSheet("Sheet1");
@@ -148,9 +199,16 @@ namespace KNearestNeighbor
                         }
                     }
 
+                    fileUrl = openFileDialog1.FileName; //Need to set the value of the current file.
                     predictAttributeNumLabel.Text = string.Format("We see {0} attributes.", attributeNames.Count);
                     populateDataGrid(xssfwb, sheet);
-                    populateAttributeList();
+
+                    //There are no previous values.
+                    if(tempInputArray.Count == 0)
+                        populateAttributeList();
+
+                    else
+                        populateAttributeList(tempInputArray);
 
                     //Now allow them to be able to manipulate the data.
                     kValueTB.Enabled = true;
@@ -227,35 +285,63 @@ namespace KNearestNeighbor
                 dataGridView1.DataSource = table;
             }
 
+        //If there is any previous data, then we need to pass it in.
+        private void populateAttributeList(List<Object> previousText)
+        {
+            tableLayoutPanel1.Controls.Clear(); //If they keep changing the value then we should remove the current rows.
+
+            int numAttributes = attributeNames.Count;
+
+            //Add values starting from zero to value - 1.
+            int column = 2;
+            for (int count = 1; count <= numAttributes; count++)
+            {
+                int row = count;
+                //inputSet.Add(count - 1);
+
+                System.Windows.Forms.Label temp = new System.Windows.Forms.Label();
+                temp.Text = attributeNames.ElementAt(count - 1).ToString() + ": ";
+
+                tableLayoutPanel1.Controls.Add(temp, 0, row);
+
+                //I need to be explicit and set a name so I can reference the fields later.
+                System.Windows.Forms.TextBox tempTB = new System.Windows.Forms.TextBox();
+                tempTB.Name = "attribute" + count + "TB"; //attribute1TB, attribute2TB...
+
+                // If there is ANY text in the textbox from before, let's put it back.
+                if (Convert.ToString(previousText[count - 1]) != "")
+                    tempTB.Text = Convert.ToString(previousText[count - 1]);
+
+                
+                tableLayoutPanel1.Controls.Add(tempTB, column, row);
+            }
+        }
+
+        //There is no previous data so we don't need to call that method.
         private void populateAttributeList()
         {
             tableLayoutPanel1.Controls.Clear(); //If they keep changing the value then we should remove the current rows.
 
             int numAttributes = attributeNames.Count;
 
-            try
+            //Add values starting from zero to value - 1.
+            int column = 2;
+            for (int count = 1; count <= numAttributes; count++)
             {
-                //Add values starting from zero to value - 1.
-                int column = 2;
-                for (int count = 1; count <= numAttributes; count++)
-                {
-                    int row = count;
-                    //inputSet.Add(count - 1);
+                int row = count;
+                //inputSet.Add(count - 1);
 
-                    System.Windows.Forms.Label temp = new System.Windows.Forms.Label();
-                    temp.Text = attributeNames.ElementAt(count - 1).ToString() + ": ";
+                System.Windows.Forms.Label temp = new System.Windows.Forms.Label();
+                temp.Text = attributeNames.ElementAt(count - 1).ToString() + ": ";
 
-                    tableLayoutPanel1.Controls.Add(temp, 0, row);
+                tableLayoutPanel1.Controls.Add(temp, 0, row);
 
-                    //I need to be explicit and set a name so I can reference the fields later.
-                    System.Windows.Forms.TextBox tempTB = new System.Windows.Forms.TextBox();
-                    tempTB.Name = "attribute" + count + "TB"; //attribute1TB, attribute2TB...
+                //I need to be explicit and set a name so I can reference the fields later.
+                System.Windows.Forms.TextBox tempTB = new System.Windows.Forms.TextBox();
+                tempTB.Name = "attribute" + count + "TB"; //attribute1TB, attribute2TB...
 
-                    tableLayoutPanel1.Controls.Add(tempTB, column, row);
-                }
+                tableLayoutPanel1.Controls.Add(tempTB, column, row);
             }
-
-            catch { }
         }
 
         private void kValueTB_TextChanged(object sender, EventArgs e)
@@ -401,6 +487,14 @@ namespace KNearestNeighbor
                 normalizedTrainingSet.Clear(); //Remove all members of the training set.
                 plotXComboBox.Items.Clear(); //Remove all of the elements in the dropdown list for the x-coordinate
                 plotYComboBox.Items.Clear(); //Remove all of the elements in the dropdown list for the y-coordinates.
+                plotXComboBox.ResetText(); //Set the text back to blank.
+                plotYComboBox.ResetText(); //Set the text back to blank.
+                plotXComboBox.SelectedIndex = -1; //Set the selected index to the default index.
+                plotYComboBox.SelectedIndex = -1; //Set the selected index to the default index.
+
+                closestCompetitorNameLabel.Text = "N/A"; //Set the name label back to default.
+                closestCompetitorClassLabel.Text = "N/A"; //Set the class name label back to default.
+                closestCompetitorDistanceLabel.Text = "N/A"; //Set the distance label back to default.
 
                 for (int count = 1; count <= numAttributes; count++)
                 {
@@ -431,8 +525,7 @@ namespace KNearestNeighbor
 
             inputClass = knn.Compute(normalizedInputSet, normalizedTrainingSet);
 
-            closestCompetitorClass.Text = Convert.ToString(inputClass);
-            closestCompetitorName.Text = outputClassNames.ElementAt(inputClass);
+            closestCompetitor.Text = Convert.ToString(outputClassNames.ElementAt(inputClass));
 
             var listOfDistances = knn.getDistances();
 
@@ -504,30 +597,16 @@ namespace KNearestNeighbor
             {
                 //baseControl.BackButtonEnabled = false;
 
+                baseControl.CancelButtonEnabled = true;
+                baseControl.CancelButtonText = "New";
+                baseControl.CancelButtonVisible = true;
+
                 //Make sure the legend doesn't already exist.
                 if(chart1.Legends.Count < 1)
                     chart1.Legends.Add("Legend");
 
                 //Remove all generated information from the chart if any exist.
                 chart1.Series.Clear();
-
-                //try
-                //{
-                //    chart1.Legends.Add("Legend");
-                //}
-
-                //catch(System.ArgumentException error)
-                //{
-                //    Console.WriteLine("The back button was pressed but the legend for the chart was already added. ");
-                //    Console.WriteLine("Packed Message: " + error.Message);
-                //    Console.WriteLine("Call Stack: " + error.StackTrace);
-
-                //    DialogResult errorMessage = MessageBox.Show(String.Format("Unfortunately, the instructions file cannot be found. Please report this error to the administrator. "),
-                //        "Error",
-                //        MessageBoxButtons.OK,
-                //        MessageBoxIcon.Error,
-                //        MessageBoxDefaultButton.Button1);
-                //}
 
                 Random randomGen = new Random();
 
@@ -609,40 +688,48 @@ namespace KNearestNeighbor
 
             bool valid = true;
 
-            try
+            //Clear previous data (if any) from the canvas.
+            foreach(var series in chart1.Series)
+                series.Points.Clear();
+
+            int xCoord = plotXComboBox.SelectedIndex;
+            int yCoord = plotYComboBox.SelectedIndex;
+
+            DataValidation.ValidateCoordinates(errorProviderPlot, xCoord, yCoord, plotXComboBox, plotYComboBox);
+
+            if (errorProviderPlot.HasErrors())
+                valid = false;
+
+            //Go ahead and plot everything, there are no errors.
+            if (valid == true)
             {
-                //Clear previous data (if any) from the canvas.
-                foreach(var series in chart1.Series)
-                    series.Points.Clear();
+                bool returnKDistances = false;
 
-                int xCoord = plotXComboBox.SelectedIndex;
-                int yCoord = plotYComboBox.SelectedIndex;
-
-                DataValidation.ValidateCoordinates(errorProviderPlot, xCoord, yCoord, plotXComboBox, plotYComboBox);
-
-                if (errorProviderPlot.HasErrors())
-                    valid = false;
-
-                //Go ahead and plot everything, there are no errors.
-                if (valid == true)
+                //User wants to display the k distances
+                if(showKDistancesCheckBox.Checked == true)
                 {
-                    //Find the closest competitor given the two chosen attributes.
-                    int indexOfClosestCompetitor = knn.FindNearestCompetitor(normalizedInputSet, normalizedTrainingSet, xCoord, yCoord);
-                    var closestCompetitorData = trainingSet[indexOfClosestCompetitor];
+                    returnKDistances = true;
+                    
+                }
 
-                    closestCompetitorSpecificLabel.Text = outputClassNames.ElementAt(indexOfClosestCompetitor);
+                //Find the closest competitor given the two chosen attributes.
+                List<List<Object>> closestCompetitor = knn.FindNearestCompetitor(normalizedInputSet, normalizedTrainingSet, xCoord, yCoord, returnKDistances, Convert.ToInt32(kValueTB.Text));
 
-                    //NEED TO ACCOUNT FOR THE CASE THE PERSON JUST HITS "PLOT" and doesn't choose two values. Maybe just set the values to 
-                    //two default "Attribute1 and Attribute2 values. No - we want them to choose them so it will look good and display right.
+                var closestCompetitorNameIndex = (int) closestCompetitor[0][0];
+                var closestCompetitorClassIndex = (int) closestCompetitor[0][1];
+                var closestCompetitorDistance = closestCompetitor[0][2];
 
-                    //Just for the case in which x-coord: Attribute1 and y-coord: Attribute2
+                closestCompetitorNameLabel.Text = trainingSetLabel[closestCompetitorNameIndex];
+                closestCompetitorClassLabel.Text = Convert.ToString(outputClassNames[closestCompetitorClassIndex]);
+                closestCompetitorDistanceLabel.Text = StringExtensions.Truncate(Convert.ToString(closestCompetitorDistance), 8);
 
-                    Plot.PlotPoints(chart1, xCoord, yCoord, normalizedTrainingSet, normalizedInputSet, inputClass, outputClass, outputClassNames, attributeNames);
+                //Now remove that first input (we don't need it anymore).
+                closestCompetitor.RemoveAt(0);
 
-                    chart1.Show();
-                }                 
+                Plot.PlotPoints(chart1, xCoord, yCoord, normalizedTrainingSet, normalizedInputSet, outputClass, outputClassNames, attributeNames, trainingSetLabel);
+
+                chart1.Show();
             }
-            catch { }
         }
 
         private void programDescriptionTB_LinkClicked(object sender, LinkClickedEventArgs e)
@@ -832,6 +919,12 @@ namespace KNearestNeighbor
         //        Console.WriteLine("Call Stack: " + error.StackTrace);
         //    }
         //}
-        #endregion 
+        #endregion
+
+        private void baseControl_CancelButtonClick(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start(Application.ExecutablePath);
+            Application.Exit();
+        }
     }
 }

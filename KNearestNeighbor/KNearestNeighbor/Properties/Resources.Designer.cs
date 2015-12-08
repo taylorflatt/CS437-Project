@@ -89,32 +89,15 @@ namespace KNearestNeighbor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap descriptionLeftPanelText {
-            get {
-                object obj = ResourceManager.GetObject("descriptionLeftPanelText", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap descriptionLeftPanelText1 {
-            get {
-                object obj = ResourceManager.GetObject("descriptionLeftPanelText1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to &lt;u&gt;Step 1:&lt;/u&gt; Select the training data via the Browse button.
-        ///&lt;u&gt;Step 2:&lt;/u&gt; Verify that the number of attributes found are correct.
-        ///&lt;u&gt;Step 3:&lt;/u&gt; Verify that the training data has loaded correctly.
-        ///&lt;u&gt;Step 4:&lt;/u&gt; Enter in the attributes corresponding to your data point using continuous data.
-        ///&lt;u&gt;Step 5:&lt;/u&gt; Enter in a k value (0 &lt; k &lt;= trainingData.Count())
-        ///&lt;u&gt;Step 6:&lt;/u&gt; Click the Next button to compute the class of your data point..
+        ///
+        ///&lt;u&gt;Step 2:&lt;/u&gt; Verify the number of attributes and training data are correct.
+        ///
+        ///&lt;u&gt;Step 3:&lt;/u&gt; Enter your input data (continuous only).
+        ///
+        ///&lt;u&gt;Step 4:&lt;/u&gt; Enter in a k value (0 &lt; k &lt;= trainingData.Count())
+        ///
+        ///&lt;u&gt;Step 5:&lt;/u&gt; Click the Next button to compute the class of your data point..
         /// </summary>
         internal static string inputdatainstructions {
             get {
@@ -129,6 +112,36 @@ namespace KNearestNeighbor.Properties {
             get {
                 object obj = ResourceManager.GetObject("knnHelp", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon openofficeorg_math_2ze_icon {
+            get {
+                object obj = ResourceManager.GetObject("openofficeorg_math_2ze_icon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap orange_light_main_top {
+            get {
+                object obj = ResourceManager.GetObject("orange-light-main-top", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap orange_light_top {
+            get {
+                object obj = ResourceManager.GetObject("orange_light_top", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

@@ -10,8 +10,8 @@ namespace KNearestNeighbor
     {
         public static void ValidateKValue(this ErrorProvider ep, string value, TextBox textbox, List<List<double>> trainingData)
         {
-            //If there are any letters, we throw an error.
-            if (Regex.Matches(value, @"[a-zA-Z]").Count > 0)
+            //If there are any letters or symbols, we throw an error.
+            if (Regex.Matches(value, @"[a-zA-Z\D]").Count > 0)
             {
                 ep.SetErrorWithCount(textbox, "K-Value cannot contain letters.");
             }
@@ -50,10 +50,10 @@ namespace KNearestNeighbor
 
         public static void ValidateAttributes(this ErrorProvider ep, string value, TextBox textbox, bool discreteValue)
         {
-            //If there are any letters (we have continuous data), we throw an error.
-            if (discreteValue == false && Regex.Matches(value, @"[a-zA-Z]").Count > 0)
+            //If there are any letters or symbols (except a decimal which we allow), we throw an error.
+            if (discreteValue == false && Regex.Matches(value, "[-a-zA-Z/!$%^&*()_+|~=`{}\\[\\]:\"; '<>?,\\/]").Count > 0)
             {
-                ep.SetErrorWithCount(textbox, "This attribute cannot contain letters.");
+                ep.SetErrorWithCount(textbox, "This attribute cannot contain letters or symbols apart from numbers.");
             }
 
             //If there is nothing typed at all OR if there are no numbers typed, we throw an error.
@@ -77,6 +77,12 @@ namespace KNearestNeighbor
                 ep.SetErrorWithCount(comboboxX, "You need to pick two different attributes to plot.");
                 ep.SetErrorWithCount(comboboxY, "You need to pick two different attributes to plot.");
             }
+
+            else if (xCoord == -1)
+                ep.SetErrorWithCount(comboboxX, "You need to select an attribute to plot. ");
+
+            else if (yCoord == -1)
+                ep.SetErrorWithCount(comboboxY, "You need to select an attribute to plot. ");
         }
 
 
@@ -85,7 +91,5 @@ namespace KNearestNeighbor
             ep.RemoveErrors();
             ep.Clear();
         }
-
     }
-
 }

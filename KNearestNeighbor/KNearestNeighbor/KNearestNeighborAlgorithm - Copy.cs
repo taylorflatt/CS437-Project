@@ -4,11 +4,11 @@ using Accord.Math;
 
 namespace KNearestNeighbor
 {
-    public class KNearestNeighbor : KNearestNeighbor<double>
+    public class KNearestNeighborAlgorithm : KNearestNeighbor<double>
     {
 
         /// <summary>
-        ///   Creates a new <see cref="KNearestNeighbor"/>.
+        ///   Creates a new <see cref="KNearestNeighborAlgorithm"/>.
         /// </summary>
         /// 
         /// <param name="k">The number of nearest neighbors to be used in the decision.</param>
@@ -16,7 +16,7 @@ namespace KNearestNeighbor
         /// <param name="inputs">The input data points.</param>
         /// <param name="outputs">The associated labels for the input points.</param>
         /// 
-        public KNearestNeighbor(int k, double[][] inputs, int[] outputs)
+        public KNearestNeighborAlgorithm(int k, double[][] inputs, int[] outputs)
             : base(k, inputs, outputs, Accord.Math.Distance.Euclidean)
         { }
     }
@@ -37,7 +37,7 @@ namespace KNearestNeighbor
         private double[] distances;
 
         /// <summary>
-        ///   Creates a new <see cref="KNearestNeighbor"/>.
+        ///   Creates a new <see cref="KNearestNeighborAlgorithm"/>.
         /// </summary>
         /// 
         /// <param name="k">The number of nearest neighbors to be used in the decision.</param>

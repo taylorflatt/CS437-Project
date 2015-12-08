@@ -55,13 +55,18 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.displayDataStep3 = new WizardBase.IntermediateStep();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.closestCompetitorName = new System.Windows.Forms.Label();
-            this.closestCompetitorClass = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
+            this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.closestCompetitorDistanceLabel = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.closestCompetitorNameLabel = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.closestCompetitorClassLabel = new System.Windows.Forms.Label();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.label19 = new System.Windows.Forms.Label();
+            this.closestCompetitor = new System.Windows.Forms.Label();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.closestCompetitorSpecificLabel = new System.Windows.Forms.Label();
-            this.label21 = new System.Windows.Forms.Label();
             this.plotButton = new System.Windows.Forms.Button();
             this.label15 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
@@ -72,7 +77,6 @@
             this.label18 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
-            this.finishStep = new WizardBase.FinishStep();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.errorProviderK = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProviderAttributes = new System.Windows.Forms.ErrorProvider(this.components);
@@ -90,6 +94,8 @@
             this.groupBox1.SuspendLayout();
             this.displayDataStep3.SuspendLayout();
             this.groupBox7.SuspendLayout();
+            this.groupBox9.SuspendLayout();
+            this.groupBox8.SuspendLayout();
             this.groupBox6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProviderK)).BeginInit();
@@ -104,6 +110,7 @@
             this.baseControl.BackButtonEnabled = true;
             this.baseControl.BackButtonVisible = true;
             this.baseControl.CancelButtonEnabled = false;
+            this.baseControl.CancelButtonText = "New";
             this.baseControl.CancelButtonVisible = false;
             this.baseControl.CausesValidation = false;
             this.baseControl.EulaButtonEnabled = false;
@@ -119,15 +126,16 @@
             this.baseControl.WizardSteps.AddRange(new WizardBase.WizardStep[] {
             this.descriptionStep1,
             this.initialDataStep2,
-            this.displayDataStep3,
-            this.finishStep});
+            this.displayDataStep3});
             this.baseControl.BackButtonClick += new System.ComponentModel.CancelEventHandler(this.baseControl_BackButtonClick);
+            this.baseControl.CancelButtonClick += new System.EventHandler(this.baseControl_CancelButtonClick);
             this.baseControl.CurrentStepIndexChanged += new System.EventHandler(this.wizardControl2_CurrentStepIndexChanged);
             this.baseControl.HelpButtonClick += new System.EventHandler(this.Wizard_HelpButtonClicked);
             this.baseControl.NextButtonClick += new WizardBase.GenericCancelEventHandler<WizardBase.WizardControl>(this.baseControl_NextButtonClick);
             // 
             // descriptionStep1
             // 
+            this.descriptionStep1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.descriptionStep1.BindingImage = ((System.Drawing.Image)(resources.GetObject("descriptionStep1.BindingImage")));
             this.descriptionStep1.CausesValidation = false;
             this.descriptionStep1.Controls.Add(this.programDescriptionTB);
@@ -145,10 +153,10 @@
             this.programDescriptionTB.BulletIndent = 30;
             this.programDescriptionTB.CausesValidation = false;
             this.programDescriptionTB.Cursor = System.Windows.Forms.Cursors.Default;
-            this.programDescriptionTB.Location = new System.Drawing.Point(173, 59);
+            this.programDescriptionTB.Location = new System.Drawing.Point(171, 59);
             this.programDescriptionTB.Name = "programDescriptionTB";
             this.programDescriptionTB.ReadOnly = true;
-            this.programDescriptionTB.Size = new System.Drawing.Size(432, 618);
+            this.programDescriptionTB.Size = new System.Drawing.Size(447, 621);
             this.programDescriptionTB.TabIndex = 0;
             this.programDescriptionTB.Text = "";
             this.programDescriptionTB.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.programDescriptionTB_LinkClicked);
@@ -158,7 +166,8 @@
             // 
             // initialDataStep2
             // 
-            this.initialDataStep2.BindingImage = ((System.Drawing.Image)(resources.GetObject("initialDataStep2.BindingImage")));
+            this.initialDataStep2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.initialDataStep2.BindingImage = global::KNearestNeighbor.Properties.Resources.orange_light_top;
             this.initialDataStep2.Controls.Add(this.groupBox5);
             this.initialDataStep2.Controls.Add(this.groupBox4);
             this.initialDataStep2.Controls.Add(this.groupBox2);
@@ -192,6 +201,7 @@
             this.dataInitializationInstructionsTB.ReadOnly = true;
             this.dataInitializationInstructionsTB.Size = new System.Drawing.Size(333, 169);
             this.dataInitializationInstructionsTB.TabIndex = 2;
+            this.dataInitializationInstructionsTB.TabStop = false;
             this.dataInitializationInstructionsTB.Text = "";
             // 
             // groupBox4
@@ -209,8 +219,10 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(6, 19);
             this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
             this.dataGridView1.Size = new System.Drawing.Size(580, 195);
             this.dataGridView1.TabIndex = 16;
+            this.dataGridView1.TabStop = false;
             // 
             // groupBox2
             // 
@@ -251,9 +263,9 @@
             this.predictAttributeNumLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.predictAttributeNumLabel.Location = new System.Drawing.Point(119, 48);
             this.predictAttributeNumLabel.Name = "predictAttributeNumLabel";
-            this.predictAttributeNumLabel.Size = new System.Drawing.Size(129, 13);
+            this.predictAttributeNumLabel.Size = new System.Drawing.Size(167, 13);
             this.predictAttributeNumLabel.TabIndex = 8;
-            this.predictAttributeNumLabel.Text = "We see no attributes.";
+            this.predictAttributeNumLabel.Text = "We don\'t see any attributes.";
             // 
             // numClassesLabel
             // 
@@ -273,6 +285,7 @@
             this.helpProvider1.SetShowHelp(this.button1, true);
             this.button1.Size = new System.Drawing.Size(70, 23);
             this.button1.TabIndex = 0;
+            this.button1.TabStop = false;
             this.button1.Text = "Browse";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -293,7 +306,7 @@
             // dontNormalizeInputDataCheckBox
             // 
             this.dontNormalizeInputDataCheckBox.AutoSize = true;
-            this.dontNormalizeInputDataCheckBox.Location = new System.Drawing.Point(6, 45);
+            this.dontNormalizeInputDataCheckBox.Location = new System.Drawing.Point(6, 72);
             this.dontNormalizeInputDataCheckBox.Name = "dontNormalizeInputDataCheckBox";
             this.dontNormalizeInputDataCheckBox.Size = new System.Drawing.Size(127, 17);
             this.dontNormalizeInputDataCheckBox.TabIndex = 5;
@@ -311,7 +324,7 @@
             // dontNormalizeTrainingDataCheckBox
             // 
             this.dontNormalizeTrainingDataCheckBox.AutoSize = true;
-            this.dontNormalizeTrainingDataCheckBox.Location = new System.Drawing.Point(6, 68);
+            this.dontNormalizeTrainingDataCheckBox.Location = new System.Drawing.Point(6, 49);
             this.dontNormalizeTrainingDataCheckBox.Name = "dontNormalizeTrainingDataCheckBox";
             this.dontNormalizeTrainingDataCheckBox.Size = new System.Drawing.Size(167, 17);
             this.dontNormalizeTrainingDataCheckBox.TabIndex = 2;
@@ -353,67 +366,137 @@
             // 
             // displayDataStep3
             // 
-            this.displayDataStep3.BindingImage = ((System.Drawing.Image)(resources.GetObject("displayDataStep3.BindingImage")));
+            this.displayDataStep3.BindingImage = global::KNearestNeighbor.Properties.Resources.orange_light_top;
             this.displayDataStep3.Controls.Add(this.groupBox7);
             this.displayDataStep3.Controls.Add(this.groupBox6);
             this.displayDataStep3.Controls.Add(this.label14);
             this.displayDataStep3.Controls.Add(this.label13);
             this.displayDataStep3.ForeColor = System.Drawing.SystemColors.ControlText;
             this.displayDataStep3.Name = "displayDataStep3";
+            this.displayDataStep3.Subtitle = resources.GetString("displayDataStep3.Subtitle");
+            this.displayDataStep3.Title = "Data Output";
             // 
             // groupBox7
             // 
-            this.groupBox7.Controls.Add(this.closestCompetitorName);
-            this.groupBox7.Controls.Add(this.closestCompetitorClass);
-            this.groupBox7.Controls.Add(this.label20);
-            this.groupBox7.Controls.Add(this.label19);
+            this.groupBox7.Controls.Add(this.groupBox9);
+            this.groupBox7.Controls.Add(this.groupBox8);
             this.groupBox7.Location = new System.Drawing.Point(0, 72);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(615, 144);
+            this.groupBox7.Size = new System.Drawing.Size(615, 127);
             this.groupBox7.TabIndex = 18;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "View Data Output";
             // 
-            // closestCompetitorName
+            // groupBox9
             // 
-            this.closestCompetitorName.AutoSize = true;
-            this.closestCompetitorName.Location = new System.Drawing.Point(145, 54);
-            this.closestCompetitorName.Name = "closestCompetitorName";
-            this.closestCompetitorName.Size = new System.Drawing.Size(27, 13);
-            this.closestCompetitorName.TabIndex = 3;
-            this.closestCompetitorName.Text = "N/A";
+            this.groupBox9.Controls.Add(this.label8);
+            this.groupBox9.Controls.Add(this.closestCompetitorDistanceLabel);
+            this.groupBox9.Controls.Add(this.label6);
+            this.groupBox9.Controls.Add(this.label2);
+            this.groupBox9.Controls.Add(this.closestCompetitorNameLabel);
+            this.groupBox9.Controls.Add(this.label4);
+            this.groupBox9.Controls.Add(this.closestCompetitorClassLabel);
+            this.groupBox9.Location = new System.Drawing.Point(216, 19);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.Size = new System.Drawing.Size(393, 100);
+            this.groupBox9.TabIndex = 5;
+            this.groupBox9.TabStop = false;
+            this.groupBox9.Text = "Plot\'s Closest Competitor";
             // 
-            // closestCompetitorClass
+            // label8
             // 
-            this.closestCompetitorClass.AutoSize = true;
-            this.closestCompetitorClass.Location = new System.Drawing.Point(141, 31);
-            this.closestCompetitorClass.Name = "closestCompetitorClass";
-            this.closestCompetitorClass.Size = new System.Drawing.Size(27, 13);
-            this.closestCompetitorClass.TabIndex = 2;
-            this.closestCompetitorClass.Text = "N/A";
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(7, 19);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(369, 13);
+            this.label8.TabIndex = 6;
+            this.label8.Text = "Choose an X and Y coords to view the closest competitors given that criteria.";
             // 
-            // label20
+            // closestCompetitorDistanceLabel
             // 
-            this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(7, 54);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(128, 13);
-            this.label20.TabIndex = 1;
-            this.label20.Text = "Closest Competitor Name:";
+            this.closestCompetitorDistanceLabel.AutoSize = true;
+            this.closestCompetitorDistanceLabel.Location = new System.Drawing.Point(154, 82);
+            this.closestCompetitorDistanceLabel.Name = "closestCompetitorDistanceLabel";
+            this.closestCompetitorDistanceLabel.Size = new System.Drawing.Size(27, 13);
+            this.closestCompetitorDistanceLabel.TabIndex = 5;
+            this.closestCompetitorDistanceLabel.Text = "N/A";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 82);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(142, 13);
+            this.label6.TabIndex = 4;
+            this.label6.Text = "Closest Competitor Distance:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 45);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(128, 13);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "Closest Competitor Name:";
+            // 
+            // closestCompetitorNameLabel
+            // 
+            this.closestCompetitorNameLabel.AutoSize = true;
+            this.closestCompetitorNameLabel.Location = new System.Drawing.Point(154, 45);
+            this.closestCompetitorNameLabel.Name = "closestCompetitorNameLabel";
+            this.closestCompetitorNameLabel.Size = new System.Drawing.Size(27, 13);
+            this.closestCompetitorNameLabel.TabIndex = 3;
+            this.closestCompetitorNameLabel.Text = "N/A";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(5, 63);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(128, 13);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "Closest Competitor Class: ";
+            // 
+            // closestCompetitorClassLabel
+            // 
+            this.closestCompetitorClassLabel.AutoSize = true;
+            this.closestCompetitorClassLabel.Location = new System.Drawing.Point(154, 63);
+            this.closestCompetitorClassLabel.Name = "closestCompetitorClassLabel";
+            this.closestCompetitorClassLabel.Size = new System.Drawing.Size(27, 13);
+            this.closestCompetitorClassLabel.TabIndex = 2;
+            this.closestCompetitorClassLabel.Text = "N/A";
+            // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.label19);
+            this.groupBox8.Controls.Add(this.closestCompetitor);
+            this.groupBox8.Location = new System.Drawing.Point(10, 19);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(200, 100);
+            this.groupBox8.TabIndex = 4;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "K-NN Closest Competitor";
             // 
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(6, 31);
+            this.label19.Location = new System.Drawing.Point(5, 20);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(128, 13);
+            this.label19.Size = new System.Drawing.Size(100, 13);
             this.label19.TabIndex = 0;
-            this.label19.Text = "Closest Competitor Class: ";
+            this.label19.Text = "Closest Competitor: ";
+            // 
+            // closestCompetitor
+            // 
+            this.closestCompetitor.AutoSize = true;
+            this.closestCompetitor.Location = new System.Drawing.Point(118, 20);
+            this.closestCompetitor.Name = "closestCompetitor";
+            this.closestCompetitor.Size = new System.Drawing.Size(27, 13);
+            this.closestCompetitor.TabIndex = 2;
+            this.closestCompetitor.Text = "N/A";
             // 
             // groupBox6
             // 
-            this.groupBox6.Controls.Add(this.closestCompetitorSpecificLabel);
-            this.groupBox6.Controls.Add(this.label21);
             this.groupBox6.Controls.Add(this.plotButton);
             this.groupBox6.Controls.Add(this.label15);
             this.groupBox6.Controls.Add(this.label16);
@@ -422,34 +505,16 @@
             this.groupBox6.Controls.Add(this.plotXComboBox);
             this.groupBox6.Controls.Add(this.label17);
             this.groupBox6.Controls.Add(this.label18);
-            this.groupBox6.Location = new System.Drawing.Point(0, 219);
+            this.groupBox6.Location = new System.Drawing.Point(0, 205);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(615, 458);
+            this.groupBox6.Size = new System.Drawing.Size(615, 472);
             this.groupBox6.TabIndex = 14;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Graph";
             // 
-            // closestCompetitorSpecificLabel
-            // 
-            this.closestCompetitorSpecificLabel.AutoSize = true;
-            this.closestCompetitorSpecificLabel.Location = new System.Drawing.Point(568, 21);
-            this.closestCompetitorSpecificLabel.Name = "closestCompetitorSpecificLabel";
-            this.closestCompetitorSpecificLabel.Size = new System.Drawing.Size(27, 13);
-            this.closestCompetitorSpecificLabel.TabIndex = 16;
-            this.closestCompetitorSpecificLabel.Text = "N/A";
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(464, 20);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(97, 13);
-            this.label21.TabIndex = 15;
-            this.label21.Text = "Closest Competitor:";
-            // 
             // plotButton
             // 
-            this.plotButton.Location = new System.Drawing.Point(383, 15);
+            this.plotButton.Location = new System.Drawing.Point(530, 18);
             this.plotButton.Name = "plotButton";
             this.plotButton.Size = new System.Drawing.Size(75, 23);
             this.plotButton.TabIndex = 14;
@@ -492,7 +557,7 @@
             this.chart1.Legends.Add(legend1);
             this.chart1.Location = new System.Drawing.Point(6, 47);
             this.chart1.Name = "chart1";
-            this.chart1.Size = new System.Drawing.Size(609, 405);
+            this.chart1.Size = new System.Drawing.Size(603, 405);
             this.chart1.TabIndex = 4;
             this.chart1.Text = "chart1";
             // 
@@ -547,11 +612,6 @@
             this.label13.TabIndex = 0;
             this.label13.Text = "Class:";
             // 
-            // finishStep
-            // 
-            this.finishStep.BindingImage = ((System.Drawing.Image)(resources.GetObject("finishStep.BindingImage")));
-            this.finishStep.Name = "finishStep";
-            // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
@@ -583,7 +643,6 @@
             this.CausesValidation = false;
             this.ClientSize = new System.Drawing.Size(619, 721);
             this.Controls.Add(this.baseControl);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(635, 759);
@@ -605,7 +664,10 @@
             this.displayDataStep3.ResumeLayout(false);
             this.displayDataStep3.PerformLayout();
             this.groupBox7.ResumeLayout(false);
-            this.groupBox7.PerformLayout();
+            this.groupBox9.ResumeLayout(false);
+            this.groupBox9.PerformLayout();
+            this.groupBox8.ResumeLayout(false);
+            this.groupBox8.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
@@ -622,7 +684,6 @@
         private WizardBase.WizardControl baseControl;
         private WizardBase.IntermediateStep initialDataStep2;
         private WizardBase.IntermediateStep displayDataStep3;
-        private WizardBase.FinishStep finishStep;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.CheckBox dontNormalizeInputDataCheckBox;
         private System.Windows.Forms.TextBox kValueTB;
@@ -658,14 +719,19 @@
         private System.Windows.Forms.RichTextBox programDescriptionTB;
         private System.Windows.Forms.HelpProvider helpProvider1;
         private System.Windows.Forms.GroupBox groupBox7;
-        private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.Label closestCompetitorName;
-        private System.Windows.Forms.Label closestCompetitorClass;
-        private System.Windows.Forms.Label closestCompetitorSpecificLabel;
-        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label closestCompetitor;
         protected internal WizardBase.StartStep descriptionStep1;
         private System.Windows.Forms.RichTextBox dataInitializationInstructionsTB;
         private System.Windows.Forms.ErrorProvider errorProviderPlot;
+        private System.Windows.Forms.GroupBox groupBox9;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label closestCompetitorNameLabel;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label closestCompetitorClassLabel;
+        private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.Label closestCompetitorDistanceLabel;
+        private System.Windows.Forms.Label label8;
     }
 }
