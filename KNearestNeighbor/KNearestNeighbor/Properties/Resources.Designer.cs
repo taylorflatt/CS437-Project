@@ -61,30 +61,94 @@ namespace KNearestNeighbor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;li&gt;
-        ///&lt;ol&gt;text1&lt;/ol&gt;
-        ///&lt;ol&gt;text2&lt;/ol&gt;
-        ///&lt;/li&gt;
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap cluster1 {
+            get {
+                object obj = ResourceManager.GetObject("cluster1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap cluster2 {
+            get {
+                object obj = ResourceManager.GetObject("cluster2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;html DIR=&quot;LTR&quot; xmlns:MSHelp=&quot;http://msdn.microsoft.com/mshelp&quot; xmlns:ddue=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; xmlns:tool=&quot;http://www.microsoft.com/tooltip&quot;&gt;
+        ///&lt;head&gt;
+        ///&lt;META HTTP-EQUIV=&quot;Content-Type&quot; CONTENT=&quot;text/html; CHARSET=Windows-1252&quot;&gt;&lt;/META&gt;&lt;META NAME=&quot;save&quot; CONTENT=&quot;history&quot;&gt;&lt;/META&gt;
+        ///&lt;title&gt;Program Data Input Page&lt;/title&gt;
         ///
+        ///&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;../local/Classic.css&quot;&gt;&lt;/link&gt;
+        ///&lt;script src=&quot;../local/script.js&quot;&gt;&lt;/script [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string datainputpage {
+            get {
+                return ResourceManager.GetString("datainputpage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;html DIR=&quot;LTR&quot; xmlns:MSHelp=&quot;http://msdn.microsoft.com/mshelp&quot; xmlns:ddue=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; xmlns:tool=&quot;http://www.microsoft.com/tooltip&quot;&gt;
+        ///&lt;head&gt;
+        ///&lt;META HTTP-EQUIV=&quot;Content-Type&quot; CONTENT=&quot;text/html; CHARSET=Windows-1252&quot;&gt;&lt;/META&gt;&lt;META NAME=&quot;save&quot; CONTENT=&quot;history&quot;&gt;&lt;/META&gt;
+        ///&lt;title&gt;Program Data Output Stage&lt;/title&gt;
+        ///
+        ///&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;../local/Classic.css&quot;&gt;&lt;/link&gt;
+        ///&lt;script src=&quot;../local/script.js&quot;&gt;&lt;/scri [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string dataoutputpage {
+            get {
+                return ResourceManager.GetString("dataoutputpage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to I&apos;m glad you have decided to use this tool for computing the k-NN. Please note the following few assumptions when using this tool:
         ///&lt;li&gt;
-        ///&lt;ol&gt;text3&lt;/ol&gt;
-        ///&lt;ol&gt;text4&lt;/ol&gt;
+        ///&lt;ol&gt; The data is in an excel format.&lt;/ol&gt;
+        ///&lt;ol&gt; The first row of the data is the header row consisting of text that describes your data.&lt;/ol&gt;
+        ///&lt;ol&gt; The first column is the classification of that data point.&lt;/ol&gt;
+        ///&lt;ol&gt; The second column is the name of that point.&lt;/ol&gt;
         ///&lt;/li&gt;
-        ///
-        ///&lt;strong&gt;this is some text here&lt;/strong&gt;
-        ///&lt;em&gt;this is some italic text&lt;/em&gt;
-        ///&lt;li&gt;
-        ///&lt;ul&gt;text1&lt;/ul&gt;
-        ///&lt;ul&gt;text2&lt;/ul&gt;
-        ///&lt;/li&gt;
-        ///
-        ///This is some text describing what the KNN algorithm is all about. It is also here to see if we will run off the side of the program or will we wrap around?
-        ///
-        ///&lt;h2&gt;Here is some&lt;/h2&gt;.
+        ///I have included a sample sheet so you know what the input should look like in terms of the trainin [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string description {
             get {
                 return ResourceManager.GetString("description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;html DIR=&quot;LTR&quot; xmlns:MSHelp=&quot;http://msdn.microsoft.com/mshelp&quot; xmlns:ddue=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; xmlns:tool=&quot;http://www.microsoft.com/tooltip&quot;&gt;
+        ///&lt;head&gt;
+        ///&lt;META HTTP-EQUIV=&quot;Content-Type&quot; CONTENT=&quot;text/html; CHARSET=Windows-1252&quot;&gt;&lt;/META&gt;&lt;META NAME=&quot;save&quot; CONTENT=&quot;history&quot;&gt;&lt;/META&gt;
+        ///&lt;title&gt;How to Compute k-NN&lt;/title&gt;
+        ///
+        ///&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;../local/Classic.css&quot;&gt;&lt;/link&gt;
+        ///&lt;script src=&quot;../local/script.js&quot;&gt;&lt;/script&gt;
+        ///        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string howtocomputeknn {
+            get {
+                return ResourceManager.GetString("howtocomputeknn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap howtocomputeknn_image1 {
+            get {
+                object obj = ResourceManager.GetObject("howtocomputeknn_image1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -106,12 +170,227 @@ namespace KNearestNeighbor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static byte[] knnHelp {
+        internal static System.Drawing.Bitmap inputDataStep_attributeField {
             get {
-                object obj = ResourceManager.GetObject("knnHelp", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("inputDataStep_attributeField", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap inputDataStep_browseBtn {
+            get {
+                object obj = ResourceManager.GetObject("inputDataStep_browseBtn", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap inputDataStep_browseBtn2 {
+            get {
+                object obj = ResourceManager.GetObject("inputDataStep_browseBtn2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap inputDataStep_inputDataPanel {
+            get {
+                object obj = ResourceManager.GetObject("inputDataStep_inputDataPanel", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap inputDataStep_instructionsPanel {
+            get {
+                object obj = ResourceManager.GetObject("inputDataStep_instructionsPanel", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap inputDataStep_knnOptions {
+            get {
+                object obj = ResourceManager.GetObject("inputDataStep_knnOptions", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap inputDataStep_knnOptionsPanel {
+            get {
+                object obj = ResourceManager.GetObject("inputDataStep_knnOptionsPanel", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap inputDataStep_plotXBtn {
+            get {
+                object obj = ResourceManager.GetObject("inputDataStep_plotXBtn", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap inputDataStep_plotYBtn {
+            get {
+                object obj = ResourceManager.GetObject("inputDataStep_plotYBtn", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap inputDataStep_trainingData {
+            get {
+                object obj = ResourceManager.GetObject("inputDataStep_trainingData", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap inputDataStep_trainingInformationPanel {
+            get {
+                object obj = ResourceManager.GetObject("inputDataStep_trainingInformationPanel", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap inputDataStep_viewTrainingDataPanel {
+            get {
+                object obj = ResourceManager.GetObject("inputDataStep_viewTrainingDataPanel", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap knn_error_rate_best_k {
+            get {
+                object obj = ResourceManager.GetObject("knn_error_rate_best_k", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;html DIR=&quot;LTR&quot; xmlns:MSHelp=&quot;http://msdn.microsoft.com/mshelp&quot; xmlns:ddue=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; xmlns:tool=&quot;http://www.microsoft.com/tooltip&quot;&gt;
+        ///&lt;head&gt;
+        ///&lt;META HTTP-EQUIV=&quot;Content-Type&quot; CONTENT=&quot;text/html; CHARSET=Windows-1252&quot;&gt;&lt;/META&gt;&lt;META NAME=&quot;save&quot; CONTENT=&quot;history&quot;&gt;&lt;/META&gt;
+        ///&lt;title&gt;k-NN Advantages&lt;/title&gt;
+        ///
+        ///&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;../local/Classic.css&quot;&gt;&lt;/link&gt;
+        ///&lt;script src=&quot;../local/script.js&quot;&gt;&lt;/script&gt;
+        ///
+        ///&lt;/h [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string knnadvantages {
+            get {
+                return ResourceManager.GetString("knnadvantages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;html DIR=&quot;LTR&quot; xmlns:MSHelp=&quot;http://msdn.microsoft.com/mshelp&quot; xmlns:ddue=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; xmlns:tool=&quot;http://www.microsoft.com/tooltip&quot;&gt;
+        ///&lt;head&gt;
+        ///&lt;META HTTP-EQUIV=&quot;Content-Type&quot; CONTENT=&quot;text/html; CHARSET=Windows-1252&quot;&gt;&lt;/META&gt;&lt;META NAME=&quot;save&quot; CONTENT=&quot;history&quot;&gt;&lt;/META&gt;
+        ///&lt;title&gt;k-NN Disadvantages&lt;/title&gt;
+        ///
+        ///&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;../local/Classic.css&quot;&gt;&lt;/link&gt;
+        ///&lt;script src=&quot;../local/script.js&quot;&gt;&lt;/script&gt;
+        ///
+        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string knndisadvantages {
+            get {
+                return ResourceManager.GetString("knndisadvantages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;html DIR=&quot;LTR&quot; xmlns:MSHelp=&quot;http://msdn.microsoft.com/mshelp&quot; xmlns:ddue=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; xmlns:tool=&quot;http://www.microsoft.com/tooltip&quot;&gt;
+        ///&lt;head&gt;
+        ///&lt;META HTTP-EQUIV=&quot;Content-Type&quot; CONTENT=&quot;text/html; CHARSET=Windows-1252&quot;&gt;&lt;/META&gt;&lt;META NAME=&quot;save&quot; CONTENT=&quot;history&quot;&gt;&lt;/META&gt;
+        ///&lt;title&gt;k-NN Algorithm Overview&lt;/title&gt;
+        ///
+        ///&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;../local/Classic.css&quot;&gt;&lt;/link&gt;
+        ///&lt;script src=&quot;../local/script.js&quot;&gt;&lt;/script [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string knnIndex {
+            get {
+                return ResourceManager.GetString("knnIndex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;html DIR=&quot;LTR&quot; xmlns:MSHelp=&quot;http://msdn.microsoft.com/mshelp&quot; xmlns:ddue=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; xmlns:tool=&quot;http://www.microsoft.com/tooltip&quot;&gt;
+        ///&lt;head&gt;
+        ///&lt;META HTTP-EQUIV=&quot;Content-Type&quot; CONTENT=&quot;text/html; CHARSET=Windows-1252&quot;&gt;&lt;/META&gt;&lt;META NAME=&quot;save&quot; CONTENT=&quot;history&quot;&gt;&lt;/META&gt;
+        ///&lt;title&gt;How do we choose a k?&lt;/title&gt;
+        ///
+        ///&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;../local/Classic.css&quot;&gt;&lt;/link&gt;
+        ///&lt;script src=&quot;../local/script.js&quot;&gt;&lt;/script&gt;        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string knnkchoice {
+            get {
+                return ResourceManager.GetString("knnkchoice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;html DIR=&quot;LTR&quot; xmlns:MSHelp=&quot;http://msdn.microsoft.com/mshelp&quot; xmlns:ddue=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; xmlns:tool=&quot;http://www.microsoft.com/tooltip&quot;&gt;
+        ///&lt;head&gt;
+        ///&lt;META HTTP-EQUIV=&quot;Content-Type&quot; CONTENT=&quot;text/html; CHARSET=Windows-1252&quot;&gt;&lt;/META&gt;&lt;META NAME=&quot;save&quot; CONTENT=&quot;history&quot;&gt;&lt;/META&gt;
+        ///&lt;title&gt;When do we use the k-NN Algorithm?&lt;/title&gt;
+        ///
+        ///&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;../local/Classic.css&quot;&gt;&lt;/link&gt;
+        ///&lt;script src=&quot;../local/script.j [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string knnwhen {
+            get {
+                return ResourceManager.GetString("knnwhen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;html DIR=&quot;LTR&quot; xmlns:MSHelp=&quot;http://msdn.microsoft.com/mshelp&quot; xmlns:ddue=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; xmlns:tool=&quot;http://www.microsoft.com/tooltip&quot;&gt;
+        ///&lt;head&gt;
+        ///&lt;META HTTP-EQUIV=&quot;Content-Type&quot; CONTENT=&quot;text/html; CHARSET=Windows-1252&quot;&gt;&lt;/META&gt;&lt;META NAME=&quot;save&quot; CONTENT=&quot;history&quot;&gt;&lt;/META&gt;
+        ///&lt;title&gt;More Reading&lt;/title&gt;
+        ///&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;../local/Classic.css&quot;&gt;&lt;/link&gt;
+        ///&lt;script src=&quot;../local/script.js&quot;&gt;&lt;/script&gt;
+        ///
+        ///&lt;/head&gt;        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string morereading {
+            get {
+                return ResourceManager.GetString("morereading", resourceCulture);
             }
         }
         
@@ -128,9 +407,9 @@ namespace KNearestNeighbor.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap orange_light_main_top {
+        internal static System.Drawing.Bitmap orange_light_top {
             get {
-                object obj = ResourceManager.GetObject("orange-light-main-top", resourceCulture);
+                object obj = ResourceManager.GetObject("orange_light_top", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -138,10 +417,152 @@ namespace KNearestNeighbor.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap orange_light_top {
+        internal static System.Drawing.Bitmap outputDataStep_closestCompetitorPanel {
             get {
-                object obj = ResourceManager.GetObject("orange_light_top", resourceCulture);
+                object obj = ResourceManager.GetObject("outputDataStep_closestCompetitorPanel", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap outputDataStep_graphPanel {
+            get {
+                object obj = ResourceManager.GetObject("outputDataStep_graphPanel", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap outputDataStep_graphPanelAfter {
+            get {
+                object obj = ResourceManager.GetObject("outputDataStep_graphPanelAfter", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap outputDataStep_graphPanelAfter2 {
+            get {
+                object obj = ResourceManager.GetObject("outputDataStep_graphPanelAfter2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap outputDataStep_initialScreen {
+            get {
+                object obj = ResourceManager.GetObject("outputDataStep_initialScreen", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap outputDataStep_plotsClosestCompetitorPanel {
+            get {
+                object obj = ResourceManager.GetObject("outputDataStep_plotsClosestCompetitorPanel", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;html DIR=&quot;LTR&quot; xmlns:MSHelp=&quot;http://msdn.microsoft.com/mshelp&quot; xmlns:ddue=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; xmlns:tool=&quot;http://www.microsoft.com/tooltip&quot;&gt;
+        ///&lt;head&gt;
+        ///&lt;META HTTP-EQUIV=&quot;Content-Type&quot; CONTENT=&quot;text/html; CHARSET=Windows-1252&quot;&gt;&lt;/META&gt;&lt;META NAME=&quot;save&quot; CONTENT=&quot;history&quot;&gt;&lt;/META&gt;
+        ///&lt;title&gt;k-NN Algorithm Program Overview&lt;/title&gt;
+        ///
+        ///&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;../local/Classic.css&quot;&gt;&lt;/link&gt;
+        ///&lt;script src=&quot;../local/script.js&quot;&gt; [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string programoverview {
+            get {
+                return ResourceManager.GetString("programoverview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap sampleData {
+            get {
+                object obj = ResourceManager.GetObject("sampleData", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;html DIR=&quot;LTR&quot; xmlns:MSHelp=&quot;http://msdn.microsoft.com/mshelp&quot; xmlns:ddue=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; xmlns:tool=&quot;http://www.microsoft.com/tooltip&quot;&gt;
+        ///&lt;head&gt;
+        ///&lt;META HTTP-EQUIV=&quot;Content-Type&quot; CONTENT=&quot;text/html; CHARSET=Windows-1252&quot;&gt;&lt;/META&gt;&lt;META NAME=&quot;save&quot; CONTENT=&quot;history&quot;&gt;&lt;/META&gt;
+        ///&lt;title&gt;Program Start Page&lt;/title&gt;
+        ///
+        ///&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;../local/Classic.css&quot;&gt;&lt;/link&gt;
+        ///&lt;script src=&quot;../local/script.js&quot;&gt;&lt;/script&gt;
+        ///
+        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string startpage {
+            get {
+                return ResourceManager.GetString("startpage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap training_error {
+            get {
+                object obj = ResourceManager.GetObject("training_error", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap training_error2 {
+            get {
+                object obj = ResourceManager.GetObject("training_error2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;html DIR=&quot;LTR&quot; xmlns:MSHelp=&quot;http://msdn.microsoft.com/mshelp&quot; xmlns:ddue=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; xmlns:tool=&quot;http://www.microsoft.com/tooltip&quot;&gt;
+        ///&lt;head&gt;
+        ///&lt;META HTTP-EQUIV=&quot;Content-Type&quot; CONTENT=&quot;text/html; CHARSET=Windows-1252&quot;&gt;&lt;/META&gt;&lt;META NAME=&quot;save&quot; CONTENT=&quot;history&quot;&gt;&lt;/META&gt;
+        ///&lt;title&gt;What is Cross Validation?&lt;/title&gt;
+        ///
+        ///&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;../local/Classic.css&quot;&gt;&lt;/link&gt;
+        ///&lt;script src=&quot;../local/script.js&quot;&gt;&lt;/scri [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string whatiscrossvalidation {
+            get {
+                return ResourceManager.GetString("whatiscrossvalidation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;html DIR=&quot;LTR&quot; xmlns:MSHelp=&quot;http://msdn.microsoft.com/mshelp&quot; xmlns:ddue=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; xmlns:tool=&quot;http://www.microsoft.com/tooltip&quot;&gt;
+        ///&lt;head&gt;
+        ///&lt;META HTTP-EQUIV=&quot;Content-Type&quot; CONTENT=&quot;text/html; CHARSET=Windows-1252&quot;&gt;&lt;/META&gt;&lt;META NAME=&quot;save&quot; CONTENT=&quot;history&quot;&gt;&lt;/META&gt;
+        ///&lt;title&gt;What is the k-NN Algorithm?&lt;/title&gt;
+        ///
+        ///&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;../local/Classic.css&quot;&gt;&lt;/link&gt;
+        ///&lt;script src=&quot;../local/script.js&quot;&gt;&lt;/sc [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string whatisknn {
+            get {
+                return ResourceManager.GetString("whatisknn", resourceCulture);
             }
         }
     }

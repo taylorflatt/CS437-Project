@@ -182,7 +182,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="descriptionLeftPanelText.png" />
+    <Content Include="knnHelp.chm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\KNearestNeighborTest.datasource" />
     <None Include="Properties\DataSources\Wizard.datasource" />
@@ -190,7 +194,156 @@
     <None Include="openofficeorg_math_2ze_icon.ico" />
     <None Include="orange-light-top.png" />
     <None Include="orange-light-main-top.png" />
-    <Content Include="Resources\knnHelp.CHM">
+    <None Include="bin\Debug\Help\html\Images\cluster1.png" />
+    <None Include="bin\Debug\Help\html\Images\cluster2.png" />
+    <None Include="bin\Debug\Help\html\Images\howtocomputeknn_image1.jpg" />
+    <None Include="bin\Debug\Help\html\Images\inputDataStep_attributeField.PNG" />
+    <None Include="bin\Debug\Help\html\Images\inputDataStep_browseBtn.PNG" />
+    <None Include="bin\Debug\Help\html\Images\inputDataStep_browseBtn2.PNG" />
+    <None Include="bin\Debug\Help\html\Images\inputDataStep_inputDataPanel.PNG" />
+    <None Include="bin\Debug\Help\html\Images\inputDataStep_instructionsPanel.PNG" />
+    <None Include="bin\Debug\Help\html\Images\inputDataStep_knnOptions.PNG" />
+    <None Include="bin\Debug\Help\html\Images\inputDataStep_knnOptionsPanel.PNG" />
+    <None Include="bin\Debug\Help\html\Images\inputDataStep_plotXBtn.PNG" />
+    <None Include="bin\Debug\Help\html\Images\inputDataStep_plotYBtn.PNG" />
+    <None Include="bin\Debug\Help\html\Images\inputDataStep_trainingData.PNG" />
+    <None Include="bin\Debug\Help\html\Images\inputDataStep_trainingInformationPanel.PNG" />
+    <None Include="bin\Debug\Help\html\Images\inputDataStep_viewTrainingDataPanel.PNG" />
+    <None Include="bin\Debug\Help\html\Images\knn_error_rate_best_k.jpg" />
+    <None Include="bin\Debug\Help\html\Images\outputDataStep_closestCompetitorPanel.PNG" />
+    <None Include="bin\Debug\Help\html\Images\outputDataStep_graphPanel.PNG" />
+    <None Include="bin\Debug\Help\html\Images\outputDataStep_graphPanelAfter.PNG" />
+    <None Include="bin\Debug\Help\html\Images\outputDataStep_graphPanelAfter2.PNG" />
+    <None Include="bin\Debug\Help\html\Images\outputDataStep_initialScreen.PNG" />
+    <None Include="bin\Debug\Help\html\Images\outputDataStep_plotsClosestCompetitorPanel.PNG" />
+    <None Include="bin\Debug\Help\html\Images\sampleData.PNG" />
+    <None Include="bin\Debug\Help\html\Images\training-error.png" />
+    <None Include="bin\Debug\Help\html\Images\training-error2.png" />
+    <None Include="bin\Debug\Help\html\KNN Algorithm\knndisadvantages.htm" />
+    <None Include="bin\Debug\Help\html\KNN Algorithm\knnIndex.htm" />
+    <None Include="bin\Debug\Help\html\KNN Algorithm\knnkchoice.htm" />
+    <None Include="bin\Debug\Help\html\KNN Algorithm\knnwhen.htm" />
+    <None Include="bin\Debug\Help\html\KNN Algorithm\morereading.htm" />
+    <None Include="bin\Debug\Help\html\KNN Algorithm\whatiscrossvalidation.htm" />
+    <None Include="bin\Debug\Help\html\KNN Algorithm\whatisknn.htm" />
+    <None Include="bin\Debug\Help\html\KNN Algorithm\howtocomputeknn.htm" />
+    <None Include="bin\Debug\Help\html\KNN Algorithm\knnadvantages.htm" />
+    <None Include="bin\Debug\Help\html\KNN Program\programoverview.htm" />
+    <None Include="bin\Debug\Help\html\KNN Program\startpage.htm" />
+    <None Include="bin\Debug\Help\html\KNN Program\datainputpage.htm" />
+    <None Include="bin\Debug\Help\html\KNN Program\dataoutputpage.htm" />
+    <Content Include="html\Images\cluster1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\Images\cluster2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\Images\howtocomputeknn_image1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\Images\inputDataStep_attributeField.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\Images\inputDataStep_browseBtn.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\Images\inputDataStep_browseBtn2.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\Images\inputDataStep_inputDataPanel.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\Images\inputDataStep_instructionsPanel.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\Images\inputDataStep_knnOptions.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\Images\inputDataStep_knnOptionsPanel.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\Images\inputDataStep_plotXBtn.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\Images\inputDataStep_plotYBtn.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\Images\inputDataStep_trainingData.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\Images\inputDataStep_trainingInformationPanel.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\Images\inputDataStep_viewTrainingDataPanel.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\Images\knn_error_rate_best_k.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\Images\outputDataStep_closestCompetitorPanel.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\Images\outputDataStep_graphPanel.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\Images\outputDataStep_graphPanelAfter.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\Images\outputDataStep_graphPanelAfter2.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\Images\outputDataStep_initialScreen.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\Images\outputDataStep_plotsClosestCompetitorPanel.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\Images\sampleData.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\Images\training-error.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\Images\training-error2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\KNN Algorithm\howtocomputeknn.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\KNN Algorithm\knnadvantages.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\KNN Algorithm\knndisadvantages.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\KNN Algorithm\knnIndex.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\KNN Algorithm\knnkchoice.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\KNN Algorithm\knnwhen.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\KNN Algorithm\morereading.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\KNN Algorithm\whatiscrossvalidation.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\KNN Algorithm\whatisknn.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\KNN Program\datainputpage.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\KNN Program\dataoutputpage.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\KNN Program\programoverview.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="html\KNN Program\startpage.htm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -261,9 +414,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="bin\Debug\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="Resources\description.txt" />
   </ItemGroup>

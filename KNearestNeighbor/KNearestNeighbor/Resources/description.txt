@@ -1,20 +1,20 @@
+I'm glad you have decided to use this tool for computing the k-NN. Please note the following few assumptions when using this tool:
 <li>
-<ol>text1</ol>
-<ol>text2</ol>
+<ol> The data is in an excel format.</ol>
+<ol> The first row of the data is the header row consisting of text that describes your data.</ol>
+<ol> The first column is the classification of that data point.</ol>
+<ol> The second column is the name of that point.</ol>
 </li>
+I have included a sample sheet so you know what the input should look like in terms of the training set.
 
-<li>
-<ol>text3</ol>
-<ol>text4</ol>
-</li>
+<h3>Why use k-NN?</h3>
+Most problems in the real world require a decision. Should we target this type of customer or that type of customer? That makes classifications models (including k-NN) very practical and useful. This algorithm is among one of the most implemented machine learning classification algorithms.
 
-<strong>this is some text here</strong>
-<em>this is some italic text</em>
-<li>
-<ul>text1</ul>
-<ul>text2</ul>
-</li>
+<h3>When to use k-NN?</h3>
+Typically k-NN is used for classification but it can also be used for regression predictive problems as well. It is also easy to implement making it a nice choice for many.
 
-This is some text describing what the KNN algorithm is all about. It is also here to see if we will run off the side of the program or will we wrap around?
+<h3>How does k-NN work?</h3>
+Given a set of training data with known classifications and an input with an unknown classification, k-NN will try to classify that input based on the training data. Picking a k is important and determines how many of the input's closest neighbors will vote. The class with the most votes will be the class of the input data.
 
-<h2>Here is some</h2>
+<h3>How do we choose k?</h3>
+If k is too small, it is just choosing the closest training point which may not represent reality. That training point could be an outlier. If k is too large, then the computation is increased substantially and the speed benefit of k-NN is lost. Typically we choose a k value to be the square root of the size of the training set. Alternatively, you can segregate the training and validation from the initial dataset then plot the validation error curve to get the optimal value of k. But this program doesn't discern from either method.

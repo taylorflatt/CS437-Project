@@ -1,0 +1,106 @@
+<html DIR="LTR" xmlns:MSHelp="http://msdn.microsoft.com/mshelp" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:tool="http://www.microsoft.com/tooltip">
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=Windows-1252"></META><META NAME="save" CONTENT="history"></META>
+<title>Program Data Input Page</title>
+
+<link rel="stylesheet" type="text/css" href="../local/Classic.css"></link>
+<script src="../local/script.js"></script>
+
+</head>
+
+<body>
+
+	<div id="header">
+		<h1>Data Input Page</h1>
+		<hr />
+	</div>
+
+	<div id="mainSection">
+		<div id="mainBody">
+			<p class="runningHeader"></p>
+			
+			<p>Function: The purpose of the page is to allow the selection of the training data and entering the input data along with a k value.</p>
+			
+			<p>When first entering the Data Input Page, you cannot go on. You can only go back or stay on this page. You must first enter all of the data before you can run the algorithm.</p>
+			
+			<p>I will be referring to the panels throughout this document. The panels are simply the titles of the different sections on the page. So for instance, on the Data Input Page (step 2), there are 5 panels. There is the Training Information panel at the top, the Input panel in the middle left, the k-NN options in the middle right, the Instructions in the middle bottom, and finally the view training data at the bottom. When I refer to these panels I refer to their contents as well.</p>
+			
+			<p><strong>Required Fields</strong>:</p>
+			
+			<ul>
+				<li>Training data must be added. You must click the browse button (<img src="../Images/inputDataStep_browseBtn.PNG" style="vertical-align: middle;" />) and select an acceptable file (*.xlsx). If you have successfully added a file, you should see <img src="../Images/inputDataStep_browseBtn2.PNG" style="vertical-align: middle;" />. If you attempt to select a file that isn't a *.xlsx then it will prompt you to select a valid file type.</li>
+				<li>Once the training data has been entered, the attribute fields will be added dynamically (See <a href="#fig1">Figure 1</a>). All of the attributes need to be entered in each of those boxes. This represents your input data.</li>
+				<li>After entering the input data, you will need to indicate a k value (See <a href="#fig2">Figure 2</a>). You have the option to indicate whether or not the training data and/or the input data is already normalized. If you normalized the data, then we won't normalize it again.
+				<li>Before proceeding, verify your input data and then training data (See <a href="#fig3">Figure 3</a>).
+			</ul>
+			
+			<p><strong>Recommended Steps</strong>:</p>
+			
+			<ol>
+				<li>Click browse and add the appropriate data file.</li>
+				<li>Verify the training data in the Training Information Panel at the bottom.</li>
+				<li>Enter in your input data.</li>
+				<li>Enter in an appropriate k value.</li>
+				<li>If you don't need normalization for your input data, check the "Don't Normalize Input". If you don't need normalization on your training data, check the "Don't Normalize Training Data. Generally these options will be left un-checked.</li>
+				<li>Click the "Next" button to compute the k-NN algorithm given your data.</li>
+			</ol>
+			
+			<p>Now we will be looking at each of these sections in a bit closer detail.</p>
+			<hr />
+			
+			<h3>Training Information Panel</h3>
+			<img src="../Images/inputDataStep_trainingInformationPanel.PNG" />
+			
+			<p>In this panel is a browse button. The button's function is for you to select a file and read in the data. Once a file is correctly read in, the "Number of Attributes:" text will change to reflect how many attributes the program sees. If this number is wrong or doesn't display, then there was something wrong with reading your file. Make sure you have it in the <a href="programoverview.htm">right format</a>.</p>
+			<hr />
+			
+			<h3>Input Data Panel</h3>
+			<img src="../Images/inputDataStep_inputDataPanel.PNG" />
+			
+			<p>This panel will first appear empty when you first visit this step. That is because the program doesn't know how many attributes you will need to enter until you select a file. Once you select a file, the attribute fields will be dynamically added. If they are not the right amount, then you need to make sure your file is in the <a href="programoverview.htm#correctDataLayout">correct layout</a>.</p>
+			
+			<p>All of the fields must contain a continuous value greater than zero to pass validation.</p>
+			<hr />
+			
+			<h3>k-NN Options Panel</h3>
+			<img src="../Images/inputDataStep_knnOptionsPanel.PNG" />
+			
+			<p>This panel contains the input box for the k value. The k value must be a natural number.</p>
+			
+			<p>There is also the option to select "Don't Normalize Training Data" and "Don't Normalize Input". These options are for the case in which the training data selected in the Training Information Panel was already normalized or the input that you gave was already normalized with respect to the entire data set. If either one of those is the case, you <strong>should</strong> select the appropriate box. There is validation to check the data if it appears normalized or not, but that is <u>not</u> fool proof.</p>
+			
+			<p>Selecting either one of those boxes when your data isn't normalized will result in wildly inaccurate results and possible run errors.</p>
+			<hr />
+			
+			<h3>Instructions Panel</h3>
+			<img src="../Images/inputDataStep_instructionsPanel.PNG" />
+			
+			<p>This panel simply gives a brief step-by-step on how to enter information and the order in which it ought to occur.</p>
+			
+			<hr />
+			<h3>View Training Data Panel</h3>
+			<img src="../Images/inputDataStep_viewTrainingDataPanel.PNG" />
+			
+			<p>This panel will first appear empty when you first visit this step. This is because the program doesn't know what the training data is until you have loaded it into the program. Once you select a file, the training data will be populated. If it appears incorrect, then you need to make sure your file is in the <a href="programoverview.htm#correctDataLayout">correct layout</a>.
+
+			<p>Otherwise, this panel provides you the opprotunity to view how the program has interpreted your document. If there is anything incorrect, you should modify your file prior to attempting to compute the algorithm</p>
+			<hr />
+			
+			<h3>Figures</h3>
+			
+			<a name="fig1"><div style="font-size: 10px; font-weight: bold;">Figure 1</div></a>
+			<img src="../Images/inputDataStep_attributeField.PNG" style="padding-top: 0px;" />
+			<br /><br />
+			<a name="fig2"><div style="font-size: 10px; font-weight: bold;">Figure 2</div></a>
+			<img src="../Images/inputDataStep_knnOptions.PNG" style="padding-top: 0px;" />
+			<br /><br />
+			<a name="fig3"><div style="font-size: 10px; font-weight: bold;">Figure 3</div></a>
+			<img src="../Images/inputDataStep_trainingData.PNG" style="padding-top: 0px;" />
+			
+		</div>
+		
+		<hr />
+		<p />
+	</div>
+</body>
+</html>

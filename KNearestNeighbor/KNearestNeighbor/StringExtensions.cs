@@ -31,6 +31,7 @@ namespace KNearestNeighbor
         ///     em - Will italicize text.
         ///     u - Will underline text.
         ///     h2 - Will increase the size of the font to 24 (default h2 font size).
+        ///     h3 - Will increase the size of the font to 18 (default h3 font size).
         ///     li - Will start a list.
         ///     ul - Will create an un-ordered list with square bullets.
         ///     ol - Will create an ordered list with numbers starting at orderCount.
@@ -43,7 +44,7 @@ namespace KNearestNeighbor
         /// <param name="fontType">The font type for the text.</param>
         public static void ParseLine(RichTextBox richTB, string line, int orderCount, ref int newCount, int fontSize, string fontType)
         {
-            Regex r = new Regex("(\\<strong\\>)|(\\<\\/strong\\>)|(\\<em\\>)|(\\<\\/em\\>)|(\\<li\\>)|(\\<\\/li\\>)|(\\<ul\\>)|(\\<\\/ul\\>)|(\\<ol\\>)|(\\<\\/ol\\>)|(\\<h2\\>)|(\\<\\/h2\\>)|(\\<u\\>)|(\\<\\/u\\>)");
+            Regex r = new Regex("(\\<strong\\>)|(\\<\\/strong\\>)|(\\<em\\>)|(\\<\\/em\\>)|(\\<li\\>)|(\\<\\/li\\>)|(\\<ul\\>)|(\\<\\/ul\\>)|(\\<ol\\>)|(\\<\\/ol\\>)|(\\<h2\\>)|(\\<\\/h2\\>)|(\\<u\\>)|(\\<\\/u\\>)|(\\<h3\\>)|(\\<\\/h3\\>)");
             string[] tokens = r.Split(line);
 
             // Set the tokens default color and font. 
@@ -67,6 +68,9 @@ namespace KNearestNeighbor
 
             string h2Start = "<h2>";
             string h2End = "</h2>";
+
+            string h3Start = "<h3>";
+            string h3End = "</h3>";
 
             string listStart = "<li>";
             string listEnd = "</li>";
@@ -104,9 +108,16 @@ namespace KNearestNeighbor
 
                 //<h2></h2>
                 else if (h2Start == token)
-                    richTB.SelectionFont = new Font(fontType, 24, FontStyle.Regular);
+                    richTB.SelectionFont = new Font(fontType, 18, FontStyle.Regular);
 
                 else if (h2End == token)
+                    richTB.SelectionFont = defaultFont;
+
+                //<h3></h3>
+                else if (h3Start == token)
+                    richTB.SelectionFont = new Font(fontType, 18, FontStyle.Regular);
+
+                else if (h3End == token)
                     richTB.SelectionFont = defaultFont;
 
                 //Maintenance

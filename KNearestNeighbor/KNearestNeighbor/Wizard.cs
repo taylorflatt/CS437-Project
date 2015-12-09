@@ -18,6 +18,7 @@ namespace KNearestNeighbor
     [Serializable()]
     public partial class Wizard : Form
     {
+        #region Main Initial Information
         protected int k;
         KNearestNeighborAlgorithm knn;
 
@@ -29,7 +30,7 @@ namespace KNearestNeighbor
         protected List<List<double>> normalizedTrainingSet = new List<List<double>>(); //Normalized Training Set
         protected List<double> normalizedInputSet = new List<double>(); //Normalized Input Set
 
-        protected List<string> trainingSetLabel = new List<string>();
+        protected List<string> trainingSetLabel = new List<string>(); //The name of the data point.
         protected List<string> outputClassNames = new List<string>(); //Name we read from the data. (Assume this is first).
         protected List<string> attributeNames = new List<string>(); //without make/model
 
@@ -51,13 +52,17 @@ namespace KNearestNeighbor
 
             ///Display the description on the first step using a document resource.
             displayProgramDescription(programDescriptionTB);
-            displayDataStep3.
+
+            displayDataStep3.Subtitle = "View the classification for your input on the left. You may plot the graph to view the training data and input data along with the input's closest competitor with the given two attributes. You may also opt to show the distance calculations on the point labels as well.";
+                
+                //resources.GetString("initialDataStep2.Subtitle");
 
             //Don't let them manipulate the training data until it has been entered.
             kValueTB.Enabled = false;
             dontNormalizeInputDataCheckBox.Enabled = false;
             dontNormalizeTrainingDataCheckBox.Enabled = false;
         }
+        #endregion
 
         #region Global Methods
 
@@ -254,6 +259,16 @@ namespace KNearestNeighbor
             base.OnClosing(e);
         }
 
+        /// <summary>
+        /// Allows the program to close when the user selects the "Finish" button.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void baseControl_FinishButtonClick(object sender, EventArgs e)
+        {
+            System.Windows.Forms.Application.Exit();
+        }
+
         //Custom code for individual steps.
         /// <summary>
         /// This method checks whether the current step has changed and run custom code based on the next step.
@@ -379,7 +394,7 @@ namespace KNearestNeighbor
             //The CHM file will be immediately created upon compile and it will reference it in the created location.
             try
             {
-                System.Diagnostics.Process.Start("Resources\\knnHelp.CHM");
+                System.Diagnostics.Process.Start("knnHelp.CHM");
             }
 
             //If the file has been moved/deleted, notify the user that we cannot display the help file because it has been moved.
@@ -389,7 +404,7 @@ namespace KNearestNeighbor
                 Console.WriteLine("Packed Message: " + error.Message);
                 Console.WriteLine("Call Stack: " + error.StackTrace);
 
-                DialogResult errorMessage = MessageBox.Show(String.Format("Unfortunately, the help file cannot be found. Please redownload the program or verify that the help file is in Resources/knnHelp.CHM"),
+                DialogResult errorMessage = MessageBox.Show(String.Format("Unfortunately, the help file cannot be found. Please redownload the program or verify that the help file is in knnHelp.CHM"),
                     "Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error,
@@ -571,7 +586,7 @@ namespace KNearestNeighbor
                         }
 
                         //Now we add our training data to our training data list. This is null only when the row contains all empty cells.
-                        else if (sheet.GetRow(row) != null) 
+                        else if (sheet.GetRow(row) != null)
                         {
                             /// Assumpetion 1: The class name will always be the first value in a row. 
                             /// We only add the class name if it is a new value (distinct).
@@ -602,7 +617,7 @@ namespace KNearestNeighbor
                             }
 
                             //Add the list of temp values to the training set.
-                            trainingSet.Add(currentRowValues); 
+                            trainingSet.Add(currentRowValues);
                         }
                     }
 
@@ -623,6 +638,7 @@ namespace KNearestNeighbor
                 }
             }
 
+            //Wrong file type error.
             catch (ICSharpCode.SharpZipLib.Zip.ZipException error)
             {
                 Console.WriteLine("You need to select an acceptable file type. ");
@@ -639,6 +655,7 @@ namespace KNearestNeighbor
                     browseButton_Click(sender, e); //Restart the dialog process.
             }
 
+            //The file is being used by another process.
             catch (System.IO.IOException error)
             {
                 Console.WriteLine("The file is currently being used by another process. Close the file and try to reopen it. ");
@@ -655,6 +672,46 @@ namespace KNearestNeighbor
                 if (errorMessage == DialogResult.OK)
                     browseButton_Click(sender, e); //Restart the dialog process.
             }
+
+            //The file has incompatible data.
+            catch (System.InvalidOperationException error)
+            {
+                Console.WriteLine("The file you are trying to add has incompatible data. This program doesn't allow for discrete values outside of the first row and first two columns of each row. The attribute values must be continuous (non-negative) numbers. ");
+                Console.WriteLine("Packed Message: " + error.Message);
+                Console.WriteLine("Call Stack: " + error.StackTrace);
+
+                DialogResult errorMessage = MessageBox.Show("The file you are trying to add has incompatible data. Please view the help file to see the proper format. The attributes values must have continuous (non-negative) numbers. ",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error,
+                    MessageBoxDefaultButton.Button1);
+
+                if (errorMessage == DialogResult.OK)
+                {
+                    fileLocationLabel.Text = "N/A"; //Set the file name back to N/A.
+
+                    //Open the knnHelp.CHM file to the place where we show how the data ought to be structured.
+                    try
+                    {
+                        Help.ShowHelp(this, "knnHelp.CHM", HelpNavigator.Topic, @"/html/KNN Program/programoverview.htm#correctDataLayout");
+                    }
+
+                    //If the file has been moved/deleted, notify the user that we cannot display the help file because it has been moved.
+                    catch (System.ComponentModel.Win32Exception error2)
+                    {
+                        Console.WriteLine("We could not find the text file to display the instructions for step 2 (initialize data step). ");
+                        Console.WriteLine("Packed Message: " + error2.Message);
+                        Console.WriteLine("Call Stack: " + error2.StackTrace);
+
+                        DialogResult errorMessage2 = MessageBox.Show(String.Format("Unfortunately, the help file cannot be found. Please redownload the program or verify that the help file is in knnHelp.CHM"),
+                            "Error",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error,
+                            MessageBoxDefaultButton.Button1);
+                    }
+                }
+            }
+
         }
 
         /// <summary>

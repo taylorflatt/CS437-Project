@@ -127,13 +127,121 @@
   <data name="description" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\description.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="knnHelp" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\knnHelp.CHM;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="openofficeorg_math_2ze_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\openofficeorg_math_2ze_icon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="orange-light-main-top" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\orange-light-main-top.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="cluster1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\Images\cluster1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cluster2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\Images\cluster2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="datainputpage" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\KNN Program\datainputpage.htm;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="dataoutputpage" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\KNN Program\dataoutputpage.htm;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="howtocomputeknn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\KNN Algorithm\howtocomputeknn.htm;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="howtocomputeknn_image1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\Images\howtocomputeknn_image1.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="inputDataStep_attributeField" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\Images\inputDataStep_attributeField.PNG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="inputDataStep_browseBtn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\Images\inputDataStep_browseBtn.PNG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="inputDataStep_browseBtn2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\Images\inputDataStep_browseBtn2.PNG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="inputDataStep_inputDataPanel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\Images\inputDataStep_inputDataPanel.PNG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="inputDataStep_instructionsPanel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\Images\inputDataStep_instructionsPanel.PNG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="inputDataStep_knnOptions" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\Images\inputDataStep_knnOptions.PNG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="inputDataStep_knnOptionsPanel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\Images\inputDataStep_knnOptionsPanel.PNG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="inputDataStep_plotXBtn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\Images\inputDataStep_plotXBtn.PNG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="inputDataStep_plotYBtn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\Images\inputDataStep_plotYBtn.PNG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="inputDataStep_trainingData" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\Images\inputDataStep_trainingData.PNG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="inputDataStep_trainingInformationPanel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\Images\inputDataStep_trainingInformationPanel.PNG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="inputDataStep_viewTrainingDataPanel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\Images\inputDataStep_viewTrainingDataPanel.PNG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="knnadvantages" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\KNN Algorithm\knnadvantages.htm;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="knndisadvantages" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\KNN Algorithm\knndisadvantages.htm;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="knnIndex" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\KNN Algorithm\knnIndex.htm;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="knnkchoice" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\KNN Algorithm\knnkchoice.htm;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="knnwhen" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\KNN Algorithm\knnwhen.htm;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="knn_error_rate_best_k" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\Images\knn_error_rate_best_k.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="morereading" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\KNN Algorithm\morereading.htm;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="outputDataStep_closestCompetitorPanel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\Images\outputDataStep_closestCompetitorPanel.PNG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="outputDataStep_graphPanel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\Images\outputDataStep_graphPanel.PNG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="outputDataStep_graphPanelAfter" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\Images\outputDataStep_graphPanelAfter.PNG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="outputDataStep_graphPanelAfter2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\Images\outputDataStep_graphPanelAfter2.PNG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="outputDataStep_initialScreen" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\Images\outputDataStep_initialScreen.PNG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="outputDataStep_plotsClosestCompetitorPanel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\Images\outputDataStep_plotsClosestCompetitorPanel.PNG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="programoverview" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\KNN Program\programoverview.htm;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="sampleData" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\Images\sampleData.PNG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="startpage" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\KNN Program\startpage.htm;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="training_error" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\Images\training-error.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="training_error2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\Images\training-error2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="whatiscrossvalidation" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\KNN Algorithm\whatiscrossvalidation.htm;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="whatisknn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\bin\Debug\Help\html\KNN Algorithm\whatisknn.htm;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
 </root>

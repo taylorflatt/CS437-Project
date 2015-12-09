@@ -132,12 +132,12 @@
             this.baseControl.BackButtonClick += new System.ComponentModel.CancelEventHandler(this.baseControl_BackButtonClick);
             this.baseControl.CancelButtonClick += new System.EventHandler(this.baseControl_CancelButtonClick);
             this.baseControl.CurrentStepIndexChanged += new System.EventHandler(this.wizardControl2_CurrentStepIndexChanged);
+            this.baseControl.FinishButtonClick += new System.EventHandler(this.baseControl_FinishButtonClick);
             this.baseControl.HelpButtonClick += new System.EventHandler(this.Wizard_HelpButtonClicked);
             this.baseControl.NextButtonClick += new WizardBase.GenericCancelEventHandler<WizardBase.WizardControl>(this.baseControl_NextButtonClick);
             // 
             // descriptionStep1
             // 
-            this.descriptionStep1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.descriptionStep1.BindingImage = ((System.Drawing.Image)(resources.GetObject("descriptionStep1.BindingImage")));
             this.descriptionStep1.CausesValidation = false;
             this.descriptionStep1.Controls.Add(this.programDescriptionTB);
@@ -303,7 +303,7 @@
             this.groupBox3.Size = new System.Drawing.Size(349, 95);
             this.groupBox3.TabIndex = 14;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "KNN Options";
+            this.groupBox3.Text = "k-NN Options";
             // 
             // dontNormalizeInputDataCheckBox
             // 
@@ -374,6 +374,8 @@
             this.displayDataStep3.Controls.Add(this.label13);
             this.displayDataStep3.ForeColor = System.Drawing.SystemColors.ControlText;
             this.displayDataStep3.Name = "displayDataStep3";
+            this.displayDataStep3.Subtitle = resources.GetString("displayDataStep3.Subtitle");
+            this.displayDataStep3.Title = "Display Data Output";
             // 
             // groupBox7
             // 
@@ -405,7 +407,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(7, 19);
+            this.label8.Location = new System.Drawing.Point(6, 19);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(369, 13);
             this.label8.TabIndex = 6;
@@ -450,7 +452,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(5, 63);
+            this.label4.Location = new System.Drawing.Point(6, 63);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(128, 13);
             this.label4.TabIndex = 0;
@@ -474,7 +476,7 @@
             this.groupBox8.Size = new System.Drawing.Size(200, 100);
             this.groupBox8.TabIndex = 4;
             this.groupBox8.TabStop = false;
-            this.groupBox8.Text = "K-NN Closest Competitor";
+            this.groupBox8.Text = "k-NN Closest Competitor";
             // 
             // label19
             // 
@@ -516,7 +518,7 @@
             // showAllDistancesRadioButton
             // 
             this.showAllDistancesRadioButton.AutoSize = true;
-            this.showAllDistancesRadioButton.Location = new System.Drawing.Point(363, 37);
+            this.showAllDistancesRadioButton.Location = new System.Drawing.Point(363, 33);
             this.showAllDistancesRadioButton.Name = "showAllDistancesRadioButton";
             this.showAllDistancesRadioButton.Size = new System.Drawing.Size(116, 17);
             this.showAllDistancesRadioButton.TabIndex = 16;
@@ -529,10 +531,10 @@
             this.showKDistancesRadioButton.AutoSize = true;
             this.showKDistancesRadioButton.Location = new System.Drawing.Point(363, 14);
             this.showKDistancesRadioButton.Name = "showKDistancesRadioButton";
-            this.showKDistancesRadioButton.Size = new System.Drawing.Size(152, 17);
+            this.showKDistancesRadioButton.Size = new System.Drawing.Size(151, 17);
             this.showKDistancesRadioButton.TabIndex = 15;
             this.showKDistancesRadioButton.TabStop = true;
-            this.showKDistancesRadioButton.Text = "Show K-Nearest Distances";
+            this.showKDistancesRadioButton.Text = "Show k-Nearest Distances";
             this.showKDistancesRadioButton.UseVisualStyleBackColor = true;
             // 
             // plotButton

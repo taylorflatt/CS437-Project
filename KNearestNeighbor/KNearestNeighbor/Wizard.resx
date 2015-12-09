@@ -2036,6 +2036,9 @@
   <data name="initialDataStep2.Subtitle" xml:space="preserve">
     <value>We assume that the training data's first column for each row is the class of the data point. Further, we assume that the second column is the point's label The rest are considered attributes. After entering all the values, click next to compute KNN.</value>
   </data>
+  <data name="displayDataStep3.Subtitle" xml:space="preserve">
+    <value>View the classification for your input on the left. You may plot the graph to view the training data and input data along with the input's closest competitor with the given two attributes. You may also opt to show the distance calculations on the point labels as well.</value>
+  </data>
   <metadata name="openFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>

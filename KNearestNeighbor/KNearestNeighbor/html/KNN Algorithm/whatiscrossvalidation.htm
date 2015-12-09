@@ -1,0 +1,38 @@
+<html DIR="LTR" xmlns:MSHelp="http://msdn.microsoft.com/mshelp" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:tool="http://www.microsoft.com/tooltip">
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=Windows-1252"></META><META NAME="save" CONTENT="history"></META>
+<title>What is Cross Validation?</title>
+
+<link rel="stylesheet" type="text/css" href="../local/Classic.css"></link>
+<script src="../local/script.js"></script>
+
+</head>
+
+<body>
+
+	<div id="header">
+		<h1>What is Cross Validation?</h1>
+	</div>
+
+	<div id="mainSection">
+		<div id="mainBody">
+			<p class="runningHeader"></p>
+			
+			<p>Cross-validation is a well established technique that can be used to obtain estimates of model parameters that are unknown. Here we discuss the applicability of this technique to estimating k.</p>
+
+			<p>The general idea of this method is to divide the data sample into a number of v folds (randomly drawn, disjointed sub-samples or segments). For a fixed value of k, we apply the KNN model to make predictions on the vth segment (i.e., use the v-1 segments as the examples) and evaluate the error. The most common choice for this error for regression is sum-of-squared and for classification it is most conveniently defined as the accuracy (the percentage of correctly classified cases). This process is then successively applied to all possible choices of v.</p> 
+			
+			<p>At the end of the v folds (cycles), the computed errors are averaged to yield a measure of the stability of the model (how well the model predicts query points). The above steps are then repeated for various k and the value achieving the lowest error (or the highest classification accuracy) is then selected as the optimal value for k (optimal in a cross-validation sense).</p> 
+			
+			<img src="../Images/knn_error_rate_best_k.jpg" width="500px" />
+			
+			<p>Note that cross-validation is computationally expensive and you should be prepared to let the algorithm run for some time especially when the size of the examples sample is large. Alternatively, you can specify k. This may be a reasonable course of action should you have an idea of which value k may take (i.e., from previous KNN analyses you may have conducted on similar data). (<a href="http://www.statsoft.com/textbook/k-nearest-neighbors">Source</a>)</p>
+			
+			<p><a href="http://gerardnico.com/wiki/_media/data_mining/knn_error_rate_best_k.jpg?w=400&tok=1c539a">Image Citation</a></p>
+		</div>
+		
+		<hr />
+		<p />
+	</div>
+</body>
+</html>
