@@ -28,7 +28,7 @@ namespace KNearestNeighbor
 
             FindMinMax(trainingSet, currentValue, colNum);
 
-            //Compute the normalized value of the 
+            //Compute the normalized value of the
             normalizedValue = (currentValue - min) / (max - min);
 
             //We need to reset the values for max and min so the next column isn't influenced by the previous column.
@@ -60,7 +60,7 @@ namespace KNearestNeighbor
                 tempRow.Add(0);
 
             //Initialize the normalized training set to the proper size.
-            for(int count = 0; count < trainingSet.Count; count++)
+            for (int count = 0; count < trainingSet.Count; count++)
                 normalizedTrainingSet.Add(new List<double>(numAttributes));
 
             //For each row's elements, this adds the normalized point to the position saving it in a tempRow array.
@@ -70,7 +70,7 @@ namespace KNearestNeighbor
                     tempRow[column] = (trainingSet[row][column] - jaggedMin[column]) / (jaggedMax[column] - jaggedMin[column]);
 
                 //Add the normalized temp row data to the normalized training set.
-                foreach(var element in tempRow)
+                foreach (var element in tempRow)
                     normalizedTrainingSet[row].Add(element);
             }
 

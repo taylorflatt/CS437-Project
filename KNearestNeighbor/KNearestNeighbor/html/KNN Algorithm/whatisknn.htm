@@ -5,7 +5,6 @@
 
 <link rel="stylesheet" type="text/css" href="../local/Classic.css"></link>
 <script src="../local/script.js"></script>
-
 </head>
 
 <body>
@@ -17,18 +16,18 @@
 	<div id="mainSection">
 		<div id="mainBody">
 			<p class="runningHeader"></p>
-			
+
 			<p> The k-NN algorithm can be considered an election algorithm of sorts. The idea is that we have a training set of known values and classifications. Then we take something we wish classified and compute all of the distances between the input and the k values around it. Those points that are on that short list of numbers within k of the input then vote for their class as the class for the input. Whichever class has the largest vote will win. Intuitively, it makes a lot of sense. If you have certain qualities that deam you to be part of a group, you would most likely identify or be identified as part of that group.</p>
-			
+
 			<p>We can take the algorithm further by applying weights to those distances between the training set and the input point. The idea is that the closer you are to the input, the more important your vote. This serves two goals. </p>
-			
-			<p>First, if you have an even distribution of votes for classes (a tie), adding weights to those data points will break that tie. The elements who are closer will have "more" of a vote than those further away.</p> 
-			
+
+			<p>First, if you have an even distribution of votes for classes (a tie), adding weights to those data points will break that tie. The elements who are closer will have "more" of a vote than those further away.</p>
+
 			<p>Second you don't <em>really</em> need a k value anymore. If you consider the entire training data set then points who are closer will vote more heavily for their class whereas other points much further away from the input will have almost no effect (as if they didn't really vote). Remember the vote is a winner takes all vote. You only end up with one class in the end. The only thing to really watch is the distance function you choose to compute and weight those values.</p>
-			
+
 			<p>In summary, k-NN is a classification algorithm that makes use of its election-based voting style to classify a complex data set into the appropriate classification.</p>
 		</div>
-		
+
 		<hr />
 		<p />
 	</div>

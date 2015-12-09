@@ -1,6 +1,6 @@
-﻿using System.Windows.Forms;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace KNearestNeighbor
 {
@@ -23,9 +23,9 @@ namespace KNearestNeighbor
 
         /// <summary>
         /// Parses text based on several key phrases using regex.
-        /// 
+        ///
         /// All values are enclosed in <> </> brackets.
-        /// 
+        ///
         /// Phrases:
         ///     strong - Will bold text.
         ///     em - Will italicize text.
@@ -47,7 +47,7 @@ namespace KNearestNeighbor
             Regex r = new Regex("(\\<strong\\>)|(\\<\\/strong\\>)|(\\<em\\>)|(\\<\\/em\\>)|(\\<li\\>)|(\\<\\/li\\>)|(\\<ul\\>)|(\\<\\/ul\\>)|(\\<ol\\>)|(\\<\\/ol\\>)|(\\<h2\\>)|(\\<\\/h2\\>)|(\\<u\\>)|(\\<\\/u\\>)|(\\<h3\\>)|(\\<\\/h3\\>)");
             string[] tokens = r.Split(line);
 
-            // Set the tokens default color and font. 
+            // Set the tokens default color and font.
             richTB.SelectionColor = Color.Black;
 
             Font defaultFont = new Font(fontType, fontSize, FontStyle.Regular);
@@ -56,7 +56,7 @@ namespace KNearestNeighbor
             bool constructingUnrderedList = false;
             bool constructingOrderedList = false;
 
-            // Check whether the token is a keyword. 
+            // Check whether the token is a keyword.
             string bold = "<strong>";
             string endBold = "</strong>";
 
@@ -88,74 +88,63 @@ namespace KNearestNeighbor
                 //<strong></strong>
                 if (bold == token)
                     richTB.SelectionFont = new Font(fontType, fontSize, FontStyle.Bold);
-
                 else if (endBold == token)
                     richTB.SelectionFont = defaultFont;
 
                 //<em></em>
                 else if (italics == token)
                     richTB.SelectionFont = new Font(fontType, fontSize, FontStyle.Italic);
-
                 else if (endItalics == token)
                     richTB.SelectionFont = defaultFont;
 
                 //<u></u>
                 else if (underline == token)
                     richTB.SelectionFont = new Font(fontType, fontSize, FontStyle.Underline);
-
                 else if (endUnderline == token)
                     richTB.SelectionFont = defaultFont;
 
                 //<h2></h2>
                 else if (h2Start == token)
                     richTB.SelectionFont = new Font(fontType, 18, FontStyle.Regular);
-
                 else if (h2End == token)
                     richTB.SelectionFont = defaultFont;
 
                 //<h3></h3>
                 else if (h3Start == token)
                     richTB.SelectionFont = new Font(fontType, 18, FontStyle.Regular);
-
                 else if (h3End == token)
                     richTB.SelectionFont = defaultFont;
 
                 //Maintenance
                 else if (listStart == token)
                     newCount = 0; //Reset numbering
-
                 else if (listEnd == token)
                     newCount = 0; //Reset numbering
 
                 //<ul></ul>
                 else if (listItemUnordered == token)
                     constructingUnrderedList = true;
-
                 else if (listItemEndUnordered == token)
                     constructingUnrderedList = false;
-
                 else if (constructingUnrderedList == true && listItemUnordered != token)
                     richTB.SelectedText = "\u25A0 " + token;
 
                 //<ol></ol>
                 else if (listItemOrdered == token)
                     constructingOrderedList = true;
-
                 else if (listItemEndOrdered == token)
                     constructingOrderedList = false;
-
                 else if (constructingOrderedList == true && listItemOrdered != token)
                     richTB.SelectedText = orderCount + ") " + token;
 
                 //This statement is required else there will be a beep sound heard each time an empty value is added to the textbox.
                 else if (token.Equals(""))
                     isValid = false;
-
-                else if(isValid == true)
+                else if (isValid == true)
                     richTB.SelectedText = token;
             }
 
             //richTB.SelectedText = "\n"; //Generous spacing between elements. (Recommend to remain commented out).
         }
-    }   
+    }
 }

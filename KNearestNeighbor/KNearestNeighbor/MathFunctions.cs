@@ -8,12 +8,12 @@ namespace KNearestNeighbor
         /// <summary>
         ///   Gets the Square Euclidean distance between two points.
         /// </summary>
-        /// 
+        ///
         /// <param name="x">A point in space.</param>
         /// <param name="y">A point in space.</param>
-        /// 
+        ///
         /// <returns>The Square Euclidean distance between x and y.</returns>
-        /// 
+        ///
         public static double SquareEuclidean(this List<double> x, List<double> y)
         {
             double d = 0.0, u;
@@ -30,12 +30,12 @@ namespace KNearestNeighbor
         /// <summary>
         ///   Gets the Euclidean distance between two points.
         /// </summary>
-        /// 
+        ///
         /// <param name="x">A point in space.</param>
         /// <param name="y">A point in space.</param>
-        /// 
+        ///
         /// <returns>The Euclidean distance between x and y.</returns>
-        /// 
+        ///
         public static double Euclidean(this List<double> x, List<double> y)
         {
             return System.Math.Sqrt(SquareEuclidean(x, y));

@@ -11,16 +11,15 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
-//DON'T FORGET TO CHANGE THE PATHS TO DOCUMENTS AND THE HELP FILE.
-
 namespace KNearestNeighbor
 {
     [Serializable()]
     public partial class Wizard : Form
     {
         #region Main Initial Information
+
         protected int k;
-        KNearestNeighborAlgorithm knn;
+        private KNearestNeighborAlgorithm knn;
 
         protected List<List<double>> trainingSet = new List<List<double>>(); //Training Set
         protected List<int> outputClass = new List<int>(); //Class (output) Set
@@ -54,15 +53,16 @@ namespace KNearestNeighbor
             displayProgramDescription(programDescriptionTB);
 
             displayDataStep3.Subtitle = "View the classification for your input on the left. You may plot the graph to view the training data and input data along with the input's closest competitor with the given two attributes. You may also opt to show the distance calculations on the point labels as well.";
-                
-                //resources.GetString("initialDataStep2.Subtitle");
+
+            //resources.GetString("initialDataStep2.Subtitle");
 
             //Don't let them manipulate the training data until it has been entered.
             kValueTB.Enabled = false;
             dontNormalizeInputDataCheckBox.Enabled = false;
             dontNormalizeTrainingDataCheckBox.Enabled = false;
         }
-        #endregion
+
+        #endregion Main Initial Information
 
         #region Global Methods
 
@@ -127,7 +127,6 @@ namespace KNearestNeighbor
                 for (int index = 0; index < lines.Count(); index++)
                     StringExtensions.ParseLine(textbox, lines[index], orderCount, ref orderCount, 10, "Times New Roman");
             }
-
             catch (System.IO.FileNotFoundException error)
             {
                 Console.WriteLine("We could not find the text file to display the instructions for step 2 (initialize data step). ");
@@ -187,8 +186,8 @@ namespace KNearestNeighbor
         }
 
         /// <summary>
-        /// This method will generate the attribute textboxes and their labels dynamically based on the training data. 
-        /// This is a vestigial method that won't be called unless I fix the text location problem. 
+        /// This method will generate the attribute textboxes and their labels dynamically based on the training data.
+        /// This is a vestigial method that won't be called unless I fix the text location problem.
         /// </summary>
         /// <param name="previousText"> The list that contains all of the previous values.</param>
         private void populateAttributeList(List<Object> previousText)
@@ -215,7 +214,6 @@ namespace KNearestNeighbor
                 // If there is ANY text in the textbox from before, let's put it back.
                 if (Convert.ToString(previousText[count - 1]) != "")
                     tempTB.Text = Convert.ToString(previousText[count - 1]);
-
 
                 tableLayoutPanel1.Controls.Add(tempTB, column, row);
             }
@@ -288,7 +286,7 @@ namespace KNearestNeighbor
                 if (fileLocationLabel.Text.Equals("N/A"))
                     baseControl.NextButtonEnabled = false;
 
-                /// Case: If they entered a file, then clicked "back" coming back to this step. 
+                /// Case: If they entered a file, then clicked "back" coming back to this step.
                 /// Solution: We let them go to the next step since they have entered a file.
                 else
                     baseControl.NextButtonEnabled = true;
@@ -413,7 +411,7 @@ namespace KNearestNeighbor
         }
 
         /// <summary>
-        /// We don't want any validation to occur when we select the "back" option. We don't care about validating 
+        /// We don't want any validation to occur when we select the "back" option. We don't care about validating
         /// information moving backwards.
         /// </summary>
         /// <param name="sender"></param>
@@ -444,7 +442,7 @@ namespace KNearestNeighbor
                 initialDataStep2.CausesValidation = true;
 
             //Force validation to occur on the InitialDataStep2 if trying to go TO DataDisplayStep.
-            //The case we are accounting for here is when I go from Step 1 to Step 2 (load a file), then back to Step 1 and then attempt 
+            //The case we are accounting for here is when I go from Step 1 to Step 2 (load a file), then back to Step 1 and then attempt
             //to go onto Step 3 without adding anymore information. We need to validate the data and tell the user there is an error.
             if (currentStep == 1)
             {
@@ -466,7 +464,7 @@ namespace KNearestNeighbor
             Application.Exit();
         }
 
-        #endregion
+        #endregion Global Methods
 
         #region Description Step
 
@@ -514,13 +512,14 @@ namespace KNearestNeighbor
             e.Handled = true;
             e.SuppressKeyPress = true;
         }
-        #endregion
+
+        #endregion Description Step
 
         #region Initial Data Step
 
         /// <summary>
         /// When we choose the "browse" button, we need to handle what will happen. There are several cases to manage.
-        /// 
+        ///
         /// Case 1: They cancel from the browse dialog box.
         /// Case 2: They select a file from the browse dialog box.
         /// Case 2a: The selected file isn't the proper file type.
@@ -588,7 +587,7 @@ namespace KNearestNeighbor
                         //Now we add our training data to our training data list. This is null only when the row contains all empty cells.
                         else if (sheet.GetRow(row) != null)
                         {
-                            /// Assumpetion 1: The class name will always be the first value in a row. 
+                            /// Assumpetion 1: The class name will always be the first value in a row.
                             /// We only add the class name if it is a new value (distinct).
                             string className = Convert.ToString(sheet.GetRow(row).GetCell(0).StringCellValue);
 
@@ -638,14 +637,14 @@ namespace KNearestNeighbor
                 }
             }
 
-            //Wrong file type error.
+            //Wrong file type error. Or they put in a file with extension .xlsx that isn't an excel file.
             catch (ICSharpCode.SharpZipLib.Zip.ZipException error)
             {
-                Console.WriteLine("You need to select an acceptable file type. ");
+                Console.WriteLine("Either the file extension wasn't acceptable or it was the correct file extension but not the right file type (if you change a *.docx file type to a *.xlsx file type by just changing the name. It won't work. ");
                 Console.WriteLine("Packed Message: " + error.Message);
                 Console.WriteLine("Call Stack: " + error.StackTrace);
 
-                DialogResult errorMessage = MessageBox.Show("You must use a file with .xlsx extension. ",
+                DialogResult errorMessage = MessageBox.Show("Your file must be a valid .xlsx file type. ",
                     "Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error,
@@ -711,7 +710,6 @@ namespace KNearestNeighbor
                     }
                 }
             }
-
         }
 
         /// <summary>
@@ -844,7 +842,7 @@ namespace KNearestNeighbor
         }
 
         /// <summary>
-        /// This method runs only after the data in step 2 (initial data step) has been successfully validated. This is where we actually 
+        /// This method runs only after the data in step 2 (initial data step) has been successfully validated. This is where we actually
         /// call the compute method for the K-NN algorithm. This method also serves as a sort of initializer for the display data step.
         /// </summary>
         /// <param name="sender"></param>
@@ -853,7 +851,7 @@ namespace KNearestNeighbor
         {
             int numAttributes = attributeNames.Count;
 
-            /// Case: In the event we compute the KNN (procede successfully to view the data) and then click the "back" option and decide 
+            /// Case: In the event we compute the KNN (procede successfully to view the data) and then click the "back" option and decide
             /// to change the information.
             /// Solution: Reset ALL of the values prior to entering new ones.
             normalizedInputSet.Clear(); //Remove all members of the input set.
@@ -872,7 +870,7 @@ namespace KNearestNeighbor
             closestCompetitorDistanceLabel.Text = "N/A"; //Set the distance label back to default.
 
             // The input data has been normalized by the user AND we validated that it *appeared* to be normalized.
-            if(dontNormalizeInputDataCheckBox.Checked == true)
+            if (dontNormalizeInputDataCheckBox.Checked == true)
                 normalizedInputSet = inputSet;
 
             //We need to normalize the input data.
@@ -919,7 +917,7 @@ namespace KNearestNeighbor
             }
         }
 
-        #endregion
+        #endregion Initial Data Step
 
         #region Data Display Step
 
@@ -964,7 +962,7 @@ namespace KNearestNeighbor
                 }
 
                 //User wants to display all the distances.
-                else if(showAllDistancesRadioButton.Checked == true)
+                else if (showAllDistancesRadioButton.Checked == true)
                 {
                     returnKDistances = true;
                     showAllDistances = true;
@@ -995,6 +993,7 @@ namespace KNearestNeighbor
                 chart1.Show();
             }
         }
-        #endregion
+
+        #endregion Data Display Step
     }
 }

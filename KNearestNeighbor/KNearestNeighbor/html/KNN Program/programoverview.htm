@@ -5,7 +5,6 @@
 
 <link rel="stylesheet" type="text/css" href="../local/Classic.css"></link>
 <script src="../local/script.js"></script>
-
 </head>
 
 <body>
@@ -18,21 +17,21 @@
 	<div id="mainSection">
 		<div id="mainBody">
 			<p class="runningHeader"></p>
-			
+
 			<p>The program was developed by Taylor Flatt for a CS 437 Machine Learning project. It is programmed in C#.</p>
-			
+
 			<p>To view specifics on each step, you may view the following files:</p>
-			
+
 			<ul>
 				<li><a href="startpage.htm">Start Page</a></li>
 				<li><a href="datainputpage.htm">Data Input Page</a></li>
 				<li><a href="dataoutputpage.htm">Data Output Page</a></li>
 			</ul>
-			
+
 			<p>The plan is to continue to implement the various components of the k-NN algorithm such as cross-validation and the ability to handle discrete data.</p>
-			
+
 			<p>The program makes several assumptions in order for it to work. All of which I think are reasonable assumptions and easy to work with.
-			
+
 			<ul>
 				<li><u>Assumption 1</u>: I assume an excel spreadsheet (*.xlsx).</li>
 				<li><u>Assumption 2</u>: I assume that the first row of the spreadsheet are the descriptors of the data. </li>
@@ -41,18 +40,18 @@
 				<li><u>Assumption 5</u>: I assume all attribute data is continous data.</li>
 				<li><u>Assumption 6</u>: I assume (for now) that you are able to determine a k value and enter it into the application.</li>
 			</ul>
-			
+
 			<p>Consider the following scenario:</p>
-			
-			<p>I have a list of cars from 5 different manufacturers. I want to know if I develop a car, who my closest manufacturing competitor will be. So I know that there are a few attributes that really influence the competitiveness of a car.</p> 
-			
+
+			<p>I have a list of cars from 5 different manufacturers. I want to know if I develop a car, who my closest manufacturing competitor will be. So I know that there are a few attributes that really influence the competitiveness of a car.</p>
+
 			<p>For instance, the average MPG, fuel capacity, # of options, sale (MSRP) price, and horsepower are all attributes that would put my car in competition with another car. So I have a list of those manufacturers with all their cars with those attributes put in and I run the k-NN algorithm with my car as the input to determine the closest manufacturer to me.</p>
 			<a id="correctDataLayout">
 			<img src="../Images/sampleData.PNG" width="500px" /></a>
-			
+
 			<p>In that case, my classes are the manufacturers (Example: Dodge). My data point label were the model of the cars (Example: Charger). My attributes are the average MPG, fuel capacity, # of options, sale price, and horsepower.</p>
 		</div>
-		
+
 		<hr />
 		<p />
 	</div>

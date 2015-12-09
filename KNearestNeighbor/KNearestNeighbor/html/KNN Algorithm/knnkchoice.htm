@@ -5,7 +5,6 @@
 
 <link rel="stylesheet" type="text/css" href="../local/Classic.css"></link>
 <script src="../local/script.js"></script>
-
 </head>
 
 <body>
@@ -17,20 +16,20 @@
 	<div id="mainSection">
 		<div id="mainBody">
 			<p class="runningHeader"></p>
-			
+
 			<p>The biggest advantage to the k-NN algorithm is its k value. It is pivotal to choose the correct value for k. It determines the entire output of the algorithm. If a k is too small, then the classification of your data may not be truly representative of reality. But if k is too large (without proper weighting), it would end up just choosing the most frequent class which is definitely not the point of the algorithm. So how do we choose a good k value?</p>
-			
+
 			<p>Aside from the points made above, there are several other concerns for the k-NN algorithm that can be addressed by k. How would we address the overfitting problem? The natural overfitting control parameter is obviously k. That is where you actually have control. The problem is that when you increase k, you are averaging over a larger region meaning you are losing resolution. So k needs to be optimized. To do this there are a couple options:</p>
-			
+
 			<ol>
 				<li class="unordered"><strong>Use <a href="whatiscrossvalidation.htm">cross validation</a></strong> to choose the k value. [<a href="http://www.stat.berkeley.edu/~nolan/stat133/Fall04/lectures/CV.pdf">How</a>]<br /><br /></li>
 				<li class="unordered"><strong>Remove noisy instances</strong>. Noise is defined as a data point that is clearly misclassified. How do you determine misclassification? Looking at it in terms of the data point, if your nearest neighbors are all of another class, then you aren't where you probably should be. However, if your nearest neighbors are all of your class, then you are probably classified correctly. A misclassified point will have an influence radius (biasing the vote for your input) which is not a good.<br /><br /></li>
 			</ol>
-			
+
 			<p>Finding outliers is a challenge however. It is easy to look at a point and see the points around it but how far out are points considered? Do you just consider the nearest two points? Three points? One hundred points? Determining the threshold is key here. To do this, you need to look at your data and determine an approximate level of noise. If the data has a low level of noise (things are classified nearly perfectly) then all of an outlier's nearest neighbors will be of a different class. If the data has a high level of noise (many misclassified points), then the outlier's nearest neighbors might be mixed classes. There is no single number or formula to calculate a threshold.</p>
-			
+
 			<p>But what if there are pockets of data points mixed with other classes? In other words, if you have a a cluster of points within a clearly different class's zone then do you reject that data? How do you define a cluster?</p>
-			
+
 			<p>You'll notice that some red dots are in the blue territory creating misclassifications. You will also notice the radius of those misclassifications is large. This goes to show that a small k value will give too much weight to the misclassifications.</p>
 			<img src="../Images/cluster1.png" width="500px" /><br />
 			<p>As we increase k, the influence of those outliers decreases but so does our accuracy of classification and our speed. If you increase k to infinity, you get the whole plot to look either totally red or totally blue depending on which ever has the most data points. So we need to determine a method by which we can choose a k that will give us an optimal neighborhood.</p>
@@ -40,15 +39,14 @@
 			<p>Now let's look at the validation error curve. We see that a choice of k to be too small causes overfitting at the boundries (this is an obvious assement). As we increase k that error will decrease but we know it has to reach a minima and begin increasing again due to having <em>too</em> many data points.</p>
 			<img src="../Images/training-error2.png" width="500px" />
 			<p>To find that minima, you will want to segregate the training and validation from the initial dataset. Then plot the validation error curve to get the optimal value. Then use that k in to compute the k-NN.</p>
-			
+
 			<p>Unfortunately, there are a lot of questions still unanswered in terms of choosing an appropriate k value. But a good approach is to use cross validation to determine the error rate relative to the k value and find the minima (highest k with the lowest error) and use that k value.</p>
-			
+
 			<p>Alternatively, it has been shown in some studies that the setting k to be the square root of the numbers of data points in the training set is not a bad first choice either.</p>
-			
+
 			<p><a href="http://www.analyticsvidhya.com/blog/2014/10/introduction-k-neighbours-algorithm-clustering/">Image Citations</a></p>
-			
 		</div>
-		
+
 		<hr />
 		<p />
 	</div>

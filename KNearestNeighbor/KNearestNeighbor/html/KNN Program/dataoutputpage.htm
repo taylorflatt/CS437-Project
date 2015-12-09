@@ -5,7 +5,6 @@
 
 <link rel="stylesheet" type="text/css" href="../local/Classic.css"></link>
 <script src="../local/script.js"></script>
-
 </head>
 
 <body>
@@ -18,73 +17,73 @@
 	<div id="mainSection">
 		<div id="mainBody">
 			<p class="runningHeader"></p>
-			
+
 			<p>Function: The purpose of the page is to display the output data.</p>
-			
+
 			<p>Upon entering the Data Output Page, it will be mostly blank (<a href="#fig1">See Figure 1</a>). You will notice, however, that it does provide you with the output class name in the View Data Output panel.</p>
-			
+
 			<p>If you want to try new information, you may (at any time) click the "Back" button or the "New" button. The "Back" button will take you back to the Data Input Page with all of your information still entered whereas the "New" button will start the program from the Start Page.</p>
-			
+
 			<p>I will be referring to the panels throughout this document. The panels are simply the titles of the different sections on the page. So for instance, on the Data Output Page (step 3), there are 3 panels. There is the View Data Output Panel, Plot's Closest Competitor Panel, and Graph Panel. When I refer to these panels I refer to their contents as well.</p>
-			
+
 			<p><strong>Recommended Steps</strong>:</p>
-			
+
 			<ol>
 				<li>Click the dropdown next to "Plot X:" <img src="../Images/inputDataStep_plotXBtn.PNG" style="vertical-align: middle;" /> and choose an attribute to view. Note: This choice must be different from the one for "Plot Y".</li>
 				<li>Click the dropdown next to "Plot Y:" <img src="../Images/inputDataStep_plotYBtn.PNG" style="vertical-align: middle;" /> and choose an attribute to view. Note: This choice must be different from the one for "Plot X".</li>
 				<li>Determine if you would like to view the distances computed from the input data point to the training data points.</li>
 				<li>Click Plot.</li>
 			</ol>
-			
+
 			<p>Now we will be looking at each of these sections in a bit closer detail.</p>
 			<hr />
-			
+
 			<h3>k-NN Closest Competitor Panel</h3>
 			<img src="../Images/outputDataStep_closestCompetitorPanel.PNG" />
-			
+
 			<p>This panel will show the k-nearest neighbor's class to your input given the k value. In other words, it displays the classification of the input data point.</p>
 			<hr />
-			
+
 			<h3>Graph Panel</h3>
 			<img src="../Images/outputDataStep_graphPanel.PNG" />
-			
+
 			<p>This panel will first appear empty when you first visit the step. It will have the classes of your training data off to the right in the legend however.</p>
-			
+
 			<p>First you must select an x-coordinate and a y-coordinate to plot. This will compute the location of the data given just the two attributes that you choose. It will also produce the nearest neighbor given ONLY those two attributes. This won't necessarily reflect the output class in the k-NN Closest Competitor Panel. For the k-NN algorithm, it considers all of the dimensions not just 2-dimensions.</p>
-			
+
 			<p>After selecting the two attributes to plot, you may choose to view the distances of the k-nearest points. This way it will give you an idea as to what else was around the data point and how far it really was. You may also choose to view all of the distances as well.</p>
-			
+
 			<p>After making your selections, click "Plot" and the graph will populate with the data points including your data point. If you chose either of the distance options, while hovering you will be able to see the distances depending on which one you chose.</p>
-			
+
 			<img src="../Images/outputDataStep_graphPanelAfter.PNG" />
-			
+
 			<p>In addition, you will notice that the Plot's Closest Competitor Panel has also been updated. You may choose differnet points to plot and choose plot again as well.</p>
-			
+
 			<img src="../Images/outputDataStep_graphPanelAfter2.PNG" />
-			
+
 			<p>To view more on the Plot's Closest Competitor, view the next section.</p>
 			<hr />
-			
+
 			<h3>Plot's Closest Competitor</h3>
 			<img src="../Images/outputDataStep_plotsClosestCompetitorPanel.PNG" />
-			
+
 			<p>This panel contains the k-NN calculated with the k value from the Data Input Page and the attributes chosen in the Graph Panel under the "Plot X" and "Plot Y" dropdowns.</p>
-			
+
 			<p>You'll notice at first the data is marked N/A. This is because you haven't assigned attributes to the algorithm to compute.</p>
-			
+
 			<p>After choosing data to plot (see Graph Panel), you will see that the information has been updated.</p>
-			
+
 			<img src="../Images/outputDataStep_graphPanelAfter2.PNG" />
-			
+
 			<p>This shows the closest competitor's data label, it's class, and its distance from the input point. This is helpful to get a sort of general idea as to how the different attributes affected the ultimate outcome of the input's overall class.</p>
 			<hr />
-			
+
 			<h3>Figures</h3>
-			
+
 			<a name="fig1"><div style="font-size: 10px; font-weight: bold;">Figure 1</div></a>
 			<img src="../Images/outputDataStep_initialScreen.PNG" style="padding-top: 0px;" />
 		</div>
-		
+
 		<hr />
 		<p />
 	</div>

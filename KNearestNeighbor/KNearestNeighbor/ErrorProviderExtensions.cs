@@ -3,7 +3,7 @@
 namespace KNearestNeighbor
 {
     /// <summary>
-    /// Provides a way to handle custom validation using a count system. If the count is greater than 0, there 
+    /// Provides a way to handle custom validation using a count system. If the count is greater than 0, there
     /// is an error. If it is zero, there isn't an error.
     /// </summary>
     public static class ErrorProviderExtensions
@@ -23,7 +23,6 @@ namespace KNearestNeighbor
                 if (ep.GetError(c) != "")
                     count--;
             }
-
             else
                 count++;
 

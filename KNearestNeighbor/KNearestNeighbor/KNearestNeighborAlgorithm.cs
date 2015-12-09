@@ -1,21 +1,20 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace KNearestNeighbor
 {
     public class KNearestNeighborAlgorithm : KNearestNeighbor<double>
     {
-
         /// <summary>
         ///   Creates a new <see cref="KNearestNeighborAlgorithm"/>.
         /// </summary>
-        /// 
+        ///
         /// <param name="k">The number of nearest neighbors to be used in the decision.</param>
-        /// 
+        ///
         /// <param name="inputs">The input data points.</param>
         /// <param name="outputs">The associated labels for the input points.</param>
-        /// 
+        ///
         public KNearestNeighborAlgorithm(int k, List<List<double>> trainingData, List<int> outputs)
             : base(k, trainingData, outputs, MathFunctions.SquareEuclidean)
         { }
@@ -24,9 +23,9 @@ namespace KNearestNeighbor
     /// <summary>
     ///   K-Nearest Neighbor (k-NN) algorithm.
     /// </summary>
-    /// 
+    ///
     /// <typeparam name="T">The type of the input data.</typeparam>
-    /// 
+    ///
     public class KNearestNeighbor<T>
     {
         private int k;
@@ -44,13 +43,13 @@ namespace KNearestNeighbor
         /// <summary>
         ///   Creates a new <see cref="KNearestNeighborAlgorithm"/>.
         /// </summary>
-        /// 
+        ///
         /// <param name="k">The number of nearest neighbors to be used in the decision.</param>
-        /// 
+        ///
         /// <param name="trainingData">The input data points.</param>
         /// <param name="outputs">The associated labels for the input points.</param>
         /// <param name="distance">The distance measure to use in the decision.</param>
-        /// 
+        ///
         public KNearestNeighbor(int k, List<List<double>> trainingData, List<int> outputs, Func<List<double>, List<double>, double> distance)
         {
             this.trainingData = trainingData;
@@ -70,7 +69,7 @@ namespace KNearestNeighbor
                 this.closestCompetitorDistances.Add(0);
             }
         }
-        
+
         /// <summary>
         /// Empty constructor.
         /// </summary>
@@ -109,9 +108,9 @@ namespace KNearestNeighbor
         ///   Gets the set of points given
         ///   as input of the algorithm.
         /// </summary>
-        /// 
+        ///
         /// <value>The input points.</value>
-        /// 
+        ///
         public List<List<double>> Inputs
         {
             get { return trainingData; }
@@ -121,19 +120,19 @@ namespace KNearestNeighbor
         ///   Gets the set of labels associated
         ///   with each <see cref="Inputs"/> point.
         /// </summary>
-        /// 
+        ///
         public List<int> Outputs
         {
             get { return outputs; }
         }
 
         /// <summary>
-        ///   Gets or sets the number of nearest 
+        ///   Gets or sets the number of nearest
         ///   neighbors to be used in the decision.
         /// </summary>
-        /// 
+        ///
         /// <value>The number of neighbors.</value>
-        /// 
+        ///
         public int K
         {
             get { return k; }
@@ -150,11 +149,11 @@ namespace KNearestNeighbor
         /// <summary>
         ///   Computes the most likely label of a new given point.
         /// </summary>
-        /// 
+        ///
         /// <param name="input">A point to be classificated.</param>
-        /// 
+        ///
         /// <returns>The most likely label for the given point.</returns>
-        /// 
+        ///
         public int Compute(List<double> normalizedInput, List<List<double>> normalizedTrainingSet)
         {
             for (int i = 0; i < normalizedTrainingSet.Count; i++)
@@ -188,19 +187,19 @@ namespace KNearestNeighbor
         }
 
         /// <summary>
-        /// The output is a List of List objects whose first row is always the closest point to the input data. The rest of the rows 
+        /// The output is a List of List objects whose first row is always the closest point to the input data. The rest of the rows
         /// (if any)  are the next k closest points to the input point.
-        /// 
-        /// Returns a List of List objects that whose first element will always be the index of the closest competitor (trainingData), the index 
-        /// of the class (outputClass), and the distanace it was from our point. The boolean flag returnKDistances will also add further elements 
-        /// to the list. It will add the k-closest competitors in terms of the index of the closest competitor (trainingData), the index of the 
+        ///
+        /// Returns a List of List objects that whose first element will always be the index of the closest competitor (trainingData), the index
+        /// of the class (outputClass), and the distanace it was from our point. The boolean flag returnKDistances will also add further elements
+        /// to the list. It will add the k-closest competitors in terms of the index of the closest competitor (trainingData), the index of the
         /// class (outputClass), and the distance it was from the input point.
         /// </summary>
         /// <param name="normalizedInput">The normalized list of inputs.</param>
         /// <param name="normalizedTrainingSet">The normalized list of training poitns.</param>
         /// <param name="attribute1">The first attribute to consider.</param>
         /// <param name="attribute2">The second attribute to consider.</param>
-        /// <param name="returnKDistances">A boolean to determine if you want to display the closest competitor (k = 1, given attribute 1 
+        /// <param name="returnKDistances">A boolean to determine if you want to display the closest competitor (k = 1, given attribute 1
         /// and attribute 2) or the k-closest competitors (k = dynamic, given attribute 1 and attribute 2) </param>
         /// <param name="numDistancesToShow">The number of k closest points to show.</param>
         /// <returns></returns>
@@ -234,14 +233,14 @@ namespace KNearestNeighbor
 
             List<List<Object>> value = new List<List<Object>>();
 
-                int closestCompetitor = nearestIndices[0]; //grabs the first element of the array (corresponds to a row in the training set).
-                int closestCompetitorClass = outputs[closestCompetitor]; //grabs the class that the element j belongs to.
-                double distanceFromInput = closestCompetitorDistances[closestCompetitor]; //grabs the distance computed (distance the training point is from the input data point)
+            int closestCompetitor = nearestIndices[0]; //grabs the first element of the array (corresponds to a row in the training set).
+            int closestCompetitorClass = outputs[closestCompetitor]; //grabs the class that the element j belongs to.
+            double distanceFromInput = closestCompetitorDistances[closestCompetitor]; //grabs the distance computed (distance the training point is from the input data point)
 
-                value.Add
-                        (
-                            new List<Object> { closestCompetitor, closestCompetitorClass, distanceFromInput }
-                        );
+            value.Add
+                    (
+                        new List<Object> { closestCompetitor, closestCompetitorClass, distanceFromInput }
+                    );
 
             //If we want to add more than the closest competitor:
             if (returnKDistances == true)
@@ -257,8 +256,8 @@ namespace KNearestNeighbor
                         );
                 }
             }
-            
-            return value; 
+
+            return value;
         }
     }
 }

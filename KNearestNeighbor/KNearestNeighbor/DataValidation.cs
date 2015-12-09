@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Linq;
-using System.Windows.Forms;
-using System.Text.RegularExpressions;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace KNearestNeighbor
 {
@@ -10,7 +10,7 @@ namespace KNearestNeighbor
     {
         /// <summary>
         /// This method validates the k-value that was entered.
-        /// 
+        ///
         /// Input criteria:
         ///     -Must be a natural number.
         ///     -Cannot be larger than the number of data points in the training set.
@@ -48,11 +48,11 @@ namespace KNearestNeighbor
 
         /// <summary>
         /// This method validates the attribute that was entered.
-        /// 
+        ///
         /// Input criteria:
         ///     -Must be a positive real number.
-        /// 
-        /// If discreteValue flag is true, then we should allow letter inputs. But that functionality hasn't be added yet. We 
+        ///
+        /// If discreteValue flag is true, then we should allow letter inputs. But that functionality hasn't be added yet. We
         /// would have to populate boxes to determine how to quantify (and normalize) the discrete values.
         /// </summary>
         /// <param name="ep">The error provider handling the error.</param>
@@ -82,7 +82,7 @@ namespace KNearestNeighbor
 
         /// <summary>
         /// Validates the dropdown boxes for plotting coordinates on the graph.
-        /// 
+        ///
         /// Input criteria:
         ///     -There must be an x-coordinate and y-coordinate chosen.
         ///     -The x-coordinate and y-coordinate must not be the same.

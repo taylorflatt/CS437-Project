@@ -5,7 +5,6 @@
 
 <link rel="stylesheet" type="text/css" href="../local/Classic.css"></link>
 <script src="../local/script.js"></script>
-
 </head>
 
 <body>
@@ -17,9 +16,9 @@
 	<div id="mainSection">
 		<div id="mainBody">
 			<p class="runningHeader"></p>
-			
+
 			<p>Computing the input classification is quite easy. There are several steps involved in the computation process. There are also a few scenarios and we will traverse them all.</p>
-			
+
 			<h3>Basic Overview</h3>
 			<ol>
 				<li class="ordered">Initialize Training Data<br /></li>
@@ -28,61 +27,60 @@
 				<li class="ordered">Calculate the distance of each Training Data point to the Input Data point.<br /></li>
 				<li class="ordered">Using k, determine the classification of the Input Data.<br /></li>
 			</ol>
-			
+
 			<h3>K-Value: </h3>
 			<p>There are two cases for the KNN algorithm: </p>
-			
+
 			<ul>
 				<li class="ordered"><u>Case 1: k = 1</u>. This is known as the Nearest Neighbor.<br /><br /></li>
 				<li class="ordered"><u>Case 2: k > 1</u>. This is known as the K-Nearest Neighbor<br /><br /></li>
 			</ul>
-			
+
 			<p>Choosing the right k-value is important. Too high of a k-value and you lose the benefits of the KNN algorithm. Too low of a k-value and you might not get an accurate representation of the data. Typically, we set k = sqrt(#trainingSetPoints).</p>
-			
+
 			<h3>Case 1:</h3>
 			<p>The input data and training data will first be normalized. Then input data will be compared with the corresponding training set data and a distance will be calculated for each point. There are multiple ways to compute the distance between the points.</p>
-			
+
 			<p>For <strong>Continuous</strong> data: </p>
-			
+
 			<ul>
 				<li class="ordered">Ln-Norm<br /><br /></li>
 				<li class="ordered">Manhattan Distance (Special case of Ln-norm where n = 1).<br /><br /></li>
 				<li class="ordered">Euclidean Distance (Special case of Ln-norm where n = 2).<br /><br /></li>
 			</ul>
-			
+
 			<p>For <strong>Discrete</strong> data: </p>
-			
+
 			<ul>
 				<li class="ordered">Hamming/Overlap (Not very useful)<br /><br /></li>
 				<li class="ordered">Value Difference Method (VDM)<br /><br /></li>
 				<li class="ordered">Euclidean Distance (Special case of Ln-norm where n = 2).<br /><br /></li>
 				<li class="ordered">Ln-Norm<br /><br /></li>
 			</ul>
-			
+
 			<p>That was by no means an exhaustive list but it contains the most popular methods. After choosing the appropriate calculation method, apply it to compute the distance between the training data set and the input data set. The minimum distance is then considered and the class of that training data point is returned. The class of the input data point is then that class.</p>
-			
+
 			<h3>Case 2:</h3>
 			<p>The input data and training data will first be normalized. Then the input data will be compared along with the corresponding training set data and a distance will be calculated for each point. After choosing the appropriate calculation method, apply it to compute the distance between the training data set and the input data set.</p>
-			
+
 			<p>Once all the distances have been calculated, then the nearest k distances will be considered. Each training data point will get a vote (they vote for their class) and the class with the most votes is the input data's class. For instance, if 2 of the 3 nearest points to the input are class 5 and the other is class 2 then class 5 will win with 2 votes. So the input will have class 5.</p>
-			
+
 			<p>We can take the algorithm further by applying weights to those distances between the training set and the input point. The idea is that the closer you are to the input, the more important your vote. This serves two goals. </p>
-			
-			<p><u>First</u>, if you have an even distribution of votes for classes (a tie), adding weights to those data points will break that tie. The elements who are closer will have "more" of a vote than those further away.</p> 
-			
+
+			<p><u>First</u>, if you have an even distribution of votes for classes (a tie), adding weights to those data points will break that tie. The elements who are closer will have "more" of a vote than those further away.</p>
+
 			<p><u>Second</u> you don't <em>really</em> need a k value anymore. If you consider the entire training data set then points who are closer will vote more heavily for their class whereas other points much further away from the input will have almost no effect (as if they didn't really vote). Remember the vote is a winner takes all vote. You only end up with one class in the end. The only thing to really watch is the distance function you choose to compute and weight those values.</p>
-			
+
 			<h3>Example: </h3>
 			<img src="..\Images\howtocomputeknn_image1.jpg" align="left" />
 			<p> Here our input data point is the red circle and our training data set is divided between two classes + and -. This example serves to illustrate the importance of the choice for the k-value.</p>
 
 			<p>If we set k = 1, our input data point is classified as a plus. However, if we choose k = 5, it is classified as a minus. Further, if we choose k = 2 the distance may be exactly equal and we can't classify our data point. So choosing a large enough k to get a good result but low enough to be efficient.</p>
-			
-			
+
 			<h3>Notes:</h3>
 			<p>It is important to note the importance of data normalization. If data normalization is neglected then some data will have a larger pull than other data just because of their size. So lack of normalization will certainly influence the input's classification.</p>
 		</div>
-		
+
 		<hr />
 		<p />
 	</div>
