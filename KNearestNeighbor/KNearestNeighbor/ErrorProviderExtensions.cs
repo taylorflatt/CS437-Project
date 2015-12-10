@@ -19,12 +19,10 @@ namespace KNearestNeighbor
         public static void SetErrorWithCount(this ErrorProvider ep, Control c, string message)
         {
             if (message == "")
-            {
                 if (ep.GetError(c) != "")
                     count--;
-            }
-            else
-                count++;
+                else
+                    count++;
 
             ep.SetError(c, message);
         }

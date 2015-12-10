@@ -1,22 +1,16 @@
-﻿using NPOI.SS.UserModel;
-using NPOI.XSSF.UserModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using System.Windows.Forms.DataVisualization.Charting;
 
 namespace KNearestNeighbor
 {
-    [Serializable()]
     public partial class Wizard : Form
     {
-        #region Main Initial Information
+        #region Instance Variables
 
         protected int k;
         private KNearestNeighborAlgorithm knn;
@@ -29,11 +23,15 @@ namespace KNearestNeighbor
         protected List<List<double>> normalizedTrainingSet = new List<List<double>>(); //Normalized Training Set
         protected List<double> normalizedInputSet = new List<double>(); //Normalized Input Set
 
-        protected List<string> trainingSetLabel = new List<string>(); //The name of the data point.
+        protected List<string> trainingDataName = new List<string>(); //The name of the data point.
         protected List<string> outputClassNames = new List<string>(); //Name we read from the data. (Assume this is first).
         protected List<string> attributeNames = new List<string>(); //without make/model
 
         protected int inputClass; //Classification of the input data.
+
+        #endregion Instance Variables
+
+        #region Main Class
 
         /// <summary>
         /// Initialize the form as well as turn off validation. I also display the description of the program in this step.
@@ -49,12 +47,10 @@ namespace KNearestNeighbor
             plotXComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             plotYComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
 
-            ///Display the description on the first step using a document resource.
+            //Display the description on the first step using a document resource.
             displayProgramDescription(programDescriptionTB);
 
             displayDataStep3.Subtitle = "View the classification for your input on the left. You may plot the graph to view the training data and input data along with the input's closest competitor with the given two attributes. You may also opt to show the distance calculations on the point labels as well.";
-
-            //resources.GetString("initialDataStep2.Subtitle");
 
             //Don't let them manipulate the training data until it has been entered.
             kValueTB.Enabled = false;
@@ -62,7 +58,48 @@ namespace KNearestNeighbor
             dontNormalizeTrainingDataCheckBox.Enabled = false;
         }
 
-        #endregion Main Initial Information
+        #endregion Main Class
+
+        #region Helper Methods
+
+        /// <summary>
+        /// Resets the normalized input set, normalized training set, plot-x dropdown list items, plot-x dropdown selected text, plot-x
+        /// selected value, plot-y dropdown list items, plot-y dropdown selected text, plot-y selected value, unchecks the k-distances radio
+        /// button, unchecks the all distances radio button, closest competitior (with respect to the attributes chosen - not the overall
+        /// (input class) labels.
+        /// </summary>
+        private void ResetPlottedData()
+        {
+            normalizedInputSet.Clear(); //Remove all members of the input set. (only normalized since that is what we graph)
+            normalizedTrainingSet.Clear(); //Remove all members of the training set. (only normalized since that is what we graph)
+            plotXComboBox.Items.Clear(); //Remove all of the elements in the dropdown list for the x-coordinate
+            plotYComboBox.Items.Clear(); //Remove all of the elements in the dropdown list for the y-coordinates.
+            plotXComboBox.ResetText(); //Set the text back to blank.
+            plotYComboBox.ResetText(); //Set the text back to blank.
+            plotXComboBox.SelectedIndex = -1; //Set the selected index to the default index.
+            plotYComboBox.SelectedIndex = -1; //Set the selected index to the default index.
+            showKDistancesRadioButton.Checked = false; //Reset the k distances radio button.
+            showAllDistancesRadioButton.Checked = false; //Reset the ALL distances radio button.
+
+            closestCompetitorNameLabel.Text = "N/A"; //Set the name label back to default.
+            closestCompetitorClassLabel.Text = "N/A"; //Set the class name label back to default.
+            closestCompetitorDistanceLabel.Text = "N/A"; //Set the distance label back to default.
+        }
+
+        /// <summary>
+        /// Resets the input set, training set, normalized input set, normalized training set, output class, and output class names.
+        /// </summary>
+        private void ResetData()
+        {
+            inputSet.Clear();
+            trainingSet.Clear();
+            normalizedInputSet.Clear();
+            normalizedTrainingSet.Clear();
+            outputClassNames.Clear();
+            outputClass.Clear();
+        }
+
+        #endregion Helper Methods
 
         #region Global Methods
 
@@ -145,108 +182,6 @@ namespace KNearestNeighbor
             }
         }
 
-        //What about taking the data sheet itself as the input and then creating the view from the excel file directly?
-        /// <summary>
-        /// This will generate the DGV information using an excel spreadsheet.
-        /// </summary>
-        /// <param name="xssfwb">The particular excel file you would like to load.</param>
-        /// <param name="sheet">The sheet you wish to read into the program.</param>
-        private void populateDataGrid(XSSFWorkbook xssfwb, ISheet sheet)
-        {
-            DataTable table = new DataTable(); //Create a new table.
-            IRow headerRow = sheet.GetRow(0); //The first row will always be considered the header.
-
-            int cellCount = headerRow.LastCellNum; //Use the header to determine the length of the row.
-
-            //Add the header row to the table.
-            for (int i = headerRow.FirstCellNum; i < cellCount; i++)
-            {
-                DataColumn column = new DataColumn(headerRow.GetCell(i).StringCellValue);
-                table.Columns.Add(column);
-            }
-
-            int rowCount = sheet.LastRowNum; //Stores the number of rows in the sheet.
-
-            /// We bypass the first header row by setting the starting value of i to be the first row + 1.
-            /// Now we just add each row to the table.
-            for (int i = (sheet.FirstRowNum + 1); i <= sheet.LastRowNum; i++)
-            {
-                IRow row = sheet.GetRow(i);
-                DataRow dataRow = table.NewRow();
-                for (int j = row.FirstCellNum; j < cellCount; j++)
-                {
-                    if (row.GetCell(j) != null)
-                        dataRow[j] = row.GetCell(j).ToString();
-                }
-
-                table.Rows.Add(dataRow); //Add each row to the table.
-            }
-
-            dataGridView1.DataSource = table; //Set the source of the DGV to be the table we created.
-        }
-
-        /// <summary>
-        /// This method will generate the attribute textboxes and their labels dynamically based on the training data.
-        /// This is a vestigial method that won't be called unless I fix the text location problem.
-        /// </summary>
-        /// <param name="previousText"> The list that contains all of the previous values.</param>
-        private void populateAttributeList(List<Object> previousText)
-        {
-            tableLayoutPanel1.Controls.Clear(); //If they keep changing the value then we should remove the current rows.
-
-            int numAttributes = attributeNames.Count;
-
-            //Add values starting from zero to value - 1.
-            int column = 2;
-            for (int count = 1; count <= numAttributes; count++)
-            {
-                int row = count;
-
-                System.Windows.Forms.Label temp = new System.Windows.Forms.Label();
-                temp.Text = attributeNames.ElementAt(count - 1).ToString() + ": ";
-
-                tableLayoutPanel1.Controls.Add(temp, 0, row);
-
-                //I need to be explicit and set a name so I can reference the fields later.
-                System.Windows.Forms.TextBox tempTB = new System.Windows.Forms.TextBox();
-                tempTB.Name = "attribute" + count + "TB"; //attribute1TB, attribute2TB...
-
-                // If there is ANY text in the textbox from before, let's put it back.
-                if (Convert.ToString(previousText[count - 1]) != "")
-                    tempTB.Text = Convert.ToString(previousText[count - 1]);
-
-                tableLayoutPanel1.Controls.Add(tempTB, column, row);
-            }
-        }
-
-        /// <summary>
-        /// This method will generate the attribute textboxes and their labels dynamically based on the training data.
-        /// </summary>
-        private void populateAttributeList()
-        {
-            tableLayoutPanel1.Controls.Clear(); //If they keep changing the value then we should remove the current rows.
-
-            int numAttributes = attributeNames.Count;
-
-            //Add values starting from zero to value - 1.
-            int column = 2;
-            for (int count = 1; count <= numAttributes; count++)
-            {
-                int row = count;
-
-                System.Windows.Forms.Label temp = new System.Windows.Forms.Label();
-                temp.Text = attributeNames.ElementAt(count - 1).ToString() + ": ";
-
-                tableLayoutPanel1.Controls.Add(temp, 0, row);
-
-                //I need to be explicit and set a name so I can reference the fields later.
-                System.Windows.Forms.TextBox tempTB = new System.Windows.Forms.TextBox();
-                tempTB.Name = "attribute" + count + "TB"; //attribute1TB, attribute2TB...
-
-                tableLayoutPanel1.Controls.Add(tempTB, column, row);
-            }
-        }
-
         /// <summary>
         /// Allows for the program to close any any point by clicking the "X" button.
         /// </summary>
@@ -298,87 +233,12 @@ namespace KNearestNeighbor
             //Data display step.
             else if (baseControl.CurrentStepIndex == 2)
             {
+                chart1.Series.Clear();
+
                 /// We are renaming the cancel button to NEW and its function is to restart the program.
                 baseControl.CancelButtonEnabled = true;
                 baseControl.CancelButtonText = "New";
                 baseControl.CancelButtonVisible = true;
-
-                //Make sure the legend doesn't already exist.
-                if (chart1.Legends.Count < 1)
-                    chart1.Legends.Add("Legend");
-
-                //Remove all generated information from the chart if any exist.
-                chart1.Series.Clear();
-
-                Random randomGen = new Random();
-
-                /// List of colors for the first 11 attributes. The first element is the input data point's color.
-                /// In the event that there are more than 11 attributes, we randomly generate a color below.
-                List<Color> acceptableColorList = new List<Color>
-                {
-                    Color.Maroon, //This will be our input data point color.
-                    Color.Orange,
-                    Color.Fuchsia,
-                    Color.Lime,
-                    Color.Aqua,
-                    Color.LightBlue,
-                    Color.DarkBlue,
-                    Color.SlateGray,
-                    Color.DarkGreen,
-                    Color.LightCoral,
-                    Color.Red,
-                    Color.BlueViolet
-                };
-
-                //Colors that have already been chosen.
-                List<int> pickedColors = new List<int>();
-
-                int count = 0;
-
-                //Generate the general characteristics for each series.
-                while (count < outputClass.Distinct().Count())
-                {
-                    chart1.Series.Add("Class " + count);
-                    chart1.Series[count].LegendText = outputClassNames[count];
-                    chart1.Series[count].ChartType = SeriesChartType.Point; //Point graph.
-                    chart1.Series[count].MarkerStyle = MarkerStyle.Circle;
-                    chart1.Series[count].MarkerSize = 6; //Might look into parameterizing this to give the user the option of increasing the size.
-
-                    bool uniqueColor = false;
-
-                    while (uniqueColor == false)
-                    {
-                        int colorPositionInList = randomGen.Next(1, acceptableColorList.Count - 1);
-
-                        //If the color is unique, we will add it. Otherwise, we will pick a random color.
-                        if (!pickedColors.Contains(colorPositionInList))
-                        {
-                            //Set the series color.
-                            chart1.Series[count].MarkerColor = acceptableColorList.ElementAt(colorPositionInList);
-
-                            //Add the element location to our list so we don't pick the same color again.
-                            pickedColors.Add(colorPositionInList);
-
-                            //Drop from the while loop.
-                            uniqueColor = true;
-                        }
-
-                        //If there are more than 11 attributes, then we will generate a random color.
-                        if (pickedColors.Count >= (acceptableColorList.Count - 1))
-                        {
-                            chart1.Series[count].MarkerColor = Color.FromArgb((byte)randomGen.Next(255), (byte)randomGen.Next(255), (byte)randomGen.Next(255));
-                        }
-                    }
-
-                    count++;
-                }
-
-                //Generate the general characteristics for the input point.
-                chart1.Series.Add("My Input");
-                chart1.Series[count].ChartType = SeriesChartType.Point; //Point graph.
-                chart1.Series[count].MarkerColor = acceptableColorList.ElementAt(0); //Set the color to be the first in the list.
-                chart1.Series[count].MarkerStyle = MarkerStyle.Square;
-                chart1.Series[count].MarkerSize = 7; //Might look into parameterizing this to give the user the option of increasing the size.
             }
         }
 
@@ -392,7 +252,23 @@ namespace KNearestNeighbor
             //The CHM file will be immediately created upon compile and it will reference it in the created location.
             try
             {
-                System.Diagnostics.Process.Start("knnHelp.CHM");
+                string helpTopic = @"/html/KNN Algorithm/knnIndex.htm";
+                int currentStep = this.baseControl.CurrentStepIndex;
+
+                //Program Start Page.
+                if (currentStep == 0)
+                    helpTopic = @"/html/KNN Program/programoverview.htm";
+
+                //Data Initialize Page.
+                else if (currentStep == 1)
+                    helpTopic = @"/html/KNN Program/datainputpage.htm";
+
+                //Data Display Page.
+                else if (currentStep == 2)
+                    helpTopic = @"/html/KNN Program/dataoutputpage.htm";
+
+                //System.Diagnostics.Process.Start("knnHelp.CHM");
+                Help.ShowHelp(this, "knnHelp.CHM", HelpNavigator.Topic, helpTopic);
             }
 
             //If the file has been moved/deleted, notify the user that we cannot display the help file because it has been moved.
@@ -484,33 +360,9 @@ namespace KNearestNeighbor
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void programDescriptionTB_KeyDown(object sender, KeyEventArgs e)
-        {
-            e.Handled = true;
-            e.SuppressKeyPress = true;
-        }
-
-        /// <summary>
-        /// We don't want any action to occur when a key is pressed in the description richtextbox. This will
-        /// remove the default beeps from occuring.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void programDescriptionTB_KeyPress(object sender, KeyPressEventArgs e)
         {
             e.Handled = true;
-        }
-
-        /// <summary>
-        /// We don't want any action to occur when a key is pressed in the description richtextbox. This will
-        /// remove the default beeps from occuring.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void programDescriptionTB_KeyUp(object sender, KeyEventArgs e)
-        {
-            e.Handled = true;
-            e.SuppressKeyPress = true;
         }
 
         #endregion Description Step
@@ -541,93 +393,32 @@ namespace KNearestNeighbor
                 /// Case 2: Add the file that they have selected.
                 if (result == DialogResult.OK)
                 {
-                    XSSFWorkbook xssfwb;
-
-                    //Read the file they have chosen.
-                    using (FileStream file = new FileStream(openFileDialog1.FileName, FileMode.Open, FileAccess.Read))
-                    {
-                        xssfwb = new XSSFWorkbook(file);
-                        fileLocationLabel.Text = openFileDialog1.SafeFileName;
-                    }
-
-                    List<Object> tempInputArray = new List<Object>();
-
                     /// In the event that this method is called multiple times (they attempt to enter multiple documents at different times)
                     /// then we need to remove the previous data. We can just re-add the data from the new file chosen by the user.
                     attributeNames.Clear(); //Clear attribute names list
                     kValueTB.Clear(); //Clear the k value.
 
                     //Clear our data sets as well.
-                    inputSet.Clear();
-                    trainingSet.Clear();
-                    normalizedInputSet.Clear();
-                    normalizedTrainingSet.Clear();
-                    outputClassNames.Clear();
-                    outputClass.Clear();
+                    ResetData();
 
-                    //We default to the first sheet always.
-                    ISheet sheet = xssfwb.GetSheet("Sheet1");
+                    //TODO: Add support for *.ODS files (Libre Calc).
 
-                    int location = 2; //We skip the class position (0), and the label name (1).
+                    DataReader reader = new DataReader(openFileDialog1, fileLocationLabel, trainingDataName, attributeNames, outputClassNames, outputClass, trainingSet, dataGridView1, tableLayoutPanel1);
 
-                    //We add the training data to the list.
-                    for (int row = 0; row <= sheet.LastRowNum; row++)
-                    {
-                        //First row and it isn't empty, these are our attribute names.
-                        if (row.Equals(0) && sheet.GetRow(row) != null)
-                        {
-                            //We generate the list of attributes (we exlude the first two columns).
-                            while (sheet.GetRow(0).GetCell(location) != null)
-                            {
-                                attributeNames.Add(Convert.ToString(sheet.GetRow(row).GetCell(location).StringCellValue));
-                                location++;
-                            }
-                        }
+                    //If the file is an excel file with the *.xlsx format, then we need to read it using XSSF.
+                    if (Path.GetExtension(openFileDialog1.FileName).Equals(".xlsx", StringComparison.InvariantCultureIgnoreCase))
+                        reader.GetXlsxData();
 
-                        //Now we add our training data to our training data list. This is null only when the row contains all empty cells.
-                        else if (sheet.GetRow(row) != null)
-                        {
-                            /// Assumpetion 1: The class name will always be the first value in a row.
-                            /// We only add the class name if it is a new value (distinct).
-                            string className = Convert.ToString(sheet.GetRow(row).GetCell(0).StringCellValue);
+                    //If the file is an excel file (2003) with the *.xls format, then we need to read it using HSSF.
+                    else if (Path.GetExtension(openFileDialog1.FileName).Equals(".xls", StringComparison.InvariantCultureIgnoreCase))
+                        reader.GetXlsData();
 
-                            //If the class name is already in the class name list, then we don't add it.
-                            if (outputClassNames.Contains(className) == false)
-                                outputClassNames.Add(className);
-
-                            //Now I need to check the outputClassNames with the currentClassName and add the appropriate class number.
-                            if (outputClassNames.Contains(className) == true)
-                                outputClass.Add(outputClassNames.IndexOf(className));
-
-                            /// Assumption 2: The training data label will always be the second value in a row.
-                            trainingSetLabel.Add(Convert.ToString(sheet.GetRow(row).GetCell(1).StringCellValue));
-
-                            //Reset the location to 2 so we start with the first attribute and not the class.
-                            location = 2;
-
-                            //temp list to store the current training set attributes.
-                            List<double> currentRowValues = new List<double>();
-
-                            //While there are still values in the row we add them to our training set data.
-                            while (sheet.GetRow(row).GetCell(location) != null)
-                            {
-                                currentRowValues.Add(Convert.ToDouble(sheet.GetRow(row).GetCell(location).NumericCellValue));
-                                location++;
-                            }
-
-                            //Add the list of temp values to the training set.
-                            trainingSet.Add(currentRowValues);
-                        }
-                    }
+                    //We do not accept any other formats.
+                    else
+                        throw new ICSharpCode.SharpZipLib.Zip.ZipException();
 
                     //We give the user our count of the number of attributes.
                     predictAttributeNumLabel.Text = string.Format("We see {0} attributes.", attributeNames.Count);
-
-                    //Now actually display the DGV with our data.
-                    populateDataGrid(xssfwb, sheet);
-
-                    //Now display the list of attributes dynamically.
-                    populateAttributeList();
 
                     //Now allow them to be able to manipulate the data and attempt to click next.
                     kValueTB.Enabled = true;
@@ -644,7 +435,7 @@ namespace KNearestNeighbor
                 Console.WriteLine("Packed Message: " + error.Message);
                 Console.WriteLine("Call Stack: " + error.StackTrace);
 
-                DialogResult errorMessage = MessageBox.Show("Your file must be a valid .xlsx file type. ",
+                DialogResult errorMessage = MessageBox.Show("Your file must be a valid *.xlsx/*.xls/*.odf file type. ",
                     "Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error,
@@ -689,6 +480,14 @@ namespace KNearestNeighbor
                 {
                     fileLocationLabel.Text = "N/A"; //Set the file name back to N/A.
 
+                    //Clear the data sets.
+                    ResetData();
+                    tableLayoutPanel1.Controls.Clear();
+
+                    //Uncheck the checkboxes if any were checked.
+                    dontNormalizeTrainingDataCheckBox.Checked = false;
+                    dontNormalizeInputDataCheckBox.Checked = false;
+
                     //Open the knnHelp.CHM file to the place where we show how the data ought to be structured.
                     try
                     {
@@ -726,6 +525,33 @@ namespace KNearestNeighbor
         }
 
         /// <summary>
+        /// Allows the next button to be pressed by hitting the enter key.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void initialDataStep2_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //If the enter key is pressed on the data input page, attempt to go to the next step.
+            if (Convert.ToInt32(e.KeyChar) == 13)
+            {
+                baseControl.SelectNextControl(displayDataStep3, true, true, true, true);
+            }
+        }
+
+        /// <summary>
+        /// Generates the attribute textboxes dynamically based on the number of attributes read in from the file. It also sets the labels as well.
+        /// </summary>
+        /// <param name="attributeNumber">The current attribute.</param>
+        /// <param name="value">The value of the textbox for the current attribute.</param>
+        /// <param name="textBox">The specific textbox name for reference.</param>
+        private void GenerateAttributeTextboxes(int attributeNumber, out string value, out System.Windows.Forms.TextBox textBox)
+        {
+            string textBoxName = "attribute" + attributeNumber + "TB";
+            textBox = (System.Windows.Forms.TextBox)this.tableLayoutPanel1.Controls[textBoxName];
+            value = this.tableLayoutPanel1.Controls[textBoxName].Text;
+        }
+
+        /// <summary>
         /// This method contians the validation rules for the inital data step.
         /// </summary>
         /// <param name="sender"></param>
@@ -742,10 +568,11 @@ namespace KNearestNeighbor
             //Run validation on each attribute entered.
             for (int count = 1; count <= numAttributes; count++)
             {
-                string textBoxName = "attribute" + count + "TB";
-                System.Windows.Forms.TextBox textBox = (System.Windows.Forms.TextBox)this.tableLayoutPanel1.Controls[textBoxName];
-                string value = this.tableLayoutPanel1.Controls[textBoxName].Text;
+                string value;
+                TextBox textBox;
+                GenerateAttributeTextboxes(count, out value, out textBox);
 
+                //Validate the attribute boxes.
                 DataValidation.ValidateAttributes(errorProviderAttributes, value, textBox, false);
             }
 
@@ -759,9 +586,9 @@ namespace KNearestNeighbor
                 int count = 0; //So we can display an error message.
                 for (int index = 1; index <= numAttributes; index++)
                 {
-                    string textBoxName = "attribute" + index + "TB";
-                    System.Windows.Forms.TextBox textBox = (System.Windows.Forms.TextBox)this.tableLayoutPanel1.Controls[textBoxName];
-                    string value = this.tableLayoutPanel1.Controls[textBoxName].Text;
+                    string value;
+                    TextBox textBox;
+                    GenerateAttributeTextboxes(count, out value, out textBox);
 
                     //If there is a single attribute value that isn't in the range [0,1], then the data cannot possibly be normalized.
                     //We already exclude negative numbers so we just check that it is less than 1.
@@ -854,20 +681,7 @@ namespace KNearestNeighbor
             /// Case: In the event we compute the KNN (procede successfully to view the data) and then click the "back" option and decide
             /// to change the information.
             /// Solution: Reset ALL of the values prior to entering new ones.
-            normalizedInputSet.Clear(); //Remove all members of the input set.
-            normalizedTrainingSet.Clear(); //Remove all members of the training set.
-            plotXComboBox.Items.Clear(); //Remove all of the elements in the dropdown list for the x-coordinate
-            plotYComboBox.Items.Clear(); //Remove all of the elements in the dropdown list for the y-coordinates.
-            plotXComboBox.ResetText(); //Set the text back to blank.
-            plotYComboBox.ResetText(); //Set the text back to blank.
-            plotXComboBox.SelectedIndex = -1; //Set the selected index to the default index.
-            plotYComboBox.SelectedIndex = -1; //Set the selected index to the default index.
-            showKDistancesRadioButton.Checked = false; //Reset the k distances radio button.
-            showAllDistancesRadioButton.Checked = false; //Reset the ALL distances radio button.
-
-            closestCompetitorNameLabel.Text = "N/A"; //Set the name label back to default.
-            closestCompetitorClassLabel.Text = "N/A"; //Set the class name label back to default.
-            closestCompetitorDistanceLabel.Text = "N/A"; //Set the distance label back to default.
+            ResetPlottedData();
 
             // The input data has been normalized by the user AND we validated that it *appeared* to be normalized.
             if (dontNormalizeInputDataCheckBox.Checked == true)
@@ -879,9 +693,10 @@ namespace KNearestNeighbor
                 //Add the normalized inputs to the normalizedInputs list.
                 for (int count = 1; count <= numAttributes; count++)
                 {
-                    string textBoxName = "attribute" + count + "TB"; //create textbox name
-                    System.Windows.Forms.TextBox textBox = (System.Windows.Forms.TextBox)this.tableLayoutPanel1.Controls[textBoxName];
-                    string value = this.tableLayoutPanel1.Controls[textBoxName].Text; //get the value in that textbox
+                    string value;
+                    TextBox textBox;
+                    GenerateAttributeTextboxes(count, out value, out textBox);
+
                     double normalizedInput = NormalizeData.Normalize(trainingSet, value, count - 1); //normalize the value
 
                     inputSet.Add(Convert.ToDouble(value)); //store un-normalized value to the un-normalized list.
@@ -977,7 +792,7 @@ namespace KNearestNeighbor
                 var closestCompetitorClassIndex = (int)closestCompetitor[0][1];
                 var closestCompetitorDistance = closestCompetitor[0][2];
 
-                closestCompetitorNameLabel.Text = trainingSetLabel[closestCompetitorNameIndex];
+                closestCompetitorNameLabel.Text = trainingDataName[closestCompetitorNameIndex];
                 closestCompetitorClassLabel.Text = Convert.ToString(outputClassNames[closestCompetitorClassIndex]);
                 closestCompetitorDistanceLabel.Text = StringExtensions.Truncate(Convert.ToString(closestCompetitorDistance), 8);
 
@@ -986,8 +801,13 @@ namespace KNearestNeighbor
                 //Now remove that first input (we don't need it anymore).
                 closestCompetitor.RemoveAt(0);
 
+                Plot populatedGraph = new Plot(chart1, xCoord, yCoord, normalizedTrainingSet, normalizedInputSet, outputClass, outputClassNames, attributeNames, trainingDataName, returnKDistances, listOfDistances, showDistanceKValue, showAllDistances);
+
+                //Set the chart's parameters.
+                populatedGraph.SetChartProperties();
+
                 //Plot the graph given our parameters.
-                Plot.PlotPoints(chart1, xCoord, yCoord, normalizedTrainingSet, normalizedInputSet, outputClass, outputClassNames, attributeNames, trainingSetLabel, returnKDistances, listOfDistances, showDistanceKValue, showAllDistances);
+                populatedGraph.PlotPoints();
 
                 //Display the graph.
                 chart1.Show();

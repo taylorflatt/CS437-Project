@@ -134,7 +134,7 @@ namespace KNearestNeighbor.Properties {
         ///
         ///&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;../local/Classic.css&quot;&gt;&lt;/link&gt;
         ///&lt;script src=&quot;../local/script.js&quot;&gt;&lt;/script&gt;
-        ///        /// [rest of string was truncated]&quot;;.
+        ///&lt; [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string howtocomputeknn {
             get {
@@ -307,8 +307,7 @@ namespace KNearestNeighbor.Properties {
         ///
         ///&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;../local/Classic.css&quot;&gt;&lt;/link&gt;
         ///&lt;script src=&quot;../local/script.js&quot;&gt;&lt;/script&gt;
-        ///
-        ///&lt;/h [rest of string was truncated]&quot;;.
+        ///&lt;/hea [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string knnadvantages {
             get {
@@ -324,8 +323,7 @@ namespace KNearestNeighbor.Properties {
         ///
         ///&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;../local/Classic.css&quot;&gt;&lt;/link&gt;
         ///&lt;script src=&quot;../local/script.js&quot;&gt;&lt;/script&gt;
-        ///
-        /// [rest of string was truncated]&quot;;.
+        ///&lt;/ [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string knndisadvantages {
             get {
@@ -385,22 +383,12 @@ namespace KNearestNeighbor.Properties {
         ///&lt;title&gt;More Reading&lt;/title&gt;
         ///&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;../local/Classic.css&quot;&gt;&lt;/link&gt;
         ///&lt;script src=&quot;../local/script.js&quot;&gt;&lt;/script&gt;
-        ///
-        ///&lt;/head&gt;        /// [rest of string was truncated]&quot;;.
+        ///&lt;/head&gt;
+        ///        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string morereading {
             get {
                 return ResourceManager.GetString("morereading", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon openofficeorg_math_2ze_icon {
-            get {
-                object obj = ResourceManager.GetObject("openofficeorg_math_2ze_icon", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
             }
         }
         
@@ -475,6 +463,16 @@ namespace KNearestNeighbor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon programIcon {
+            get {
+                object obj = ResourceManager.GetObject("programIcon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;html DIR=&quot;LTR&quot; xmlns:MSHelp=&quot;http://msdn.microsoft.com/mshelp&quot; xmlns:ddue=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; xmlns:tool=&quot;http://www.microsoft.com/tooltip&quot;&gt;
         ///&lt;head&gt;
         ///&lt;META HTTP-EQUIV=&quot;Content-Type&quot; CONTENT=&quot;text/html; CHARSET=Windows-1252&quot;&gt;&lt;/META&gt;&lt;META NAME=&quot;save&quot; CONTENT=&quot;history&quot;&gt;&lt;/META&gt;
@@ -507,8 +505,7 @@ namespace KNearestNeighbor.Properties {
         ///
         ///&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;../local/Classic.css&quot;&gt;&lt;/link&gt;
         ///&lt;script src=&quot;../local/script.js&quot;&gt;&lt;/script&gt;
-        ///
-        /// [rest of string was truncated]&quot;;.
+        ///&lt;/ [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string startpage {
             get {

@@ -23,27 +23,19 @@ namespace KNearestNeighbor
         {
             //The input contained something other than a number.
             if (Regex.Matches(value, @"[a-zA-Z\D]").Count > 0)
-            {
                 ep.SetErrorWithCount(textbox, "K-Value cannot contain letters.");
-            }
 
             //There was nothing typed.
             else if (value.Count() == 0 || Regex.Matches(value, @"[0-9]").Count == 0)
-            {
                 ep.SetErrorWithCount(textbox, "K-Value must contain a number.");
-            }
 
             //A negative number was entered or just a zero.
             else if (value.Contains("-") || (value.Length == 1 && value.Contains("0")))
-            {
                 ep.SetErrorWithCount(textbox, "K-Value must contain a positive number greater than zero.");
-            }
 
             //The value entered was valid in type but not in size. It was larger than the total number of training inputs.
             else if (Convert.ToInt32(value) > trainingData.Count)
-            {
                 ep.SetErrorWithCount(textbox, "K-Value must be less than the number of training set inputs");
-            }
         }
 
         /// <summary>
@@ -63,21 +55,15 @@ namespace KNearestNeighbor
         {
             //A symbol (apart from the decimal) or letter was entered.
             if (discreteValue == false && Regex.Matches(value, "[-a-zA-Z/!$%^&*()_+|~=`{}\\[\\]:\"; '<>?,\\/]").Count > 0)
-            {
                 ep.SetErrorWithCount(textbox, "This attribute cannot contain letters or symbols apart from a decimal point.");
-            }
 
             //There was nothing typed.
             else if (value.Count() == 0 || Regex.Matches(value, @"[0-9]").Count == 0)
-            {
                 ep.SetErrorWithCount(textbox, "This attribute must contain a number.");
-            }
 
             //A negative number was entered.
             else if (value.Contains("-"))
-            {
                 ep.SetErrorWithCount(textbox, "This attribute must contain a positive number greater than zero.");
-            }
         }
 
         /// <summary>

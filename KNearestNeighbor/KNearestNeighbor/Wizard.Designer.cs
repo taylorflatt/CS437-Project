@@ -162,9 +162,7 @@
             this.programDescriptionTB.TabIndex = 0;
             this.programDescriptionTB.Text = "";
             this.programDescriptionTB.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.programDescriptionTB_LinkClicked);
-            this.programDescriptionTB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.programDescriptionTB_KeyDown);
             this.programDescriptionTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.programDescriptionTB_KeyPress);
-            this.programDescriptionTB.KeyUp += new System.Windows.Forms.KeyEventHandler(this.programDescriptionTB_KeyUp);
             // 
             // initialDataStep2
             // 
@@ -179,6 +177,7 @@
             this.initialDataStep2.Name = "initialDataStep2";
             this.initialDataStep2.Subtitle = resources.GetString("initialDataStep2.Subtitle");
             this.initialDataStep2.Title = "Data Initialization";
+            this.initialDataStep2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.initialDataStep2_KeyPress);
             this.initialDataStep2.Validating += new System.ComponentModel.CancelEventHandler(this.initialDataStep2_Validating);
             this.initialDataStep2.Validated += new System.EventHandler(this.initialDataStep2_Validated);
             // 
