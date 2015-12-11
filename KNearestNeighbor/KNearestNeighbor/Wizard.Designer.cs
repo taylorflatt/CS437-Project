@@ -64,6 +64,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.closestCompetitorClassLabel = new System.Windows.Forms.Label();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.browseOutputButton = new System.Windows.Forms.Button();
             this.label19 = new System.Windows.Forms.Label();
             this.closestCompetitor = new System.Windows.Forms.Label();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
@@ -86,6 +87,7 @@
             this.helpProvider1 = new System.Windows.Forms.HelpProvider();
             this.errorProviderPlot = new System.Windows.Forms.ErrorProvider(this.components);
             this.wizardBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.descriptionStep1.SuspendLayout();
             this.initialDataStep2.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -279,8 +281,8 @@
             // 
             // browseButton
             // 
-            this.helpProvider1.SetHelpKeyword(this.browseButton, "TestKeyWord");
-            this.helpProvider1.SetHelpString(this.browseButton, "TestString");
+            this.helpProvider1.SetHelpKeyword(this.browseButton, "");
+            this.helpProvider1.SetHelpString(this.browseButton, "");
             this.browseButton.Location = new System.Drawing.Point(87, 16);
             this.browseButton.Name = "browseButton";
             this.helpProvider1.SetShowHelp(this.browseButton, true);
@@ -320,7 +322,6 @@
             this.kValueTB.Name = "kValueTB";
             this.kValueTB.Size = new System.Drawing.Size(100, 20);
             this.kValueTB.TabIndex = 1;
-            this.kValueTB.TextChanged += new System.EventHandler(this.kValueTB_TextChanged);
             // 
             // dontNormalizeTrainingDataCheckBox
             // 
@@ -468,6 +469,7 @@
             // 
             // groupBox8
             // 
+            this.groupBox8.Controls.Add(this.browseOutputButton);
             this.groupBox8.Controls.Add(this.label19);
             this.groupBox8.Controls.Add(this.closestCompetitor);
             this.groupBox8.Location = new System.Drawing.Point(10, 19);
@@ -476,6 +478,20 @@
             this.groupBox8.TabIndex = 4;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "k-NN Closest Competitor";
+            // 
+            // browseOutputButton
+            // 
+            this.helpProvider1.SetHelpKeyword(this.browseOutputButton, "TestKeyWord");
+            this.helpProvider1.SetHelpString(this.browseOutputButton, "TestString");
+            this.browseOutputButton.Location = new System.Drawing.Point(97, 71);
+            this.browseOutputButton.Name = "browseOutputButton";
+            this.helpProvider1.SetShowHelp(this.browseOutputButton, true);
+            this.browseOutputButton.Size = new System.Drawing.Size(97, 23);
+            this.browseOutputButton.TabIndex = 11;
+            this.browseOutputButton.TabStop = false;
+            this.browseOutputButton.Text = "Generate Report";
+            this.browseOutputButton.UseVisualStyleBackColor = true;
+            this.browseOutputButton.Click += new System.EventHandler(this.button1_Click);
             // 
             // label19
             // 
@@ -517,7 +533,7 @@
             // showAllDistancesRadioButton
             // 
             this.showAllDistancesRadioButton.AutoSize = true;
-            this.showAllDistancesRadioButton.Location = new System.Drawing.Point(363, 33);
+            this.showAllDistancesRadioButton.Location = new System.Drawing.Point(378, 33);
             this.showAllDistancesRadioButton.Name = "showAllDistancesRadioButton";
             this.showAllDistancesRadioButton.Size = new System.Drawing.Size(116, 17);
             this.showAllDistancesRadioButton.TabIndex = 16;
@@ -528,7 +544,7 @@
             // showKDistancesRadioButton
             // 
             this.showKDistancesRadioButton.AutoSize = true;
-            this.showKDistancesRadioButton.Location = new System.Drawing.Point(363, 14);
+            this.showKDistancesRadioButton.Location = new System.Drawing.Point(378, 14);
             this.showKDistancesRadioButton.Name = "showKDistancesRadioButton";
             this.showKDistancesRadioButton.Size = new System.Drawing.Size(151, 17);
             this.showKDistancesRadioButton.TabIndex = 15;
@@ -660,6 +676,10 @@
             // 
             this.wizardBindingSource.DataSource = typeof(KNearestNeighbor.Wizard);
             // 
+            // saveFileDialog1
+            // 
+            this.saveFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog1_FileOk);
+            // 
             // Wizard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -759,5 +779,7 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.RadioButton showAllDistancesRadioButton;
         private System.Windows.Forms.RadioButton showKDistancesRadioButton;
+        private System.Windows.Forms.Button browseOutputButton;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }

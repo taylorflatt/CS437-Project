@@ -90,7 +90,7 @@ namespace KNearestNeighbor
         /// Returns the list of distances.
         /// </summary>
         /// <returns></returns>
-        public List<double> getDistances()
+        public List<double> GetDistances()
         {
             return this.distances;
         }
@@ -99,9 +99,117 @@ namespace KNearestNeighbor
         /// Returns the list of closest competitor distances (within a k range).
         /// </summary>
         /// <returns></returns>
-        public List<double> getclosestCompetitorDistances()
+        public List<double> GetClosestCompetitorDistances()
         {
             return this.closestCompetitorDistances;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="k"></param>
+        /// <returns></returns>
+        //public List<double> GetKDistances(int k, bool weightedVote)
+        //{
+        //    List<double> kClosestDistances = new List<double>();
+        //    List<double> sortedDistancesList = new List<double>(this.distances);
+
+        //    try
+        //    {
+        //        sortedDistancesList.Sort();
+
+        //        if(weightedVote == true)
+        //            for (int index = 0; index < k; index++)
+        //                kClosestDistances.Add(1.0 / sortedDistancesList[index]);
+
+        //        else
+        //            for (int index = 0; index < k; index++)
+        //                kClosestDistances.Add(sortedDistancesList[index]);
+        //    }
+
+        //    catch(IndexOutOfRangeException error)
+        //    {
+        //        Console.WriteLine("The k value cannot exceed the size of the training set. ");
+        //        Console.WriteLine("Packed Message: " + error.Message);
+        //        Console.WriteLine("Call Stack: " + error.StackTrace);
+        //    }
+        //    return kClosestDistances;
+        //}
+
+        public List<double> GetKDistances(int k, bool weightedVote)
+        {
+            List<double> kClosestDistances = new List<double>();
+            List<double> sortedDistancesList = new List<double>(this.distances);
+
+            try
+            {
+                sortedDistancesList.Sort();
+
+                if (weightedVote == true)
+                    for (int index = 0; index < k; index++)
+                        kClosestDistances.Add(1.0 / sortedDistancesList[index]);
+
+                else
+                    for (int index = 0; index < k; index++)
+                        kClosestDistances.Add(this.distances[index]);
+            }
+
+            catch (IndexOutOfRangeException error)
+            {
+                Console.WriteLine("The k value cannot exceed the size of the training set. ");
+                Console.WriteLine("Packed Message: " + error.Message);
+                Console.WriteLine("Call Stack: " + error.StackTrace);
+            }
+            return kClosestDistances;
+        }
+
+        public List<double> IndexOfKNearestDistances()
+        {
+            if (distances == null)
+                throw new ArgumentNullException("self");
+
+            if (distances.Count == 0)
+                throw new ArgumentException("List is empty.", "self");
+
+            List<double> tempList = new List<double>(this.distances);
+            List<double> kMinDistances = new List<double>();
+
+            double min = tempList[0];
+            int minIndex = 0;
+
+            //Allows us to make sure that an element already chosen isn't picked again. It is skipped over.
+            List<double> storedMin = new List<double>(k);
+
+            for(int count = 0; count < k; count++)
+            {
+                for (int index = 0; index < tempList.Count; index++)
+                {
+                    if(count > 0)
+                    {
+                        if (tempList[index] < min && storedMin.Contains(tempList[index]) == false)
+                        {
+                            min = tempList[index];
+                            minIndex = index;
+                        }
+                    }
+
+                    else if (tempList[index] < min)
+                    {
+                        min = tempList[index];
+                        minIndex = index; 
+                    }
+                }
+
+                storedMin.Add(min);
+
+                kMinDistances.Add(minIndex); //Due to the output file having an additional 4 rows at the beginning.
+                //tempList.RemoveAt(minIndex);
+
+                min = tempList[0];
+                minIndex = 0;
+            }
+
+            return kMinDistances;
         }
 
         /// <summary>
@@ -164,7 +272,9 @@ namespace KNearestNeighbor
 
             int[] nearestIndices = MathFunctions.Indices(0, normalizedTrainingSet.Count);
 
-            Array.Sort(distances.ToArray(), nearestIndices);
+            List<double> sortedDistances = new List<double>(this.distances);
+
+            Array.Sort(sortedDistances.ToArray(), nearestIndices);
 
             double[] scores = new double[classCount];
 
@@ -173,9 +283,9 @@ namespace KNearestNeighbor
                 int j = nearestIndices[i];
 
                 int label = outputs[j];
-                double d = distances[j];
+                double d = sortedDistances[j];
 
-                scores[label] += 1.0 / d; //weights the score.
+                scores[label] += 1.0 / (d * d); //weights the score. 1/d^2
             }
 
             // Get the maximum weighted score

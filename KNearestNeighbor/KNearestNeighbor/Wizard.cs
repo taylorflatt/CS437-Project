@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace KNearestNeighbor
@@ -13,7 +14,7 @@ namespace KNearestNeighbor
         #region Instance Variables
 
         protected int k;
-        private KNearestNeighborAlgorithm knn;
+        protected KNearestNeighborAlgorithm knn;
 
         protected List<List<double>> trainingSet = new List<List<double>>(); //Training Set
         protected List<int> outputClass = new List<int>(); //Class (output) Set
@@ -511,18 +512,18 @@ namespace KNearestNeighbor
             }
         }
 
-        /// <summary>
-        /// Set the k value enetered into the textbox to the value entered. Then perform validation on that value.
-        /// Display any errors if the value is not permitted.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void kValueTB_TextChanged(object sender, EventArgs e)
-        {
-            string kValue = kValueTB.Text;
+        ///// <summary>
+        ///// Set the k value enetered into the textbox to the value entered. Then perform validation on that value.
+        ///// Display any errors if the value is not permitted.
+        ///// </summary>
+        ///// <param name="sender"></param>
+        ///// <param name="e"></param>
+        //private void kValueTB_TextChanged(object sender, EventArgs e)
+        //{
+        //    string kValue = kValueTB.Text;
 
-            DataValidation.ValidateKValue(errorProviderK, kValue, kValueTB, trainingSet);
-        }
+        //    DataValidation.ValidateKValue(errorProviderK, e, kValue, kValueTB, trainingSet);
+        //}
 
         /// <summary>
         /// Allows the next button to be pressed by hitting the enter key.
@@ -559,8 +560,8 @@ namespace KNearestNeighbor
         private void initialDataStep2_Validating(object sender, CancelEventArgs e)
         {
             //THESE TWO LINES ARE REQUIRED OR THE VALIDATION WON'T WORK PROPERLY.
-            DataValidation.RemoveProviderErrors(errorProviderAttributes); //Zero out the previous errors (if any).
-            DataValidation.RemoveProviderErrors(errorProviderK); //Zero out the previous errors (if any).
+            //DataValidation.RemoveProviderErrors(errorProviderAttributes); //Zero out the previous errors (if any).
+            //DataValidation.RemoveProviderErrors(errorProviderK); //Zero out the previous errors (if any).
 
             int numAttributes = attributeNames.Count;
             bool valid = true; //Assume the data is valid unless we find something invalid.
@@ -573,12 +574,71 @@ namespace KNearestNeighbor
                 GenerateAttributeTextboxes(count, out value, out textBox);
 
                 //Validate the attribute boxes.
-                DataValidation.ValidateAttributes(errorProviderAttributes, value, textBox, false);
+                //DataValidation.ValidateAttributes(errorProviderAttributes, e, value, textBox, false);
+
+                //A symbol (apart from the decimal) or letter was entered.
+                if (Regex.Matches(value, "[-a-zA-Z/!$%^&*()_+|~=`{}\\[\\]:\"; '<>?,\\/]").Count > 0)
+                {
+                    errorProviderAttributes.SetError(textBox, "This attribute cannot contain letters or symbols apart from a decimal point.");
+                    e.Cancel = true;
+                }
+
+                //There was nothing typed.
+                else if (value.Count() == 0 || Regex.Matches(value, @"[0-9]").Count == 0)
+                {
+                    errorProviderAttributes.SetError(textBox, "This attribute must contain a number.");
+                    e.Cancel = true;
+                }
+
+                //A negative number was entered.
+                else if (value.Contains("-"))
+                {
+                    errorProviderAttributes.SetError(textBox, "This attribute must contain a positive number greater than zero.");
+                    e.Cancel = true;
+                }
+
             }
 
             //Run validation on the K-Value
             string kValue = kValueTB.Text;
-            DataValidation.ValidateKValue(errorProviderK, kValue, kValueTB, trainingSet);
+
+            #region Validate K Value
+            //The input contained something other than a number.
+            if (Regex.Matches(kValueTB.Text, @"[a-zA-Z\D]").Count > 0)
+            {
+                errorProviderK.SetError(kValueTB, "K-Value cannot contain letters.");
+                e.Cancel = true;
+                valid = false;
+            }
+
+
+            //There was nothing typed.
+            else if (kValueTB.Text.Count() == 0 || Regex.Matches(kValueTB.Text, @"[0-9]").Count == 0)
+            {
+                errorProviderK.SetError(kValueTB, "K-Value must contain a number.");
+                e.Cancel = true;
+                valid = false;
+            }
+
+            //A negative number was entered or just a zero.
+            else if (kValueTB.Text.Contains("-") || (kValueTB.Text.Length == 1 && kValueTB.Text.Contains("0")))
+            {
+                errorProviderK.SetError(kValueTB, "K-Value must contain a positive number greater than zero.");
+                e.Cancel = true;
+                valid = false;
+            }
+
+            //The value entered was valid in type but not in size. It was larger than the total number of training inputs.
+            else if (Convert.ToInt32(kValueTB.Text) > trainingSet.Count)
+            {
+                errorProviderK.SetError(kValueTB, "K-Value must be less than the number of training set inputs");
+                e.Cancel = true;
+                valid = false;
+            }
+
+            #endregion 
+
+            //DataValidation.ValidateKValue(errorProviderK, e, kValue, kValueTB, trainingSet);
 
             //Check if the data has been normalized properly (or at all). We are HOPING they normalized it properly.
             if (dontNormalizeInputDataCheckBox.Checked)
@@ -652,8 +712,8 @@ namespace KNearestNeighbor
             }
 
             //Invalidate this step if there are any errors in the attributes or k value.
-            if (errorProviderAttributes.HasErrors() || errorProviderK.HasErrors())
-                valid = false;
+            //if (errorProviderAttributes.HasErrors() || errorProviderK.HasErrors())
+            //    valid = false;
 
             //There are errors, so we DO NOT move onto the initialDataStep2_Validated method. Instead we tell the user to fix their issues.
             if (valid == false)
@@ -732,6 +792,11 @@ namespace KNearestNeighbor
             }
         }
 
+        private void CreateOutputFile()
+        {
+
+        }
+
         #endregion Initial Data Step
 
         #region Data Display Step
@@ -744,7 +809,10 @@ namespace KNearestNeighbor
         private void plotButton_Click(object sender, EventArgs e)
         {
             //Remove errors (if any) so we can revalidate during the next iteration.
-            DataValidation.RemoveProviderErrors(errorProviderPlot);
+            //DataValidation.RemoveProviderErrors(errorProviderPlot);
+
+            //if (errorProviderPlot.HasErrors())
+            //    errorProviderPlot.RemoveProviderErrors();
 
             //We assume there aren't any errors in the plot.
             bool valid = true;
@@ -756,10 +824,36 @@ namespace KNearestNeighbor
             int xCoord = plotXComboBox.SelectedIndex;
             int yCoord = plotYComboBox.SelectedIndex;
 
-            DataValidation.ValidateCoordinates(errorProviderPlot, xCoord, yCoord, plotXComboBox, plotYComboBox);
+            //DataValidation.ValidateCoordinates(errorProviderPlot, xCoord, yCoord, plotXComboBox, plotYComboBox);
+
+            //The x-coordinate and y-coordinate inputs are identical.
+            if (xCoord.Equals(yCoord) || yCoord.Equals(xCoord))
+            {
+                errorProviderPlot.SetError(plotXComboBox, "You need to pick two different attributes to plot.");
+                errorProviderPlot.SetError(plotYComboBox, "You need to pick two different attributes to plot.");
+                valid = false;
+            }
+
+            //No x-coordinate was chosen.
+            else if (xCoord == -1)
+            {
+                errorProviderPlot.SetError(plotXComboBox, "You need to select an attribute to plot. ");
+                valid = false;
+            }
+
+            //No y-coordinate was chosen.
+            else if (yCoord == -1)
+            {
+                errorProviderPlot.SetError(plotYComboBox, "You need to select an attribute to plot. ");
+                valid = false;
+            }
 
             //If the user selected incorrect values in the PlotX and PlotY dropdowns (or any error involving the selection).
-            if (errorProviderPlot.HasErrors())
+            //if (errorProviderPlot.HasErrors())
+            //    valid = false;
+
+            //Temporary until I can narrow the issue down.
+            else if (xCoord == yCoord)
                 valid = false;
 
             //Go ahead and plot everything, there are no errors.
@@ -796,7 +890,7 @@ namespace KNearestNeighbor
                 closestCompetitorClassLabel.Text = Convert.ToString(outputClassNames[closestCompetitorClassIndex]);
                 closestCompetitorDistanceLabel.Text = StringExtensions.Truncate(Convert.ToString(closestCompetitorDistance), 8);
 
-                var listOfDistances = knn.getclosestCompetitorDistances();
+                var listOfDistances = knn.GetClosestCompetitorDistances();
 
                 //Now remove that first input (we don't need it anymore).
                 closestCompetitor.RemoveAt(0);
@@ -815,5 +909,42 @@ namespace KNearestNeighbor
         }
 
         #endregion Data Display Step
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //saveFileDialog1.ShowDialog();
+
+            var kClosestDistances = knn.GetKDistances(k, true);
+            var allDistances = knn.GetKDistances(trainingSet.Count, false);
+
+            //Will return the k-nearest distances (min distance) and the index of that value relative to the trainingSet.
+            var kNearestDistances = knn.IndexOfKNearestDistances(); 
+
+            string saveFileName = saveFileDialog1.FileName;
+
+            DataWriter writer = new DataWriter(kNearestDistances, allDistances, saveFileDialog1, openFileDialog1, k, trainingSet, trainingDataName, outputClass, outputClassNames, attributeNames, inputSet);
+
+            if (Path.GetExtension(openFileDialog1.FileName).Equals(".xls", StringComparison.InvariantCultureIgnoreCase))
+                writer.CreateOutputXlsFile();
+
+            else if (Path.GetExtension(openFileDialog1.FileName).Equals(".xlsx", StringComparison.InvariantCultureIgnoreCase))
+                writer.CreateOutputXlsFile();
+
+        }
+
+        private void saveFileDialog1_FileOk(object sender, CancelEventArgs e)
+        {
+            //string saveFileName = saveFileDialog1.FileName;
+
+            //DataWriter writer = new DataWriter(knn, saveFileDialog1, saveFileName, openFileDialog1.FileName, k, trainingSet, outputClass, outputClassNames, attributeNames, inputSet);
+
+            //if (Path.GetExtension(openFileDialog1.FileName).Equals(".xls", StringComparison.InvariantCultureIgnoreCase))
+            //    writer.CreateOutputXlsFile();
+
+        //else if(Path.GetExtension(openFileDialog1.FileName).Equals(".xlsx", StringComparison.InvariantCultureIgnoreCase))
+               
+
+            //This is where we need to have the info for outputting the file contents.
+        }
     }
 }
