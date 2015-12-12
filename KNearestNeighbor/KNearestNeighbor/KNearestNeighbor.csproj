@@ -200,6 +200,7 @@
     <Content Include="knnHelp.chm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="ClassDiagram1.cd" />
     <None Include="KNearestNeighbor_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\DataSources\KNearestNeighborTest.datasource" />

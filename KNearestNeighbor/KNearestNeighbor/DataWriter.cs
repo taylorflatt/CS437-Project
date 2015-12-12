@@ -10,12 +10,6 @@ using System.Reflection;
 using System.Windows.Forms;
 using NPOI.HSSF.Model;
 
-/// <summary>
-/// What I want to do here is take the original data input file that they used to generate the k-NN training set and copy it.
-/// Then add my additions to it such as the input data, k-value, etc. Then save that for the user on their computer. I will create 
-/// a button that says "Generate Report" and the user can save it anywhere that they wish.
-/// </summary>
-
 namespace KNearestNeighbor
 {
     class DataWriter
@@ -37,6 +31,20 @@ namespace KNearestNeighbor
 
         private string outputFileName = "knnOutputFile.xls";
 
+        /// <summary>
+        /// Allows for the export of the output for computing the k-NN.
+        /// </summary>
+        /// <param name="kNearestDistances">The list of elements that voted on the class for the inpt.</param>
+        /// <param name="allDistances">All of the distances for the training set.</param>
+        /// <param name="saveFileDialog">The save dialog object.</param>
+        /// <param name="trainingDataFilePath">The open file dialog object for the training data.</param>
+        /// <param name="kValue">The chosen k-value.</param>
+        /// <param name="trainingSet">The entire training set.</param>
+        /// <param name="trainingDataName">The name of the particular data point.</param>
+        /// <param name="outputClass">The list of output classes for each data point.</param>
+        /// <param name="outputClassNames">The output class names (distinct).</param>
+        /// <param name="attributeName">The names of the attributes.</param>
+        /// <param name="inputSet">The user input.</param>
         public DataWriter(List<double> kNearestDistances, List<double> allDistances, SaveFileDialog saveFileDialog, OpenFileDialog trainingDataFilePath, int kValue, List<List<double>> trainingSet, List<string> trainingDataName, List<int> outputClass, List<string> outputClassNames, List<string> attributeName, List<double> inputSet)
         {
             this.trainingDataFilePath = trainingDataFilePath;
@@ -70,6 +78,9 @@ namespace KNearestNeighbor
             inputValue = inputValue + "}";
         }
 
+        /// <summary>
+        /// This class will create the *.xls output file with the training data and the output data combined.
+        /// </summary>
         public void CreateOutputXlsFile()
         {
             HSSFWorkbook workbook;
@@ -242,6 +253,7 @@ namespace KNearestNeighbor
                     }
                 }
 
+                //Create the file.
                 using (var fileStream = new FileStream("dataOutput.xls", FileMode.Create, FileAccess.Write))
                 {
                     workbook.Write(fileStream);
@@ -258,138 +270,5 @@ namespace KNearestNeighbor
                 }
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        ////Will probably need to pass in the file path/name of the previously selected file.
-        //public void CreateOutputXlsFile()
-        //{
-        //    //Training Data Template.
-        //    FileStream fileStream = new FileStream(trainingDataFilePath.FileName, FileMode.Open, FileAccess.Read);
-
-        //    // Getting the complete workbook...
-        //    //HSSFWorkbook trainingDataFile = new HSSFWorkbook(fileStream, true);
-        //    XSSFWorkbook trainingDataFile = new XSSFWorkbook(fileStream);
-
-        //    // Getting the worksheet by its name...
-        //    ISheet sheet = trainingDataFile.GetSheet("Sheet1");
-
-        //    //Here is where you get the rows.
-
-        //    //Rows and columns start at index 0.
-
-        //    var temp = sheet.LastRowNum;
-        //    var temp2 = sheet.PhysicalNumberOfRows;
-
-        //    //Let's read all of the rows in the document into our new file.
-        //    for (int index = 0; index < sheet.LastRowNum; index++)
-        //    {
-        //        //Get the row data from the trainingDataFile.
-        //        IRow dataRow = sheet.GetRow(index);
-
-        //        //Create the extra cells in the row for our new data.
-        //        for (int column = 8; column <= 13; column++)
-        //            dataRow.CreateCell(column);
-
-        //        //If it is the first row, add the header text.
-        //        if (index == 0)
-        //        {
-        //            dataRow.CreateCell(8);
-        //            //Give a buffer column.
-        //            dataRow.GetCell(8).SetCellValue("");
-        //            dataRow.GetCell(9).SetCellValue("Input Data Set"); //Input data in a set. {a1, a2, a3, a4, a5}
-        //            dataRow.GetCell(10).SetCellValue("k-Value"); //k-Value entered by the user.
-        //            dataRow.GetCell(11).SetCellValue("Voted For"); //Class the particular data point voted for
-        //            dataRow.GetCell(12).SetCellValue("Vote Weight"); //Blank for now.
-        //            dataRow.GetCell(13).SetCellValue("Distance from input"); //The distance the data point is from the input.
-        //        }
-
-        //        //Add the input set and k-value (only need to put it once.
-        //        else if(index == 1)
-        //        {
-        //            dataRow.GetCell(9).SetCellValue(inputValue); //Input data in a set. {a1, a2, a3, a4, a5}
-        //            dataRow.GetCell(10).SetCellValue(Convert.ToString(kValue)); //k-Value entered by the user.
-        //        }
-
-        //        //Otherwise add the data.
-        //        else
-        //        {
-        //            //Now for each row, we want to add onto the ends of them with our output.
-        //            //Give a buffer column.
-        //            dataRow.GetCell(8).SetCellValue("");
-        //            dataRow.GetCell(11).SetCellValue(outputClass[index]); //Class the particular data point voted for
-
-        //            var temp12381 = kClosestDistances;
-
-        //            //Will print the k-closest (the values that voted) with their weights.
-        //            for (int count = 0; count < kClosestDistances.Count; count++)
-        //                dataRow.GetCell(12).SetCellValue(Convert.ToString(kClosestDistances[count])); //The distance the data point is from the input.
-
-        //            //Will print the normalized distance from the input.
-        //            dataRow.GetCell(13).SetCellValue(allDistances[index]);
-        //        }
-        //    }
-
-        //    //Bug Fix
-        //    if(sheet.PhysicalNumberOfRows < 100)
-        //    {
-        //        for (int index = sheet.PhysicalNumberOfRows + 1; index < 100; index++)
-        //        {
-        //            sheet.CreateRow(index);
-
-        //            var dataRow = sheet.GetRow(index);
-
-        //            dataRow.CreateCell(0);
-        //            dataRow.GetCell(0).SetCellValue("");
-        //        }
-        //    }
-
-        //    //We will be making the changes in memory and returning the file to the user.
-        //    MemoryStream memoryStream = new MemoryStream();
-
-        //    // Writing the workbook content to the FileStream...
-        //    trainingDataFile.Write(memoryStream);
-
-        //    //string newFileName = trainingDataFilePath.SafeFileName + "_output.xls";
-
-        //    //string directory  = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
-
-        //    //string outputFileName = directory + newFileName;
-
-        //    //var systemPath = System.Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-
-        //    var systemPath = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
-        //    //var outputFileName = Path.Combine(systemPath, "\\output_" + trainingDataFilePath.SafeFileName);
-
-        //    var outputFileName = systemPath + "\\output_" + trainingDataFilePath.SafeFileName;
-
-
-        //    FileStream outputFile = new FileStream(outputFileName, FileMode.Create);
-
-        //    trainingDataFile.Write(outputFile);
-        //}
     }
 }

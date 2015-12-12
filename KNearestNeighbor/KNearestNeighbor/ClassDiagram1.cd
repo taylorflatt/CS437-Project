@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="KNearestNeighbor.Plot">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>QAAACQCACAAEBAgCAAABACAAIIAAABQAABEQQAAAAAA=</HashCode>
+      <FileName>ChartExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KNearestNeighbor.DataReader">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEACAAAIAACIAAAAAAAAJAAMWAIQAAAACA=</HashCode>
+      <FileName>DataReader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KNearestNeighbor.DataValidation">
+    <Position X="0.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataValidation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KNearestNeighbor.DataWriter">
+    <Position X="2.25" Y="7.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>BAAAkAAgAAAAAIAAIAAAAIEAAAAAAJAAAAAIQAEAIAA=</HashCode>
+      <FileName>DataWriter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KNearestNeighbor.ErrorHandler">
+    <Position X="5.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ErrorHandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KNearestNeighbor.KNearestNeighborAlgorithm">
+    <Position X="0.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>KNearestNeighborAlgorithm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KNearestNeighbor.KNearestNeighbor&lt;T&gt;">
+    <Position X="0.5" Y="4" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>BEAAAEFAAAAAAQCIAAIAAAAAEECAAAAAgBAAAIQAAAA=</HashCode>
+      <FileName>KNearestNeighborAlgorithm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KNearestNeighbor.KNearestNeighborMain">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>KNearestNeighborMain.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KNearestNeighbor.MathFunctions">
+    <Position X="4" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAFAEAAAAEAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>MathFunctions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KNearestNeighbor.NormalizeData">
+    <Position X="2.25" Y="5.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAQAAAAEAAAAAAgAAAAAAgAAAAACAAAAAA=</HashCode>
+      <FileName>NormalizeData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KNearestNeighbor.StringExtensions">
+    <Position X="2.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAEAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>StringExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KNearestNeighbor.Wizard">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>jwAgCAG0CGAEIBkCoAjDxAACgAhk0XAaxmBIJBNlSDA=</HashCode>
+      <FileName>Wizard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KNearestNeighbor.Properties.Resources">
+    <Position X="5.75" Y="5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>0MAIAAIAgCAgQAAAIgABEBQECZCKFAhBACAkQEggAYU=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

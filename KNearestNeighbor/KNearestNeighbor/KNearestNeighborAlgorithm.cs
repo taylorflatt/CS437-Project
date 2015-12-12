@@ -105,38 +105,12 @@ namespace KNearestNeighbor
         }
 
         /// <summary>
-        /// 
+        /// Gets the k-closest distances.
         /// </summary>
-        /// <param name="k"></param>
+        /// <param name="k">Chosen k value.</param>
+        /// <param name="weightedVote">True if you want the distance returned to be weighted. False otherwise.</param>
         /// <returns></returns>
-        //public List<double> GetKDistances(int k, bool weightedVote)
-        //{
-        //    List<double> kClosestDistances = new List<double>();
-        //    List<double> sortedDistancesList = new List<double>(this.distances);
-
-        //    try
-        //    {
-        //        sortedDistancesList.Sort();
-
-        //        if(weightedVote == true)
-        //            for (int index = 0; index < k; index++)
-        //                kClosestDistances.Add(1.0 / sortedDistancesList[index]);
-
-        //        else
-        //            for (int index = 0; index < k; index++)
-        //                kClosestDistances.Add(sortedDistancesList[index]);
-        //    }
-
-        //    catch(IndexOutOfRangeException error)
-        //    {
-        //        Console.WriteLine("The k value cannot exceed the size of the training set. ");
-        //        Console.WriteLine("Packed Message: " + error.Message);
-        //        Console.WriteLine("Call Stack: " + error.StackTrace);
-        //    }
-        //    return kClosestDistances;
-        //}
-
-        public List<double> GetKDistances(int k, bool weightedVote)
+        public List<double> GetKDistances(int k, bool weightedVote = false)
         {
             List<double> kClosestDistances = new List<double>();
             List<double> sortedDistancesList = new List<double>(this.distances);
@@ -163,6 +137,10 @@ namespace KNearestNeighbor
             return kClosestDistances;
         }
 
+        /// <summary>
+        /// Gets the index of the training values that actually voted for the class of the input.
+        /// </summary>
+        /// <returns>The index of the element (relative to the training set index) of the training element that voted for the input class.</returns>
         public List<double> IndexOfKNearestDistances()
         {
             if (distances == null)
